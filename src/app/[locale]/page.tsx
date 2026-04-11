@@ -2,7 +2,6 @@ import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import HeroSection from "@/components/sections/home/hero-section";
 import AboutSection from "@/components/sections/home/about-section";
-import StatsSection from "@/components/sections/home/stats-section";
 import ServicesSection from "@/components/sections/home/services-section";
 import ProductsSection from "@/components/sections/home/products-section";
 import InfoVitrinSection from "@/components/sections/home/info-vitrin-section";
@@ -17,10 +16,9 @@ export default function HomePage() {
       <Header />
       <main>
         <HeroSection />
-        <StatsSection />
         <AboutSection />
-        <ServicesSection />
         <ProductsSection />
+        <ServicesSection />
         <InfoVitrinSection />
         <SmartIndicatorsSection />
         <FaqSection />

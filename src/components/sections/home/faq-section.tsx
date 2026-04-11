@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import Container from "@/components/ui/container";
 import { faqItems } from "@/data/faq";
@@ -8,77 +9,103 @@ export default function FaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="sss" className="relative overflow-hidden py-24 sm:py-32">
-      {/* Background */}
-      <div className="absolute left-0 top-0 h-[400px] w-[400px] rounded-full bg-purple-500/5 blur-[100px] pointer-events-none" />
+    <section id="sss" className="faq-section relative overflow-hidden py-24 sm:py-32">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute left-[-120px] top-[40px] h-[320px] w-[320px] rounded-full bg-purple-500/8 blur-[120px]" />
+        <div className="absolute right-[-80px] bottom-[30px] h-[260px] w-[260px] rounded-full bg-pink-500/8 blur-[110px]" />
+      </div>
 
-      <Container className="relative">
-        <div className="grid gap-12 lg:grid-cols-5 lg:gap-16 lg:items-start">
-          {/* Left: heading */}
+      <Container className="relative z-10">
+        <div className="grid gap-14 lg:grid-cols-5 lg:items-start lg:gap-16">
           <div className="flex flex-col gap-6 lg:col-span-2 lg:sticky lg:top-28">
-            <h2
-              className="text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl"
-              style={{ fontFamily: "var(--font-jakarta), sans-serif" }}
-            >
-              Sıkça Sorulan{" "}
-              <span className="gradient-text">Sorular</span>
+            <span className="faq-kicker">BİLMENİZ GEREKENLER</span>
+
+            <h2 className="faq-title">
+              Sıkça Sorulan <span className="gradient-text">Sorular</span>
             </h2>
-            <p className="text-sm leading-relaxed text-muted sm:text-base">
-              Aklınızdaki soruların cevaplarını burada bulabilirsiniz. Daha fazlası
-              için bizimle iletişime geçin.
+
+            <p className="faq-intro">
+              Süreci, teslim modelimizi ve birlikte çalışma biçimizi netleştiren
+              en sık gelen soruları burada topladık.
             </p>
-            <a
-              href="#iletisim"
-              className="inline-flex w-fit items-center gap-2 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 px-5 py-3 text-sm font-medium text-white shadow-[0_0_20px_rgba(168,85,247,0.3)] transition-all hover:scale-105"
-            >
-              Ücretsiz Tanışma Görüşmesi
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
-              </svg>
+
+            <a href="#iletisim" className="faq-cta group">
+              <span className="faq-cta-bg">
+                <Image
+                  src="/hero-orb.svg"
+                  alt=""
+                  fill
+                  aria-hidden="true"
+                  className="object-cover opacity-30 scale-125 group-hover:scale-150 transition-transform duration-700"
+                />
+              </span>
+
+              <span className="faq-cta-overlay" />
+
+              <span className="faq-cta-content">
+                Ücretsiz Tanışma Görüşmesi
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  className="transition-transform duration-300 group-hover:translate-x-1"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </span>
             </a>
           </div>
 
-          {/* Right: accordion */}
-          <div className="flex flex-col gap-2 lg:col-span-3">
+          <div className="flex flex-col gap-3 lg:col-span-3">
             {faqItems.map((item, index) => {
               const isOpen = openIndex === index;
+
               return (
                 <div
                   key={index}
-                  className={`overflow-hidden rounded-xl border transition-all duration-200 ${
-                    isOpen
-                      ? "border-purple-500/30 bg-purple-500/5"
-                      : "border-white/8 bg-card/60"
+                  className={`faq-card group ${
+                    isOpen ? "faq-card-open" : "faq-card-closed"
                   }`}
                 >
                   <button
+                    type="button"
                     onClick={() => setOpenIndex(isOpen ? null : index)}
-                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
+                    className="faq-trigger"
                     aria-expanded={isOpen}
+                    aria-controls={`faq-content-${index}`}
+                    id={`faq-trigger-${index}`}
                   >
-                    <span className="text-sm font-medium text-white sm:text-base">
-                      {item.question}
-                    </span>
-                    <span
-                      className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border transition-all ${
-                        isOpen
-                          ? "border-purple-500/40 bg-purple-500/20 text-purple-light rotate-45"
-                          : "border-white/10 bg-white/5 text-white/50"
-                      }`}
-                    >
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <span className="faq-question">{item.question}</span>
+
+                    <span className={`faq-icon ${isOpen ? "faq-icon-open" : ""}`}>
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.2"
+                      >
                         <line x1="12" y1="5" x2="12" y2="19" />
                         <line x1="5" y1="12" x2="19" y2="12" />
                       </svg>
                     </span>
                   </button>
 
-                  {isOpen && (
-                    <div className="px-5 pb-5">
-                      <p className="text-sm leading-relaxed text-muted">{item.answer}</p>
+                  <div
+                    id={`faq-content-${index}`}
+                    role="region"
+                    aria-labelledby={`faq-trigger-${index}`}
+                    className={`faq-answer-wrap ${isOpen ? "faq-answer-wrap-open" : ""}`}
+                  >
+                    <div className="faq-answer-inner">
+                      <p className="faq-answer">{item.answer}</p>
                     </div>
-                  )}
+                  </div>
                 </div>
               );
             })}

@@ -1,91 +1,57 @@
-export type ProductFeature = {
-  text: string;
-};
+type AccentColor = "purple" | "pink" | "green";
 
-export type Product = {
+interface Product {
   id: string;
   title: string;
-  titleEn: string;
+  tag: string;
   description: string;
-  descriptionEn: string;
   features: string[];
-  featuresEn: string[];
-  accentColor: "purple" | "pink" | "green";
-  reverse?: boolean;
-};
+  accentColor: AccentColor;
+  reverse: boolean;
+}
 
 export const products: Product[] = [
   {
-    id: "data-security",
-    title: "Veri Güvenliği ve Erişim Yönetimi",
-    titleEn: "Data Security & Access Management",
+    id: "calmdo",
+    title: "CalmDo",
+    tag: "AI Todo App",
     description:
-      "Kurumsal verilerinizi koruyun, erişim yetkilerini tam kontrol altında tutun. Güvenlik ihlallerine karşı çok katmanlı koruma altyapısı.",
-    descriptionEn:
-      "Protect your enterprise data and keep access permissions fully under control. Multi-layered protection against security breaches.",
+      "CalmDo, günlük planlama sürecini daha sade, odaklı ve sürdürülebilir hale getiren yapay zekâ destekli mobil yapılacaklar uygulamasıdır. Kullanıcının önceliklerini analiz eder, görevleri anlamlı bir akışa dönüştürür ve yoğunluk anlarında karar yükünü azaltır.",
     features: [
-      "Rol tabanlı erişim kontrolü",
-      "Gerçek zamanlı tehdit izleme",
-      "Şifreli veri depolama",
-      "Uyumluluk raporlaması (KVKK, GDPR)",
-      "Güvenlik olayı yönetimi",
-    ],
-    featuresEn: [
-      "Role-based access control",
-      "Real-time threat monitoring",
-      "Encrypted data storage",
-      "Compliance reporting (GDPR)",
-      "Security incident management",
+      "Yapay zekâ destekli görev önceliklendirme ve gün planı oluşturma",
+      "Kişisel odak seviyesine göre önerilen çalışma blokları",
+      "Erteleme eğilimini azaltan akıllı hatırlatma ve yönlendirmeler",
+      "Minimal ve sakin deneyim sunan mobil odaklı kullanıcı arayüzü",
     ],
     accentColor: "purple",
     reverse: false,
   },
   {
-    id: "reporting",
-    title: "Raporlama ve Operasyon Takibi",
-    titleEn: "Reporting & Operations Tracking",
+    id: "seyahat",
+    title: "AI Destekli Seyahat ve Liste Uygulaması",
+    tag: "Travel Planner",
     description:
-      "Tüm iş süreçlerinizi tek ekranda görün. Anlık raporlar, akıllı göstergeler ve özelleştirilebilir dashboard'larla veriye dayalı kararlar alın.",
-    descriptionEn:
-      "See all your business processes on a single screen. Make data-driven decisions with real-time reports and smart indicators.",
+      "Bu ürün, seyahat planlama sürecini tek bir akışta birleştirir. Kullanıcıya rota, hazırlık ve yapılacaklar listesi yönetimini aynı deneyim içinde sunarken yapay zekâ desteğiyle daha doğru, daha hızlı ve daha kişisel öneriler üretir.",
     features: [
-      "Özelleştirilebilir dashboard",
-      "Otomatik raporlama ve bildirimler",
-      "KPI takip sistemi",
-      "Tarihsel veri analizi",
-      "PDF ve Excel dışa aktarım",
-    ],
-    featuresEn: [
-      "Customizable dashboards",
-      "Automated reporting & alerts",
-      "KPI tracking system",
-      "Historical data analysis",
-      "PDF & Excel export",
+      "Seyahat amacına ve süreye göre akıllı plan önerileri",
+      "Valiz, belge, görev ve rezervasyon takibi için entegre listeler",
+      "Lokasyon bazlı içerik, gezi akışı ve hazırlık kontrol noktaları",
+      "Dağınık planları tek ekranda toplayan kullanıcı dostu deneyim",
     ],
     accentColor: "pink",
     reverse: true,
   },
   {
-    id: "integration",
-    title: "Akıllı Süreç ve Entegrasyon Altyapısı",
-    titleEn: "Smart Process & Integration Platform",
+    id: "erisilebilirlik",
+    title: "Erişilebilirlik Entegrasyonu",
+    tag: "Inclusive Tech",
     description:
-      "Farklı sistemlerinizi birbirine bağlayın, tekrar eden işlemleri otomatikleştirin. Kesintisiz iş akışı ve tam entegrasyon.",
-    descriptionEn:
-      "Connect your different systems, automate repetitive tasks. Seamless workflow and full integration.",
+      "Erişilebilirlik Entegrasyonu, dijital ürünlerin engelli bireyler tarafından daha rahat, güvenli ve bağımsız kullanılabilmesi için geliştirilen kapsamlı bir çözüm setidir. Mevcut sistemlere entegre edilerek erişilebilirlik standartlarını güçlendirir ve kapsayıcı deneyim tasarımını destekler.",
     features: [
-      "API tabanlı entegrasyonlar",
-      "İş akışı otomasyonu",
-      "Üçüncü taraf sistem bağlantıları",
-      "Hata toleranslı süreç yönetimi",
-      "Gerçek zamanlı senkronizasyon",
-    ],
-    featuresEn: [
-      "API-based integrations",
-      "Workflow automation",
-      "Third-party system connections",
-      "Fault-tolerant process management",
-      "Real-time synchronization",
+      "Ekran okuyucu, klavye navigasyonu ve odak yönetimi uyumluluğu",
+      "Renk kontrastı, tipografi ve etkileşim alanları için erişilebilir arayüz iyileştirmeleri",
+      "WCAG odaklı denetim, raporlama ve geliştirme önerileri",
+      "Engelli bireylerin dijital hizmetlere daha eşit erişimi için sürdürülebilir entegrasyon yaklaşımı",
     ],
     accentColor: "green",
     reverse: false,

@@ -7,34 +7,55 @@ export default function HeroForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Future: submit logic
     setEmail("");
   };
 
   return (
-    <div className="mt-10 w-full max-w-xl">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:flex-row">
+    <div className="ml-24 mt-8 w-full max-w-sm">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2.5 sm:flex-row">
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="E-posta adresinizi girin"
+          placeholder="E-posta adresiniz"
           required
-          className="input-dark h-12 flex-1 rounded-2xl px-5 text-sm"
+          className="flex-1 h-11 rounded-xl px-4 text-[13px] text-white/80 placeholder:text-white/22 outline-none transition-all duration-200"
+          style={{
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(255,255,255,0.09)",
+          }}
+          onFocus={(e) => {
+            e.currentTarget.style.borderColor = "rgba(168,85,247,0.35)";
+            e.currentTarget.style.boxShadow = "0 0 0 3px rgba(168,85,247,0.07)";
+          }}
+          onBlur={(e) => {
+            e.currentTarget.style.borderColor = "rgba(255,255,255,0.09)";
+            e.currentTarget.style.boxShadow = "none";
+          }}
         />
         <button
           type="submit"
-          className="inline-flex h-12 items-center justify-center rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 px-6 text-sm font-medium text-white shadow-[0_0_25px_rgba(168,85,247,0.35)] transition-all hover:scale-105 hover:shadow-[0_0_35px_rgba(236,72,153,0.45)] whitespace-nowrap"
+          className="h-11 px-5 rounded-xl text-[13px] text-white/90 whitespace-nowrap transition-all duration-200 hover:text-white"
+          style={{
+            background: "linear-gradient(135deg, rgba(168,85,247,0.55), rgba(236,72,153,0.50))",
+            border: "1px solid rgba(255,255,255,0.08)",
+            letterSpacing: "0.03em",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "linear-gradient(135deg, rgba(168,85,247,0.72), rgba(236,72,153,0.66))";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "linear-gradient(135deg, rgba(168,85,247,0.55), rgba(236,72,153,0.50))";
+          }}
         >
           Tanışalım
-          <svg className="ml-2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <line x1="5" y1="12" x2="19" y2="12" />
-            <polyline points="12 5 19 12 12 19" />
-          </svg>
         </button>
       </form>
-      <p className="mt-3 text-center text-xs text-white/30">
-        Gizliliğinize saygı duyuyoruz. Spam göndermeyiz.
+      <p
+        className="mt-3 text-center text-white/18"
+        style={{ fontSize: "11px", letterSpacing: "0.02em" }}
+      >
+        Gizliliğinize saygı duyuyoruz.
       </p>
     </div>
   );

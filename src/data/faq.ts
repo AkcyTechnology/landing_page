@@ -1,57 +1,32 @@
-export type FaqItem = {
-  question: string;
-  questionEn: string;
-  answer: string;
-  answerEn: string;
-};
-
-export const faqItems: FaqItem[] = [
+export const faqItems = [
   {
-    question: "AKCY hangi tür yazılım çözümleri sunar?",
-    questionEn: "What type of software solutions does AKCY offer?",
+    question: "Hangi tür yazılım projelerinde birlikte çalışıyorsunuz?",
     answer:
-      "AKCY; özel yazılım geliştirme, web ve mobil uygulama geliştirme, dijital dönüşüm danışmanlığı ve kurumsal otomasyon çözümleri sunar. Her proje, müşteriye özel ihtiyaç analiziyle başlar.",
-    answerEn:
-      "AKCY offers custom software development, web and mobile application development, digital transformation consulting, and enterprise automation solutions. Each project begins with a client-specific needs analysis.",
+      "Web tabanlı platformlar, kurumsal yönetim panelleri, özel iş yazılımları, SaaS ürünleri ve markaya özel dijital deneyimler geliştiriyoruz. Her projeyi hazır kalıplarla değil, iş hedeflerinize göre ele alıyoruz.",
   },
   {
-    question: "Süreç nasıl ilerler?",
-    questionEn: "How does the process work?",
+    question: "Bir projeye başlamadan önce nasıl bir süreç izliyorsunuz?",
     answer:
-      "Önce keşif görüşmesiyle ihtiyaçlarınızı anlıyoruz. Ardından proje planı ve teknik yol haritası hazırlıyoruz. Geliştirme sürecinde düzenli güncellemeler ve testler yapılır. Son olarak teslim ve sürekli destek aşaması gelir.",
-    answerEn:
-      "We start by understanding your needs through a discovery call. Then we prepare a project plan and technical roadmap. During development, regular updates and testing are conducted. Finally comes delivery and ongoing support.",
+      "Önce ihtiyacı, hedef kullanıcıyı ve iş önceliklerini netleştiriyoruz. Ardından kapsam, teknoloji yaklaşımı, teslim planı ve tasarım yönünü belirleyip kontrollü bir yol haritası oluşturuyoruz.",
   },
   {
-    question: "Özel proje geliştirme yapıyor musunuz?",
-    questionEn: "Do you do custom project development?",
+    question: "Sadece geliştirme mi yapıyorsunuz, tasarım desteği de veriyor musunuz?",
     answer:
-      "Evet, tüm projelerimiz müşteriye özeldir. Hazır şablonlar yerine, işinizin gerçek ihtiyaçlarına göre tasarlanmış ve geliştirilen çözümler sunuyoruz.",
-    answerEn:
-      "Yes, all our projects are client-specific. Instead of ready-made templates, we offer solutions designed and developed according to your business's real needs.",
+      "Hem arayüz tasarımı hem de yazılım geliştirme tarafında destek veriyoruz. Gerektiğinde ürün stratejisi, kullanıcı deneyimi, marka hissi ve teknik mimariyi birlikte ele alıyoruz.",
   },
   {
-    question: "Destek hizmetiniz var mı?",
-    questionEn: "Do you offer support services?",
+    question: "Proje süresi neye göre belirleniyor?",
     answer:
-      "Evet, 7/24 teknik destek sunuyoruz. Proje tesliminin ardından bakım sözleşmeleri kapsamında yazılımınızı güncel tutuyoruz. Kritik sorunlarda hızlı müdahale garantisi veriyoruz.",
-    answerEn:
-      "Yes, we offer 24/7 technical support. After project delivery, we keep your software up to date under maintenance agreements. We guarantee rapid response for critical issues.",
+      "Süre; kapsamın büyüklüğüne, entegrasyon ihtiyaçlarına, özel fonksiyonlara ve revizyon sayısına göre değişir. İlk görüşmeden sonra daha net bir zaman planı ve teslim çerçevesi paylaşıyoruz.",
   },
   {
-    question: "Ürünleriniz kimler için uygun?",
-    questionEn: "Who are your products suitable for?",
+    question: "Mevcut bir projeyi devralabiliyor musunuz?",
     answer:
-      "Ürünlerimiz KOBİ'lerden büyük kurumsal şirketlere kadar geniş bir yelpazede hizmet verir. Özellikle operasyonlarını dijitalleştirmek isteyen, veriye dayalı karar almayı hedefleyen ve büyüme sürecindeki işletmeler için idealdir.",
-    answerEn:
-      "Our products serve a wide range from SMEs to large enterprises. They are particularly ideal for businesses looking to digitize their operations, aim for data-driven decision-making, and are in a growth phase.",
+      "Evet. Var olan yazılımı analiz ederek kod kalitesi, performans, sürdürülebilirlik ve geliştirme potansiyeli açısından değerlendiriyoruz. Ardından iyileştirme veya yeniden yapılandırma önerileri sunuyoruz.",
   },
   {
-    question: "Sürdürülebilirlik yaklaşımınız nedir?",
-    questionEn: "What is your sustainability approach?",
+    question: "Destek ve bakım hizmeti sağlıyor musunuz?",
     answer:
-      "Her projede çevresel farkındalıkla hareket ediyoruz. Geliştirdiğimiz her yazılım için bağış yapıyor, ağaç dikimi programlarına katılıyoruz. Dijital ürünlerimizde enerji verimliliği ve uzun ömürlü mimari önceliğimizdir.",
-    answerEn:
-      "We act with environmental awareness in every project. For every software we develop, we make donations and participate in tree-planting programs. Energy efficiency and long-lived architecture are our priorities in digital products.",
+      "Evet. Proje yayına alındıktan sonra teknik destek, bakım, performans iyileştirmeleri ve yeni özellik geliştirmeleri için birlikte çalışmaya devam edebiliyoruz.",
   },
 ];
