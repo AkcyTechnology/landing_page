@@ -1,0 +1,13 @@
+.digit {
+  position: fixed;
+
+  pointer-events: none;
+  user-select: none;
+
+  z-index: 9999;
+
+  font-family: var(--font-mono, ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace);
+  font-weight: 500;
+
+  color: rgb(13, 154, 163);
+}

@@ -1,0 +1,163 @@
+/* ==========================
+   DESKTOP (STICKY)
+========================== */
+
+.desktopToc {
+  position: sticky;
+
+  top: 120px;
+
+  align-self: start;
+}
+
+.title {
+  display: block;
+
+  margin-bottom: 18px;
+
+  color: #06101f;
+
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.1em;
+
+  text-transform: uppercase;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+
+  border-left: 1px solid rgba(6, 16, 31, 0.12);
+
+  li {
+    margin: 0;
+  }
+}
+
+.subItem {
+  .link {
+    padding-left: 30px;
+
+    font-size: 13px;
+  }
+}
+
+.link {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+
+  padding: 8px 0 8px 18px;
+
+  margin-left: -1px;
+
+  border-left: 2px solid transparent;
+
+  color: rgba(6, 16, 31, 0.55);
+
+  text-decoration: none;
+
+  font-size: 14px;
+  line-height: 1.4;
+
+  transition: color 0.3s ease, border-color 0.3s ease;
+
+  &:hover {
+    color: #06101f;
+  }
+}
+
+.linkActive {
+  color: #06101f;
+
+  font-weight: 600;
+
+  border-left-color: #16c3ce;
+}
+
+.number {
+  flex-shrink: 0;
+
+  color: rgba(6, 16, 31, 0.4);
+
+  font-size: 12px;
+}
+
+/* ==========================
+   MOBILE (COLLAPSIBLE)
+========================== */
+
+.mobileToc {
+  display: none;
+}
+
+.mobileHeader {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 18px 0;
+
+  border-top: 1px solid rgba(6, 16, 31, 0.12);
+  border-bottom: 1px solid rgba(6, 16, 31, 0.12);
+
+  background: transparent;
+
+  color: #06101f;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.icon {
+  display: inline-block;
+
+  font-size: 18px;
+  font-weight: 300;
+
+  transition: transform 0.35s ease;
+}
+
+.iconOpen {
+  transform: rotate(135deg);
+}
+
+.mobileBody {
+  overflow: hidden;
+
+  .list {
+    padding: 20px 0 4px;
+
+    border-left: 0;
+  }
+
+  .link {
+    padding-left: 16px;
+  }
+}
+
+@media (max-width: 1050px) {
+  .desktopToc {
+    display: none;
+  }
+
+  .mobileToc {
+    display: block;
+
+    margin-bottom: 32px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link,
+  .icon {
+    transition: none;
+  }
+}

@@ -1,0 +1,175 @@
+.newsletter {
+  position: relative;
+
+  width: 100%;
+
+  background: #f7f9fb;
+
+  color: #06101f;
+}
+
+.container {
+  width: min(calc(100% - 48px), 1320px);
+
+  margin: 0 auto;
+
+  padding: 100px 0;
+
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+
+  gap: 48px;
+
+  border-top: 1px solid rgba(6, 16, 31, 0.12);
+}
+
+.text {
+  max-width: 480px;
+}
+
+.heading {
+  margin: 0;
+
+  color: #06101f;
+
+  font-size: clamp(26px, 2.6vw, 36px);
+  line-height: 1.15;
+
+  font-weight: 500;
+
+  letter-spacing: -0.02em;
+}
+
+.subtext {
+  margin: 14px 0 0;
+
+  color: rgba(6, 16, 31, 0.66);
+
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.form {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+
+  justify-self: end;
+}
+
+.input {
+  width: 260px;
+
+  padding-bottom: 10px;
+
+  border: 0;
+  border-bottom: 1px solid rgba(6, 16, 31, 0.2);
+  outline: none;
+  background: transparent;
+
+  color: #06101f;
+
+  font-size: 15px;
+  font-family: inherit;
+
+  transition: border-color 0.3s ease;
+
+  &::placeholder {
+    color: rgba(6, 16, 31, 0.4);
+  }
+
+  &:focus {
+    border-color: #16c3ce;
+  }
+}
+
+.submit {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  flex-shrink: 0;
+
+  padding-bottom: 10px;
+
+  border: 0;
+  border-bottom: 1px solid rgba(6, 16, 31, 0.28);
+  background: transparent;
+
+  color: #06101f;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: border-color 0.3s ease;
+
+  b {
+    display: inline-block;
+
+    color: #0d9aa3;
+
+    font-weight: 500;
+
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    border-color: #16c3ce;
+
+    b {
+      transform: translateX(5px);
+    }
+  }
+}
+
+@media (max-width: 1050px) {
+  .container {
+    grid-template-columns: 1fr;
+
+    gap: 32px;
+
+    padding: 80px 0;
+  }
+
+  .form {
+    justify-self: start;
+
+    width: 100%;
+  }
+
+  .input {
+    flex: 1;
+  }
+}
+
+@media (max-width: 700px) {
+  .container {
+    width: calc(100% - 32px);
+
+    padding: 64px 0;
+  }
+
+  .form {
+    flex-direction: column;
+    align-items: stretch;
+
+    gap: 20px;
+  }
+
+  .input {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .input,
+  .submit,
+  .submit b {
+    transition: none;
+  }
+}

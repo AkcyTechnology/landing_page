@@ -1,0 +1,55 @@
+.share {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 24px;
+
+  max-width: 760px;
+
+  margin: 64px auto 0;
+  padding-top: 32px;
+
+  border-top: 1px solid rgba(6, 16, 31, 0.12);
+}
+
+.label {
+  color: rgba(6, 16, 31, 0.5);
+
+  font-size: 13px;
+  font-weight: 550;
+
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+
+  gap: 22px;
+
+  button {
+    border: 0;
+    background: transparent;
+
+    color: #06101f;
+
+    font-size: 14px;
+    font-weight: 550;
+
+    cursor: pointer;
+
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #0d9aa3;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .actions button {
+    transition: none;
+  }
+}
