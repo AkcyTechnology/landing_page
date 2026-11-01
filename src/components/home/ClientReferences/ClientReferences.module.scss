@@ -1,0 +1,235 @@
+.section {
+  position: relative;
+
+  width: 100%;
+
+  padding: 80px 0;
+
+  background: #ffffff;
+
+  color: #06101f;
+}
+
+.container {
+  width: min(calc(100% - 48px), 1200px);
+
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: 64px;
+
+  text-align: center;
+}
+
+.label {
+  display: inline-block;
+
+  margin-bottom: 16px;
+
+  color: #16c3ce;
+
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.15em;
+
+  text-transform: uppercase;
+}
+
+.heading {
+  margin: 0;
+
+  font-size: clamp(36px, 4.5vw, 52px);
+  line-height: 1.2;
+
+  font-weight: 500;
+
+  letter-spacing: -0.03em;
+}
+
+.grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+
+  padding: 40px;
+
+  border: 1px solid rgba(6, 16, 31, 0.08);
+  border-radius: 12px;
+
+  background: #fafbfc;
+
+  transition:
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+
+  &:hover {
+    border-color: #16c3ce;
+
+    background: #ffffff;
+
+    box-shadow: none;
+  }
+}
+
+.logoArea {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  /* Sabit oran: logo yuklenirken layout kaymasi (CLS) olusmaz */
+  height: 120px;
+
+  margin-bottom: 28px;
+  padding: 16px 20px;
+
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  border: 1px solid rgba(6, 16, 31, 0.06);
+}
+
+.logo {
+  width: auto;
+  height: auto;
+
+  max-width: 100%;
+  max-height: 88px;
+
+  /* Logo oranini koru, kendi renkleriyle gorunsun */
+  object-fit: contain;
+}
+
+.logoFallback {
+  color: rgba(6, 16, 31, 0.3);
+
+  font-size: 34px;
+  font-weight: 600;
+
+  letter-spacing: 0.06em;
+}
+
+.category {
+  display: block;
+
+  margin-bottom: 12px;
+
+  color: #16c3ce;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  letter-spacing: 0.04em;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+}
+
+.name {
+  margin: 0 0 14px;
+
+  font-size: 20px;
+  font-weight: 600;
+
+  letter-spacing: -0.02em;
+
+  line-height: 1.3;
+
+  color: #06101f;
+}
+
+
+
+
+
+.description {
+  margin: 0;
+
+  color: rgba(6, 16, 31, 0.6);
+
+  font-size: 14px;
+  line-height: 1.7;
+
+  font-weight: 400;
+}
+
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+
+  .card {
+    padding: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 60px 0;
+  }
+
+  .header {
+    margin-bottom: 48px;
+  }
+
+  .heading {
+    font-size: clamp(28px, 6vw, 40px);
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .card {
+    padding: 24px;
+  }
+
+  .logoArea {
+    height: 104px;
+
+    margin-bottom: 24px;
+  }
+}
+
+@media (max-width: 430px) {
+  .section {
+    padding: 48px 0;
+  }
+
+  .heading {
+    font-size: clamp(24px, 5vw, 32px);
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .name {
+    font-size: 16px;
+  }
+
+  .description {
+    font-size: 13px;
+  }
+
+}

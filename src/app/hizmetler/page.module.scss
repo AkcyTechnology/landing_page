@@ -1,0 +1,23 @@
+.list {
+  position: relative;
+
+  width: 100%;
+
+  background: var(--color-bg);
+
+  color: var(--color-text-primary);
+
+  padding-bottom: var(--space-section);
+}
+
+@media (max-width: 1050px) {
+  .list {
+    padding-bottom: var(--space-section-tablet);
+  }
+}
+
+@media (max-width: 700px) {
+  .list {
+    padding-bottom: var(--space-section-mobile);
+  }
+}

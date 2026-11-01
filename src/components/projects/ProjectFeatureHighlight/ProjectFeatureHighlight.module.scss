@@ -1,0 +1,131 @@
+.section {
+  position: relative;
+
+  width: 100%;
+
+  background: var(--color-bg);
+
+  color: var(--color-text-primary);
+
+  padding: var(--space-section) 0;
+}
+
+.label {
+  display: block;
+
+  margin-bottom: 18px;
+
+  color: var(--color-accent);
+
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+
+  text-transform: uppercase;
+}
+
+.header {
+  max-width: 640px;
+}
+
+.title {
+  margin: 0 0 16px;
+
+  color: var(--color-text-primary);
+
+  font-size: clamp(26px, 2.8vw, 36px);
+  font-weight: 500;
+
+  letter-spacing: -0.02em;
+}
+
+.description {
+  margin: 0;
+
+  color: var(--color-text-secondary);
+
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+
+  margin: 48px 0 0;
+  padding: 0;
+
+  list-style: none;
+
+  li {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid var(--color-border);
+  }
+}
+
+.stepNumber {
+  color: var(--color-text-muted);
+
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+}
+
+.stepTitle {
+  color: var(--color-text-primary);
+
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.imageFrame {
+  position: relative;
+
+  width: 100%;
+  margin-top: 56px;
+
+  /* Ekran görüntüleri 1440×1000; aynı oran kırpılmayı önler */
+  aspect-ratio: 36 / 25;
+
+  border-radius: var(--radius-small);
+
+  overflow: hidden;
+}
+
+.image {
+  object-fit: cover;
+  object-position: top;
+}
+
+@media (max-width: 1050px) {
+  .section {
+    padding: var(--space-section-tablet) 0;
+  }
+
+  .steps {
+    grid-template-columns: 1fr;
+    gap: 20px;
+
+    margin-top: 36px;
+  }
+
+  .imageFrame {
+    margin-top: 40px;
+  }
+}
+
+@media (max-width: 700px) {
+  .section {
+    padding: var(--space-section-mobile) 0;
+  }
+
+  .description {
+    font-size: 15px;
+  }
+}
