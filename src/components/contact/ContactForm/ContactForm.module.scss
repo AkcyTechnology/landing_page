@@ -1,0 +1,289 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+/*
+  FormField ayrı bir component olduğu için içerisindeki
+  native input/select/textarea elementlerini buradan düzenliyoruz.
+*/
+
+.form :global(label) {
+  display: block;
+  margin-bottom: 9px;
+
+  font-size: 0.78rem;
+  font-weight: 500;
+
+  color: rgba(var(--foreground-rgb), 0.66);
+}
+
+.form :global(input),
+.form :global(select),
+.form :global(textarea) {
+  width: 100%;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-medium);
+
+  background: #ffffff;
+  color: var(--foreground);
+
+  font: inherit;
+
+  outline: none;
+
+  transition: border-color 0.25s ease;
+}
+
+.form :global(input),
+.form :global(select) {
+  min-height: 52px;
+  padding: 0 16px;
+}
+
+.form :global(textarea) {
+  min-height: 150px;
+  padding: 14px 16px;
+
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.form :global(input::placeholder),
+.form :global(textarea::placeholder) {
+  color: rgba(var(--foreground-rgb), 0.3);
+}
+
+.form :global(input:focus),
+.form :global(select:focus),
+.form :global(textarea:focus) {
+  border-color: var(--color-accent);
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+
+  margin-top: 6px;
+
+  p {
+    max-width: 310px;
+    margin: 0;
+
+    font-size: 0.8rem;
+    line-height: 1.55;
+
+    color: rgba(var(--foreground-rgb), 0.5);
+  }
+}
+
+.submit {
+  height: 56px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+
+  padding: 0 8px 0 26px;
+
+  border: 0;
+  border-radius: var(--radius-pill);
+
+  background: #071b46;
+  color: #ffffff;
+
+  font-size: 0.88rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: background 0.25s ease;
+
+  b {
+    width: 40px;
+    height: 40px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+    color: #071b46;
+
+    font-size: 1.05rem;
+    font-weight: 400;
+
+    transition: transform 0.3s ease;
+  }
+
+  &:hover:not(:disabled) {
+    background: #123a7a;
+
+    b {
+      transform: rotate(45deg);
+    }
+  }
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+}
+
+/* ==========================
+   ALAN + HATA MESAJI
+========================== */
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Hatalı alanın kenarlığı kırmızıya döner */
+.fieldError {
+  :global(input),
+  :global(select),
+  :global(textarea) {
+    border-color: rgba(212, 85, 85, 0.55);
+  }
+}
+
+.errorText {
+  align-self: flex-start;
+
+  margin-top: 5px;
+  padding: 2px 6px;
+
+  border-radius: 3px;
+
+  background: #fff;
+
+  font-size: 11px;
+  font-style: italic;
+  line-height: 1.4;
+
+  color: #d45555;
+}
+
+.formError {
+  align-self: flex-start;
+
+  margin: 0;
+  padding: 2px 6px;
+
+  border-radius: 3px;
+
+  background: #fff;
+
+  font-size: 11px;
+  font-style: italic;
+
+  color: #d45555;
+}
+
+.success {
+  min-height: 440px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+
+  h3 {
+    margin: 24px 0 10px;
+
+    font-size: clamp(2rem, 3vw, 3rem);
+    letter-spacing: -0.03em;
+    font-weight: 500;
+  }
+
+  p {
+    max-width: 460px;
+    margin: 0;
+
+    line-height: 1.7;
+    color: rgba(var(--foreground-rgb), 0.55);
+  }
+}
+
+.successIcon {
+  width: 54px;
+  height: 54px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(var(--foreground-rgb), 0.15);
+  border-radius: 50%;
+
+  font-size: 1.25rem;
+}
+
+.resetLink {
+  margin-top: 34px;
+  padding: 0;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+
+  border: 0;
+  background: transparent;
+
+  color: var(--foreground);
+  font: inherit;
+
+  cursor: pointer;
+
+  span {
+    transition: transform 0.2s ease;
+  }
+
+  &:hover span {
+    transform: translateX(4px);
+  }
+}
+
+@media (max-width: 700px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+
+  .footer {
+    flex-direction: column;
+    align-items: stretch;
+
+    p {
+      max-width: none;
+    }
+  }
+
+  .submit {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .success {
+    min-height: 360px;
+  }
+}
