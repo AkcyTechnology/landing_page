@@ -5,29 +5,30 @@
   position: relative;
   background: $white;
   color: $ink;
-  padding: 176px 0 112px;
+  padding: 140px 0 80px;
   border-bottom: 1px solid $line;
 }
 
 .layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: center;
   gap: 64px;
 }
 
 .eyebrow {
   @include eyebrow;
-  margin: 0 0 28px;
+  margin: 0 0 20px;
+  font-size: 13px;
 }
 
 .heading {
   margin: 0;
   color: $ink;
-  font-size: clamp(38px, 6.4vw, 92px);
+  font-size: clamp(36px, 4vw, 56px);
   font-weight: 600;
-  line-height: 1.02;
-  letter-spacing: -0.045em;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
   overflow-wrap: break-word;
 }
 
@@ -53,102 +54,137 @@
 }
 
 .description {
-  max-width: 560px;
-  margin: 32px 0 0;
+  max-width: 62ch;
+  margin: 20px 0 0;
   color: $ink-soft;
   font-size: 17px;
-  line-height: 1.75;
+  line-height: 1.65;
 }
 
 .actions {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 40px;
+  margin-top: 32px;
 }
 
 /* ==========================
-   FİKİR → ÇÖZÜM → KULLANIM
+   GÖRSEL KOMPOZİSYON
 ========================== */
 
-.flow {
-  --mx: 0;
-  --my: 0;
-  position: relative;
-  width: 100%;
-  aspect-ratio: 5 / 6;
-  max-height: 560px;
-  border-left: 1px solid $line;
+.visual {
+  margin: 0;
 }
 
-.flowLine {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
+.screens {
+  position: relative;
+  padding: 0 32px 40px 0;
+}
 
-  path {
-    fill: none;
-    stroke: $primary;
-    stroke-width: 1.25;
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    transition: stroke-dashoffset 1.6s $ease 0.25s;
+.browser {
+  overflow: hidden;
+  border: 1px solid $line;
+  border-radius: $radius;
+  background: $white;
+}
+
+.bar {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  height: 28px;
+  padding: 0 12px;
+  border-bottom: 1px solid rgba(29, 34, 38, 0.1);
+  background: $off-white;
+
+  i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #d6d4cd;
   }
 }
 
-.flowVisible .flowLine path {
-  stroke-dashoffset: 0;
+.desktopShot {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1440 / 1000;
+  object-fit: cover;
+  object-position: top;
 }
 
-.flowWord {
+.phone {
   position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 28%;
+  max-width: 150px;
+  overflow: hidden;
+  border: 5px solid $ink;
+  border-radius: 20px;
+  background: $white;
+}
+
+.mobileShot {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Fikir → çözüm → kullanım şeridi */
+.flow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 20px;
+  border-top: 1px solid $line;
+}
+
+.flowStep {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 8px 12px;
-  background: $white;
+  gap: 4px;
+  padding: 14px 12px 0 0;
   color: $ink;
-  font-size: clamp(22px, 2.4vw, 34px);
+  font-size: 15px;
   font-weight: 600;
-  line-height: 1.1;
-  letter-spacing: -0.025em;
-  white-space: nowrap;
-  opacity: 0.15;
-  translate: calc(var(--mx) * var(--depth) * 1px) calc(var(--my) * var(--depth) * 1px);
-  transition: opacity 0.6s ease, translate 0.6s $ease;
 
   small {
     color: $ink-faint;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
+  }
+
+  /* Adımları bağlayan düğüm */
+  &::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: 0;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: $primary;
+  }
+
+  &:last-child {
+    color: $primary;
   }
 }
 
-.flowVisible .flowWord {
-  opacity: 1;
+.primary {
+  @include btn.primary;
 }
 
-.flowWordFinal {
-  color: $primary;
+.secondary {
+  @include btn.secondary;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .line {
     animation: none;
-  }
-
-  .flowLine path {
-    stroke-dashoffset: 0;
-    transition: none;
-  }
-
-  .flowWord {
-    opacity: 1;
-    translate: none;
-    transition: none;
   }
 }
 
@@ -158,16 +194,15 @@
 
 @media (max-width: 1050px) {
   .hero {
-    padding: 148px 0 88px;
+    padding: 124px 0 64px;
   }
 
   .layout {
     grid-template-columns: 1fr;
-    gap: 56px;
+    gap: 48px;
   }
 
-  .flow {
-    aspect-ratio: 16 / 9;
+  .visual {
     max-width: 640px;
   }
 }
@@ -178,15 +213,14 @@
 
 @media (max-width: 700px) {
   .hero {
-    padding: 120px 0 72px;
+    padding: 104px 0 48px;
   }
 
   .heading {
-    font-size: clamp(34px, 10.5vw, 48px);
+    font-size: clamp(30px, 8.6vw, 36px);
   }
 
   .description {
-    margin-top: 24px;
     font-size: 16px;
   }
 
@@ -195,20 +229,16 @@
     align-items: stretch;
   }
 
-  .flow {
-    aspect-ratio: 4 / 3;
+  .screens {
+    padding: 0 20px 28px 0;
   }
 
-  .flowWord {
-    font-size: clamp(18px, 5.4vw, 24px);
+  .phone {
+    border-width: 4px;
+    border-radius: 14px;
   }
-}
 
-/* Ortak buton standardı (src/styles/_buttons.scss) */
-.primary {
-  @include btn.primary;
-}
-
-.secondary {
-  @include btn.secondary;
+  .flowStep {
+    font-size: 14px;
+  }
 }

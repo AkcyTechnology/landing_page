@@ -16,12 +16,15 @@ export interface AboutContent {
     secondaryCta: string;
     flow: string[];
     flowLabel: string;
+    visualAlt: { desktop: string; mobile: string };
   };
   intro: {
     eyebrow: string;
     title: string;
     body: string;
     statement: string;
+    illustrationLabel: string;
+    illustrationSteps: string[];
   };
   value: {
     eyebrow: string;
@@ -46,10 +49,9 @@ export interface AboutContent {
     words: string[];
     accessibleTitle: string;
     tags: string[];
-    replay: string;
-    bandTitle: string;
-    bandText: string;
-    bandCta: string;
+    pause: string;
+    resume: string;
+    tagsLabel: string;
   };
 }
 
@@ -69,12 +71,18 @@ export const aboutContent: Record<Locale, AboutContent> = {
       secondaryCta: "Bizi Tanıyın",
       flow: ["Bir fikir", "Bir çözüm", "Gerçek kullanım"],
       flowLabel: "Bir fikirden bir çözüme, oradan gerçek kullanıma.",
+      visualAlt: {
+        desktop: "AKCY’nin geliştirdiği Gökçe Kombi web sitesinin masaüstü görünümü",
+        mobile: "AKCY’nin geliştirdiği Çakıroğlu Savunma web sitesinin mobil görünümü",
+      },
     },
     intro: {
       eyebrow: "Biz kimiz?",
       title: "İhtiyaçtan çözüme.",
       body: "2025’te kurulan AKCY Technologies, işletmeler için yazılım, yapay zekâ ve otomasyon çözümleri geliştirir. Her projeye ihtiyacı anlamakla başlar; tasarım ve teknolojiyi, günlük kullanımda karşılık bulan çözümler üretmek için bir araya getiririz.",
       statement: "Önce anlarız. Sonra geliştiririz.",
+      illustrationLabel: "Tasarımdan koda, koddan kullanıma hazır ürüne uzanan süreç çizimi",
+      illustrationSteps: ["Tasarım", "Geliştirme", "Ürün"],
     },
     value: {
       eyebrow: "Neden önemli?",
@@ -124,11 +132,14 @@ export const aboutContent: Record<Locale, AboutContent> = {
       staticWord: "bir şey",
       words: ["bir şey", "bir web deneyimi", "bir mobil uygulama", "akıllı bir çözüm"],
       accessibleTitle: "Birlikte harika bir şey geliştirelim.",
-      tags: ["Web", "Mobil", "Yapay Zekâ", "Otomasyon", "Yazılım", "Entegrasyon", "Dijital Deneyim"],
-      replay: "Tekrar Oynat",
-      bandTitle: "Bir fikriniz mi var?",
-      bandText: "Bir sonraki adımı birlikte netleştirelim.",
-      bandCta: "Projenizi Konuşalım",
+      tags: [
+        "Web Tasarım", "Mobil Uygulama", "Yapay Zekâ", "Otomasyon", "Yazılım", "Entegrasyon", "Dijital Deneyim",
+        "API", "E-Ticaret", "Arayüz Tasarımı", "Kullanıcı Deneyimi", "Veri Analizi", "İş Süreçleri",
+        "Bulut Çözümleri", "Dijital Dönüşüm", "Fikir", "Tasarım", "Teknoloji", "Geliştirme", "İnovasyon",
+      ],
+      pause: "Hareketi duraklat",
+      resume: "Hareketi sürdür",
+      tagsLabel: "Çalışma alanlarımız",
     },
   },
   en: {
@@ -146,12 +157,18 @@ export const aboutContent: Record<Locale, AboutContent> = {
       secondaryCta: "Get to Know Us",
       flow: ["An idea", "A solution", "Real use"],
       flowLabel: "From an idea to a solution, and on to real use.",
+      visualAlt: {
+        desktop: "Desktop view of the Gökçe Kombi website built by AKCY",
+        mobile: "Mobile view of the Çakıroğlu Savunma website built by AKCY",
+      },
     },
     intro: {
       eyebrow: "Who are we?",
       title: "From need to solution.",
       body: "Founded in 2025, AKCY Technologies builds software, AI and automation solutions for businesses. Every project starts with understanding the need; we bring design and technology together to create solutions that hold up in everyday use.",
       statement: "First we understand. Then we build.",
+      illustrationLabel: "Illustration of the process from design to code to a product ready for use",
+      illustrationSteps: ["Design", "Development", "Product"],
     },
     value: {
       eyebrow: "Why it matters",
@@ -189,11 +206,14 @@ export const aboutContent: Record<Locale, AboutContent> = {
       staticWord: "something great",
       words: ["something great", "a great web experience", "a great mobile app", "a smart solution"],
       accessibleTitle: "Let’s build something great together.",
-      tags: ["Web", "Mobile", "AI", "Automation", "Software", "Integration", "Digital Experience"],
-      replay: "Replay",
-      bandTitle: "Have an idea?",
-      bandText: "Let’s clarify the next step together.",
-      bandCta: "Let’s Talk About Your Project",
+      tags: [
+        "Web Design", "Mobile App", "AI", "Automation", "Software", "Integration", "Digital Experience",
+        "API", "E-Commerce", "Interface Design", "User Experience", "Data Analysis", "Business Processes",
+        "Cloud Solutions", "Digital Transformation", "Idea", "Design", "Technology", "Development", "Innovation",
+      ],
+      pause: "Pause motion",
+      resume: "Resume motion",
+      tagsLabel: "Our areas of work",
     },
   },
 };

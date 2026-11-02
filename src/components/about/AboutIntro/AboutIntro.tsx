@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform, type MotionValue } from "motion/react"
 import Container from "@/components/common/Container/Container";
 import type { AboutContent } from "@/content/about";
 
+import ProcessIllustration from "./ProcessIllustration";
 import styles from "./AboutIntro.module.scss";
 
 interface AboutIntroProps {
@@ -22,7 +23,7 @@ export default function AboutIntro({ id, content }: AboutIntroProps) {
   const statementRef = useRef<HTMLParagraphElement>(null);
   const { scrollYProgress } = useScroll({
     target: statementRef,
-    offset: ["start 0.9", "end 0.45"],
+    offset: ["start 0.9", "end 0.5"],
   });
 
   const words = content.statement.split(" ");
@@ -31,28 +32,32 @@ export default function AboutIntro({ id, content }: AboutIntroProps) {
     <section id={id} className={styles.section} aria-labelledby={`${id}-title`}>
       <Container>
         <div className={styles.columns}>
-          <div>
+          <div className={styles.text}>
             <p className={styles.eyebrow}>{content.eyebrow}</p>
             <h2 id={`${id}-title`} className={styles.title}>
               {content.title}
             </h2>
-          </div>
-          <p className={styles.body}>{content.body}</p>
-        </div>
+            <p className={styles.body}>{content.body}</p>
 
-        {/* Yalnızca bu büyük vurgu cümlesinde kelimeler kaydırmayla koyulaşır */}
-        <p ref={statementRef} className={styles.statement}>
-          {/* Hareket azaltma tercihinde renk CSS ile sabitlenir (sunucu ve istemci aynı HTML'i üretir) */}
-          {words.map((word, index) => (
-            <Word
-              key={`${word}-${index}`}
-              progress={scrollYProgress}
-              range={[index / words.length, (index + 1) / words.length]}
-            >
-              {word}
-            </Word>
-          ))}
-        </p>
+            {/* Yalnızca bu vurgu cümlesinde kelimeler kaydırmayla koyulaşır;
+                hareket azaltma tercihinde renk CSS ile sabitlenir */}
+            <p ref={statementRef} className={styles.statement}>
+              {words.map((word, index) => (
+                <Word
+                  key={`${word}-${index}`}
+                  progress={scrollYProgress}
+                  range={[index / words.length, (index + 1) / words.length]}
+                >
+                  {word}
+                </Word>
+              ))}
+            </p>
+          </div>
+
+          <div className={styles.illustration}>
+            <ProcessIllustration label={content.illustrationLabel} steps={content.illustrationSteps} />
+          </div>
+        </div>
       </Container>
     </section>
   );

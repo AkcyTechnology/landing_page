@@ -3,13 +3,13 @@
 .section {
   background: $off-white;
   color: $ink;
-  padding: 128px 0;
+  padding: 88px 0;
 }
 
 .layout {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  gap: 80px;
+  gap: 64px;
 }
 
 /* Başlık yalnızca bu bölüm boyunca sabit kalır */
@@ -31,7 +31,7 @@
   max-width: 420px;
   margin: 24px 0 0;
   color: $ink-soft;
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.7;
 }
 
@@ -66,7 +66,7 @@
 
 .step {
   position: relative;
-  padding: 0 0 72px;
+  padding: 0 0 44px;
 
   &:last-of-type {
     padding-bottom: 0;
@@ -98,7 +98,7 @@
 .stepTitle {
   margin: 0;
   color: $ink-faint;
-  font-size: clamp(28px, 3.4vw, 48px);
+  font-size: clamp(19px, 1.6vw, 22px);
   font-weight: 600;
   line-height: 1.08;
   letter-spacing: -0.035em;
@@ -109,7 +109,7 @@
   max-width: 520px;
   margin: 14px 0 0;
   color: $ink-soft;
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.7;
 }
 
@@ -131,7 +131,7 @@
 
 @media (max-width: 1050px) {
   .section {
-    padding: 100px 0;
+    padding: 72px 0;
   }
 
   .layout {
@@ -146,7 +146,7 @@
 
 @media (max-width: 700px) {
   .section {
-    padding: 80px 0;
+    padding: 48px 0;
   }
 
   .steps {
@@ -158,11 +158,58 @@
   }
 
   .step {
-    padding-bottom: 48px;
+    padding-bottom: 32px;
   }
 
   .stepText,
   .description {
-    font-size: 16px;
+    font-size: 15px;
+  }
+}
+
+/* Adım görselleri: sade çizgisel ikonlar */
+.stepBody {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 64px;
+  gap: 24px;
+  align-items: start;
+}
+
+.stepIcon {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border: 1px solid $line;
+  border-radius: $radius;
+  background: $white;
+  color: $ink-faint;
+  transition: color 0.35s ease, border-color 0.35s ease;
+
+  svg {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+.stepActive .stepIcon {
+  border-color: $primary;
+  color: $primary;
+}
+
+@media (max-width: 700px) {
+  .stepBody {
+    grid-template-columns: minmax(0, 1fr) 48px;
+    gap: 16px;
+  }
+
+  .stepIcon {
+    width: 48px;
+    height: 48px;
+
+    svg {
+      width: 26px;
+      height: 26px;
+    }
   }
 }

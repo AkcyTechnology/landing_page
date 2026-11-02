@@ -1,40 +1,81 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type Matter from "matter-js";
 
 import styles from "./AboutClosing.module.scss";
 
 interface FallingTagsProps {
   tags: string[];
-  replayLabel: string;
+  label: string;
+  pauseLabel: string;
+  resumeLabel: string;
 }
 
 const MOBILE_QUERY = "(max-width: 700px)";
-const MOBILE_TAG_COUNT = 5;
-const TAG_TONES = ["primary", "blue", "neutral"] as const;
+const DESKTOP_COUNT = 40;
+const MOBILE_COUNT = 20;
+const TONES = ["primary", "blue", "neutral"] as const;
+
+/* Döngü zamanlaması (ms, simülasyon zamanı: duraklatınca durur) */
+const SPAWN_MIN = 90;
+const SPAWN_MAX = 230;
+const SETTLE_MAX = 5000;
+const HOLD = 2000;
+const REMOVE_STEP = 110;
+const FADE = 380;
+const GAP = 700;
+/* Etiketler en fazla bu kadar döner (radyan): okunur kalır */
+const MAX_ANGLE = 0.38;
+const STEP = 1000 / 60;
+
+type Phase = "spawn" | "settle" | "hold" | "clear" | "gap";
+
+/* Her döngüde farklı sıra: kelimeler karıştırılır, gerekirse tekrar eder */
+function pickWords(tags: string[], count: number) {
+  const words: string[] = [];
+  while (words.length < count) {
+    const shuffled = [...tags];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    words.push(...shuffled);
+  }
+  return words.slice(0, count);
+}
 
 /*
-  Kelime etiketleri bölüm ilk göründüğünde düşer ve zeminde yerleşir.
-  - Fizik motoru yalnızca bu bölümde, ihtiyaç anında yüklenir.
-  - Bölüm ekran dışındayken ya da etiketler durulduğunda hesaplama durur.
-  - Masaüstünde etiketler sürüklenebilir; dokunmatikte kaydırma engellenmez.
-  - JavaScript yoksa veya hareket azaltılmışsa etiketler sabit bir sırada görünür.
+  Kelime etiketleri üstten farklı zaman ve konumlardan düşer, çarpışıp birikir,
+  alan dolunca 2 sn bekler, sonra sırayla küçülüp silinir ve döngü yeniden başlar.
+  - Silinen etiketin fizik gövdesi dünyadan kaldırılır; sabit sayıda DOM öğesi
+    her döngüde yeniden kullanılır (nesne, zamanlayıcı ve dinleyici birikmez).
+  - Bütün zamanlama tek bir requestAnimationFrame döngüsündedir; alan ekran
+    dışındayken, sekme gizliyken veya kullanıcı duraklattığında döngü durur.
+  - Etiketler dokunmayı yakalamaz; mobilde sayfa kaydırması engellenmez.
+  - Hareket azaltma tercihinde ve JavaScript yokken sabit bir kompozisyon görünür.
 */
-export default function FallingTags({ tags, replayLabel }: FallingTagsProps) {
+export default function FallingTags({ tags, label, pauseLabel, resumeLabel }: FallingTagsProps) {
   const stageRef = useRef<HTMLDivElement>(null);
-  const tagRefs = useRef<(HTMLSpanElement | null)[]>([]);
-  const dropRef = useRef<(() => void) | null>(null);
+  const slotRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const syncRef = useRef<() => void>(() => {});
+  const pausedRef = useRef(false);
   const [physics, setPhysics] = useState(false);
-  const [visibleCount, setVisibleCount] = useState(tags.length);
+  const [paused, setPaused] = useState(false);
+  const [count, setCount] = useState(DESKTOP_COUNT);
 
   useEffect(() => {
     const narrow = window.matchMedia(MOBILE_QUERY);
-    const sync = () => setVisibleCount(narrow.matches ? Math.min(MOBILE_TAG_COUNT, tags.length) : tags.length);
+    const sync = () => setCount(narrow.matches ? MOBILE_COUNT : DESKTOP_COUNT);
     sync();
     narrow.addEventListener("change", sync);
     return () => narrow.removeEventListener("change", sync);
-  }, [tags.length]);
+  }, []);
+
+  useEffect(() => {
+    pausedRef.current = paused;
+    syncRef.current();
+  }, [paused]);
 
   useEffect(() => {
     const stage = stageRef.current;
@@ -45,95 +86,199 @@ export default function FallingTags({ tags, replayLabel }: FallingTagsProps) {
     let started = false;
     let inView = false;
     let frame = 0;
-    let engine: Matter.Engine | null = null;
-    let bodies: Matter.Body[] = [];
-    let walls: Matter.Body[] = [];
-    let drag: Matter.Constraint | null = null;
-    let M: typeof Matter | null = null;
     let lastTime = 0;
-    const cleanups: (() => void)[] = [];
+    let sim = 0;
+    let M: typeof Matter | null = null;
+    let engine: Matter.Engine | null = null;
+    let walls: Matter.Body[] = [];
+    let bodies: (Matter.Body | null)[] = [];
+    let spawnAt: number[] = [];
+    let spawnX: number[] = [];
+    let spawned = 0;
+    let cycleSize = 0;
+    let acc = 0;
+    let removeOrder: number[] = [];
+    let removed = 0;
+    let nextRemove = 0;
+    let phase: Phase = "gap";
+    let phaseStart = 0;
+    let resizeTimer: number | undefined;
 
-    const isMobile = () => window.matchMedia(MOBILE_QUERY).matches;
-    const canDrag = () => window.matchMedia("(pointer: fine) and (hover: hover)").matches;
+    const slots = () => slotRefs.current.slice(0, count).filter((el): el is HTMLSpanElement => Boolean(el));
+    const mobile = () => window.matchMedia(MOBILE_QUERY).matches;
 
-    const elements = () =>
-      tagRefs.current.filter((el): el is HTMLSpanElement => Boolean(el) && el!.offsetParent !== null);
-
-    const render = () => {
-      const els = elements();
-      bodies.forEach((body, i) => {
-        const el = els[i];
-        if (!el) return;
-        const w = el.offsetWidth;
-        const h = el.offsetHeight;
-        el.style.transform = `translate(${body.position.x - w / 2}px, ${body.position.y - h / 2}px) rotate(${body.angle}rad)`;
-      });
-    };
-
-    const allSleeping = () => bodies.every((body) => body.isSleeping) && !drag;
-
-    const loop = (time: number) => {
-      if (!engine || !M) return;
-      const delta = Math.min(32, lastTime ? time - lastTime : 16.67);
-      lastTime = time;
-      M.Engine.update(engine, delta);
-      render();
-      if (inView && !allSleeping()) frame = requestAnimationFrame(loop);
-      else frame = 0;
-    };
-
-    const wake = () => {
+    const buildWalls = () => {
       if (!M || !engine) return;
-      bodies.forEach((body) => M!.Sleeping.set(body, false));
-      if (!frame && inView) {
-        lastTime = 0;
-        frame = requestAnimationFrame(loop);
-      }
-    };
-
-    const buildWorld = () => {
-      if (!M || !engine) return;
-      const { Bodies, Composite, Body } = M;
-      Composite.clear(engine.world, false);
+      if (walls.length) M.Composite.remove(engine.world, walls);
       const width = stage.clientWidth;
       const height = stage.clientHeight;
       const thick = 200;
-
       walls = [
-        Bodies.rectangle(width / 2, height + thick / 2, width * 3, thick, { isStatic: true }),
-        Bodies.rectangle(-thick / 2, height / 2 - 600, thick, height * 4, { isStatic: true }),
-        Bodies.rectangle(width + thick / 2, height / 2 - 600, thick, height * 4, { isStatic: true }),
+        M.Bodies.rectangle(width / 2, height + thick / 2, width * 3, thick, { isStatic: true }),
+        M.Bodies.rectangle(-thick / 2, height / 2 - 600, thick, height * 4, { isStatic: true }),
+        M.Bodies.rectangle(width + thick / 2, height / 2 - 600, thick, height * 4, { isStatic: true }),
       ];
+      M.Composite.add(engine.world, walls);
+    };
 
-      const mobile = isMobile();
-      bodies = elements().map((el, i) => {
-        const w = el.offsetWidth;
-        const h = el.offsetHeight;
-        const x = Math.min(width - w / 2, Math.max(w / 2, w / 2 + Math.random() * (width - w)));
-        const y = -h - i * (mobile ? 50 : 70) - Math.random() * 40;
-        const body = Bodies.rectangle(x, y, w, h, {
-          chamfer: { radius: h / 2 - 1 },
-          restitution: 0.25,
-          friction: 0.4,
-          frictionAir: mobile ? 0.03 : 0.015,
-          density: 0.002,
-          sleepThreshold: 40,
-        });
-        /* Etiketler hafifçe döner ama ters dönüp okunmaz hâle gelmez */
-        Body.setInertia(body, body.inertia * 6);
-        Body.setAngle(body, (Math.random() - 0.5) * 0.8);
-        Body.setAngularVelocity(body, (Math.random() - 0.5) * (mobile ? 0.05 : 0.12));
-        return body;
+    const removeAllBodies = () => {
+      if (!M || !engine) return;
+      bodies.forEach((body) => body && M!.Composite.remove(engine!.world, body));
+      bodies = [];
+    };
+
+    const startCycle = () => {
+      removeAllBodies();
+      const els = slots();
+      /* Etiket havuzu henüz DOM'da değilse kısa süre sonra yeniden dene */
+      if (els.length === 0) {
+        cycleSize = 0;
+        phase = "gap";
+        phaseStart = sim - (FADE + GAP) + 100;
+        return;
+      }
+      cycleSize = els.length;
+      const words = pickWords(tags, els.length);
+      const width = stage.clientWidth;
+      let t = sim + 150;
+      spawnAt = [];
+      spawnX = [];
+      els.forEach((el, index) => {
+        el.textContent = words[index];
+        el.dataset.state = "wait";
+        el.style.transform = "translate(-9999px, -9999px)";
+        t += SPAWN_MIN + Math.random() * (SPAWN_MAX - SPAWN_MIN);
+        spawnAt.push(t);
+        spawnX.push(Math.random() * width);
       });
+      bodies = els.map(() => null);
+      spawned = 0;
+      removed = 0;
+      phase = "spawn";
+      phaseStart = sim;
+    };
 
-      Composite.add(engine.world, [...walls, ...bodies]);
+    const spawn = (index: number) => {
+      if (!M || !engine) return;
+      const el = slots()[index];
+      if (!el) return;
+      const w = el.offsetWidth;
+      const h = el.offsetHeight;
+      const width = stage.clientWidth;
+      const x = Math.min(width - w / 2, Math.max(w / 2, spawnX[index]));
+      const body = M.Bodies.rectangle(x, -h - 10, w, h, {
+        chamfer: { radius: h / 2 - 1 },
+        restitution: 0.2,
+        friction: 0.5,
+        frictionAir: mobile() ? 0.025 : 0.015,
+        density: 0.002,
+        sleepThreshold: 45,
+      });
+      /* Hafifçe döner ama ters dönüp okunmaz hâle gelmez */
+      M.Body.setInertia(body, body.inertia * 8);
+      M.Body.setAngle(body, (Math.random() - 0.5) * 0.5);
+      M.Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.08);
+      M.Composite.add(engine.world, body);
+      bodies[index] = body;
+      el.dataset.state = "in";
+    };
+
+    const render = () => {
+      const els = slots();
+      bodies.forEach((body, index) => {
+        const el = els[index];
+        if (!body || !el) return;
+        el.style.transform = `translate(${body.position.x - el.offsetWidth / 2}px, ${body.position.y - el.offsetHeight / 2}px) rotate(${body.angle}rad)`;
+      });
+    };
+
+    const step = () => {
+      const els = slots();
+      switch (phase) {
+        case "spawn":
+          while (spawned < cycleSize && sim >= spawnAt[spawned]) spawn(spawned++);
+          if (spawned >= cycleSize) {
+            phase = "settle";
+            phaseStart = sim;
+          }
+          break;
+        case "settle": {
+          const resting = bodies.every((body) => !body || body.isSleeping || body.speed < 0.08);
+          if ((resting && sim - phaseStart > 600) || sim - phaseStart > SETTLE_MAX) {
+            phase = "hold";
+            phaseStart = sim;
+          }
+          break;
+        }
+        case "hold":
+          if (sim - phaseStart >= HOLD) {
+            /* Üstteki etiketlerden başlayarak sırayla silinir */
+            removeOrder = bodies
+              .map((body, index) => ({ index, y: body ? body.position.y : 0 }))
+              .sort((a, b) => a.y - b.y)
+              .map((item) => item.index);
+            removed = 0;
+            nextRemove = sim;
+            phase = "clear";
+          }
+          break;
+        case "clear":
+          while (removed < removeOrder.length && sim >= nextRemove) {
+            const index = removeOrder[removed++];
+            const body = bodies[index];
+            if (body && M && engine) M.Composite.remove(engine.world, body);
+            bodies[index] = null;
+            const el = els[index];
+            if (el) el.dataset.state = "out";
+            nextRemove += REMOVE_STEP;
+            /* Kalan etiketler boşalan yere yerleşebilsin */
+            bodies.forEach((other) => other && M?.Sleeping.set(other, false));
+          }
+          if (removed >= removeOrder.length) {
+            phase = "gap";
+            phaseStart = sim;
+          }
+          break;
+        case "gap":
+          if (sim - phaseStart >= FADE + GAP) startCycle();
+          break;
+      }
+    };
+
+    const running = () => inView && !document.hidden && !pausedRef.current && !disposed;
+
+    const loop = (time: number) => {
+      frame = 0;
+      if (!M || !engine || !running()) return;
+      const delta = Math.min(50, lastTime ? time - lastTime : 16.67);
+      lastTime = time;
+      sim += delta;
+      /* Sabit adımlı fizik: kararlı çarpışma, en fazla 3 adım/kare */
+      acc = Math.min(acc + delta, STEP * 3);
+      while (acc >= STEP) {
+        M.Engine.update(engine, STEP);
+        acc -= STEP;
+      }
+      bodies.forEach((body) => {
+        if (!body || Math.abs(body.angle) <= MAX_ANGLE) return;
+        M!.Body.setAngle(body, Math.sign(body.angle) * MAX_ANGLE);
+        M!.Body.setAngularVelocity(body, 0);
+      });
+      step();
       render();
+      frame = requestAnimationFrame(loop);
     };
 
-    const drop = () => {
-      buildWorld();
-      wake();
+    const sync = () => {
+      if (running() && engine && !frame) {
+        lastTime = 0;
+        frame = requestAnimationFrame(loop);
+      } else if (!running() && frame) {
+        cancelAnimationFrame(frame);
+        frame = 0;
+      }
     };
+    syncRef.current = sync;
 
     const start = async () => {
       started = true;
@@ -141,143 +286,97 @@ export default function FallingTags({ tags, replayLabel }: FallingTagsProps) {
       if (disposed) return;
       M = (mod.default ?? mod) as typeof Matter;
       engine = M.Engine.create({ enableSleeping: true });
-      engine.gravity.y = 1;
       setPhysics(true);
-      /* Etiketler mutlak konuma geçtikten sonra ölçülür */
+      /* Etiket havuzu render edildikten sonra ölçüm yapılır */
       requestAnimationFrame(() => {
         if (disposed) return;
-        drop();
+        buildWalls();
+        startCycle();
+        sync();
       });
     };
 
-    dropRef.current = drop;
-
-    /* Görünürlük: ilk girişte başlat, ekran dışında döngüyü durdur */
     const observer = new IntersectionObserver(
       ([entry]) => {
         inView = entry.isIntersecting;
         if (inView && !started) start();
-        else if (inView) wake();
-        else if (frame) {
-          cancelAnimationFrame(frame);
-          frame = 0;
-        }
+        else sync();
       },
-      { threshold: 0.25 }
+      { threshold: 0.15 }
     );
     observer.observe(stage);
 
-    /* Boyut değişince etiketleri yeni genişliğe göre yeniden yerleştir */
-    let resizeTimer: number | undefined;
+    const onVisibility = () => sync();
+    document.addEventListener("visibilitychange", onVisibility);
+
     let lastWidth = stage.clientWidth;
     const onResize = () => {
       window.clearTimeout(resizeTimer);
       resizeTimer = window.setTimeout(() => {
         if (!engine || stage.clientWidth === lastWidth) return;
         lastWidth = stage.clientWidth;
-        drop();
-      }, 200);
+        buildWalls();
+        startCycle();
+      }, 250);
     };
     window.addEventListener("resize", onResize);
-    cleanups.push(() => window.removeEventListener("resize", onResize));
-
-    /* Sürükleme (yalnızca fareli cihazlarda) */
-    const localPoint = (event: PointerEvent) => {
-      const rect = stage.getBoundingClientRect();
-      return { x: event.clientX - rect.left, y: event.clientY - rect.top };
-    };
-
-    const onPointerDown = (event: PointerEvent) => {
-      if (!M || !engine || !canDrag()) return;
-      const target = (event.target as HTMLElement).closest<HTMLElement>("[data-tag-index]");
-      if (!target) return;
-      const index = elements().indexOf(target as HTMLSpanElement);
-      const body = bodies[index];
-      if (!body) return;
-      event.preventDefault();
-      target.setPointerCapture(event.pointerId);
-      const point = localPoint(event);
-      drag = M.Constraint.create({
-        pointA: point,
-        bodyB: body,
-        pointB: { x: point.x - body.position.x, y: point.y - body.position.y },
-        stiffness: 0.2,
-        damping: 0.1,
-        length: 0,
-      });
-      M.Composite.add(engine.world, drag);
-      stage.dataset.dragging = "true";
-      wake();
-    };
-
-    const onPointerMove = (event: PointerEvent) => {
-      if (!drag) return;
-      const point = localPoint(event);
-      drag.pointA = { x: point.x, y: Math.max(0, point.y) };
-      wake();
-    };
-
-    const onPointerUp = () => {
-      if (!drag || !M || !engine) return;
-      M.Composite.remove(engine.world, drag);
-      drag = null;
-      delete stage.dataset.dragging;
-      wake();
-    };
-
-    stage.addEventListener("pointerdown", onPointerDown);
-    stage.addEventListener("pointermove", onPointerMove);
-    stage.addEventListener("pointerup", onPointerUp);
-    stage.addEventListener("pointercancel", onPointerUp);
-    cleanups.push(() => {
-      stage.removeEventListener("pointerdown", onPointerDown);
-      stage.removeEventListener("pointermove", onPointerMove);
-      stage.removeEventListener("pointerup", onPointerUp);
-      stage.removeEventListener("pointercancel", onPointerUp);
-    });
 
     return () => {
       disposed = true;
-      dropRef.current = null;
+      syncRef.current = () => {};
       cancelAnimationFrame(frame);
       window.clearTimeout(resizeTimer);
       observer.disconnect();
-      cleanups.forEach((fn) => fn());
+      document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("resize", onResize);
       if (engine && M) {
         M.Composite.clear(engine.world, false);
         M.Engine.clear(engine);
       }
     };
-  }, [visibleCount]);
+  }, [count, tags]);
 
-  const replay = useCallback(() => dropRef.current?.(), []);
+  /* Hareket yokken (JS kapalı, hareket azaltma) gösterilen sabit kompozisyon */
+  const staticTags = tags.slice(0, count === MOBILE_COUNT ? 12 : tags.length);
 
   return (
     <div className={styles.tagsArea}>
-      <div
-        ref={stageRef}
-        className={`${styles.stage} ${physics ? styles.stagePhysics : ""}`}
-        aria-hidden="true"
-      >
-        {tags.slice(0, visibleCount).map((tag, index) => (
-          <span
-            key={tag}
-            ref={(el) => {
-              tagRefs.current[index] = el;
-            }}
-            data-tag-index={index}
-            className={`${styles.tag} ${styles[`tag_${TAG_TONES[index % TAG_TONES.length]}`]}`}
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-
       {physics && (
-        <button type="button" className={styles.replay} onClick={replay}>
-          <span aria-hidden="true">↻</span> {replayLabel}
+        <button
+          type="button"
+          className={styles.motionToggle}
+          aria-pressed={paused}
+          onClick={() => setPaused((value) => !value)}
+        >
+          <span aria-hidden="true">
+            {paused ? (
+              <svg viewBox="0 0 18 18" width="18" height="18"><path d="M5 3.5v11l9-5.5z" fill="currentColor" /></svg>
+            ) : (
+              <svg viewBox="0 0 18 18" width="18" height="18"><path d="M5 3.5h3v11H5zM10 3.5h3v11h-3z" fill="currentColor" /></svg>
+            )}
+          </span>
+          {paused ? resumeLabel : pauseLabel}
         </button>
       )}
+
+      <div ref={stageRef} className={`${styles.stage} ${physics ? styles.stagePhysics : ""}`} role="img" aria-label={`${label}: ${tags.join(", ")}`}>
+        {physics
+          ? Array.from({ length: count }, (_, index) => (
+              <span
+                key={index}
+                ref={(el) => {
+                  slotRefs.current[index] = el;
+                }}
+                className={`${styles.tag} ${styles.tagSlot} ${styles[`tag_${TONES[index % TONES.length]}`]}`}
+                aria-hidden="true"
+              />
+            ))
+          : staticTags.map((tag, index) => (
+              <span key={tag} className={`${styles.tag} ${styles[`tag_${TONES[index % TONES.length]}`]}`} aria-hidden="true">
+                {tag}
+              </span>
+            ))}
+      </div>
     </div>
   );
 }

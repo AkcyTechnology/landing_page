@@ -14,7 +14,7 @@ $ease: cubic-bezier(0.22, 0.8, 0.25, 1);
 @mixin eyebrow {
   display: inline-block;
   color: $primary;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 650;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -23,12 +23,16 @@ $ease: cubic-bezier(0.22, 0.8, 0.25, 1);
 @mixin section-title {
   margin: 0;
   color: $ink;
-  font-size: clamp(30px, 4.2vw, 56px);
+  font-size: clamp(28px, 2.6vw, 34px);
   font-weight: 600;
-  line-height: 1.08;
-  letter-spacing: -0.03em;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
   overflow-wrap: break-word;
   hyphens: auto;
+
+  @media (max-width: 700px) {
+    font-size: clamp(23px, 6.6vw, 28px);
+  }
 }
 
 @mixin focus-ring {
