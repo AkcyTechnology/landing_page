@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/i18n/Link";
 import { motion } from "motion/react";
 
 import styles from "./About.module.scss";

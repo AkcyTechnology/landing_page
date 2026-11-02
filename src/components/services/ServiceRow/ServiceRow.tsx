@@ -1,5 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/i18n/Link";
+import { getT } from "@/i18n/server";
 
 import type { ServiceDef } from "@/data/services";
 
@@ -27,7 +28,7 @@ export default function ServiceRow({ service }: ServiceRowProps) {
         </span>
 
         <span className={styles.cta}>
-          <span>Detayları İncele</span>
+          <span>{getT().services.rowCta}</span>
           <b aria-hidden="true">↗</b>
         </span>
       </div>

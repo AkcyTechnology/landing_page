@@ -1,10 +1,11 @@
-﻿"use client";
+"use client";
 
 import type { ReactNode } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/i18n/Link";
+import { useLocale, useT } from "@/i18n/LocaleProvider";
 import { motion, useReducedMotion } from "motion/react";
-import { footerNavigation, services as footerServices } from "@/data/navigation";
+import { footerNavigation, getServiceLinks } from "@/data/navigation";
 import Container from "@/components/common/Container/Container";
 import styles from "./Footer.module.scss";
 
@@ -22,6 +23,10 @@ function Icon({ name }: { name: "arrow" | "instagram" | "youtube" | "mail" | "ph
 
 export default function Footer() {
   const reducedMotion = useReducedMotion();
+  const locale = useLocale();
+  const t = useT();
+  const f = t.footer;
+  const footerServices = getServiceLinks(locale);
   const reveal = (delay = 0) => ({
     initial: { opacity: 0, y: 18 },
     whileInView: { opacity: 1, y: 0 },
@@ -34,51 +39,51 @@ export default function Footer() {
     <footer className={styles.footer}>
       <Container>
         <div className={styles.cta}>
-          <motion.p className={styles.ctaEyebrow} {...reveal()}>BİRLİKTE DAHA FAZLASI MÜMKÜN</motion.p>
-          <motion.h2 className={styles.ctaHeading} {...reveal(0.08)}>Fikirlerinizi<br /><span>Dijital Gerçekliğe</span><br />Dönüştürelim.</motion.h2>
-          <motion.p className={styles.ctaDescription} {...reveal(0.16)}>Web, mobil, yapay zekâ ve otomasyon çözümleriyle işletmenizin dijital yolculuğunda yanınızdayız.</motion.p>
-          <motion.div {...reveal(0.24)}><Link href="/iletisim" className={styles.ctaButton} data-magnetic>Bizimle İletişime Geçin <Icon name="arrow" /></Link></motion.div>
+          <motion.p className={styles.ctaEyebrow} {...reveal()}>{f.eyebrow}</motion.p>
+          <motion.h2 className={styles.ctaHeading} {...reveal(0.08)}>{f.headingStart}<br /><span>{f.headingAccent}</span><br />{f.headingEnd}</motion.h2>
+          <motion.p className={styles.ctaDescription} {...reveal(0.16)}>{f.description}</motion.p>
+          <motion.div {...reveal(0.24)}><Link href="/iletisim" className={styles.ctaButton} data-magnetic>{f.cta} <Icon name="arrow" /></Link></motion.div>
         </div>
 
         <div className={styles.grid}>
           <motion.div className={styles.brand} {...reveal()}>
-            <Link href="/" aria-label="AKCY Technologies — Ana Sayfa" className={styles.logo}>
+            <Link href="/" aria-label={f.homeLabel} className={styles.logo}>
               <Image src="/images/brand/logo.svg" alt="AKCY Technologies" width={210} height={120} />
               <Image className={styles.logoMark} src="/images/brand/logo.svg" alt="" aria-hidden="true" width={210} height={120} />
             </Link>
-            <p>Web, mobil, yapay zekâ ve otomasyon çözümleriyle dijital ürünler geliştiriyoruz.</p>
-            <nav className={styles.social} aria-label="Sosyal medya">
+            <p>{f.brandText}</p>
+            <nav className={styles.social} aria-label={f.social}>
               <a href="https://www.instagram.com/akcytechnology/" target="_blank" rel="noopener noreferrer" aria-label="AKCY Instagram"><Icon name="instagram" /></a>
               {youtubeUrl && <a href={youtubeUrl} target="_blank" rel="noopener noreferrer" aria-label="AKCY YouTube"><Icon name="youtube" /></a>}
             </nav>
           </motion.div>
 
-          <motion.nav className={styles.column} aria-label="Footer navigasyonu" {...reveal(0.08)}>
-            <h3 className={styles.columnLabel}>HIZLI LİNKLER</h3>
-            <ul>{footerNavigation.map(item => <li key={item.href}><Link href={item.href}>{item.title}</Link></li>)}</ul>
+          <motion.nav className={styles.column} aria-label={f.navLabel} {...reveal(0.08)}>
+            <h3 className={styles.columnLabel}>{f.quickLinks}</h3>
+            <ul>{footerNavigation.map(item => <li key={item.href}><Link href={item.href}>{t.nav[item.key]}</Link></li>)}</ul>
           </motion.nav>
 
-          <motion.nav className={styles.column} aria-label="Footer hizmetleri" {...reveal(0.16)}>
-            <h3 className={styles.columnLabel}>HİZMETLER</h3>
+          <motion.nav className={styles.column} aria-label={f.servicesLabel} {...reveal(0.16)}>
+            <h3 className={styles.columnLabel}>{f.services}</h3>
             <ul>{footerServices.map(item => <li key={item.href}><Link href={item.href}>{item.title}</Link></li>)}</ul>
           </motion.nav>
 
           <motion.div className={`${styles.column} ${styles.contact}`} {...reveal(0.24)}>
-            <h3 className={styles.columnLabel}>İLETİŞİM</h3>
+            <h3 className={styles.columnLabel}>{f.contact}</h3>
             <address><ul>
               <li><Icon name="mail" /><a href="mailto:akcyglobal@gmail.com">akcyglobal@gmail.com</a></li>
               <li><Icon name="phone" /><a href="tel:+905526290420">+90 552 629 04 20</a></li>
-              <li><Icon name="location" /><span>İstanbul, Türkiye</span></li>
+              <li><Icon name="location" /><span>{f.location}</span></li>
             </ul></address>
           </motion.div>
         </div>
 
         <div className={styles.bottom}>
-          <span>© {new Date().getFullYear()} AKCY. Tüm hakları saklıdır.</span>
-          <nav className={styles.legalNav} aria-label="Yasal linkler">
-            <Link href="/privacy">Gizlilik Politikası</Link>
-            <Link href="/kvkk">KVKK Aydınlatma Metni</Link>
-            <Link href="/cookies">Çerez Politikası</Link>
+          <span>© {new Date().getFullYear()} AKCY. {f.rights}</span>
+          <nav className={styles.legalNav} aria-label={f.legalLabel}>
+            <Link href="/privacy">{f.privacy}</Link>
+            <Link href="/kvkk">{f.kvkk}</Link>
+            <Link href="/cookies">{f.cookies}</Link>
           </nav>
         </div>
       </Container>

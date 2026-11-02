@@ -1,5 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
+import { getLocale, getT } from "@/i18n/server";
+import Link from "@/i18n/Link";
 
 import type { BlogPostMeta } from "@/data/blog";
 import { getCategoryLabel } from "@/components/blog/categoryMeta";
@@ -26,13 +27,13 @@ export default function NextArticle({ post }: NextArticleProps) {
 
         <div className={styles.content}>
           <span className={styles.eyebrow}>
-            SONRAKİ YAZI · {getCategoryLabel(post.category).toLocaleUpperCase("tr-TR")}
+            {getT().blog.next} · {getCategoryLabel(post.category, getLocale()).toLocaleUpperCase(getLocale())}
           </span>
 
           <h3 className={styles.title}>{post.title}</h3>
 
           <span className={styles.meta}>
-            {post.readingTime} dk okuma
+            {getT().blog.card.readingTime.replace("{minutes}", String(post.readingTime))}
           </span>
         </div>
 

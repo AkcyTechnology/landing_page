@@ -1,7 +1,9 @@
 "use client";
 
+import { useLocale, useT } from "@/i18n/LocaleProvider";
+
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/i18n/Link";
 
 import type { BlogPostMeta } from "@/data/blog";
 import {
@@ -19,6 +21,8 @@ interface BlogCardProps {
 }
 
 export default function BlogCard({ post, size = "standard" }: BlogCardProps) {
+  const locale = useLocale();
+  const t = useT().blog.card;
   return (
     <Link
       href={`/blog/${post.slug}`}
@@ -45,15 +49,15 @@ export default function BlogCard({ post, size = "standard" }: BlogCardProps) {
 
         <span className={styles.category}>
           <i aria-hidden="true" />
-          {getCategoryLabel(post.category)}
+          {getCategoryLabel(post.category, locale)}
         </span>
       </div>
 
       <div className={styles.body}>
         <div className={styles.meta}>
-          <time dateTime={post.date}>{formatPostDate(post.date)}</time>
+          <time dateTime={post.date}>{formatPostDate(post.date, locale)}</time>
           <span aria-hidden="true" className={styles.sep} />
-          <span>{post.readingTime} dk okuma</span>
+          <span>{t.readingTime.replace("{minutes}", String(post.readingTime))}</span>
         </div>
 
         <h3 className={styles.title}>{post.title}</h3>
@@ -61,7 +65,7 @@ export default function BlogCard({ post, size = "standard" }: BlogCardProps) {
         <p className={styles.excerpt}>{post.excerpt}</p>
 
         <span className={styles.link}>
-          <span>Yazıyı oku</span>
+          <span>{t.readMore}</span>
           <b aria-hidden="true">
             <svg width="14" height="14" viewBox="0 0 16 16">
               <path

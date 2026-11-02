@@ -1,4 +1,5 @@
-import Link from "next/link";
+import Link from "@/i18n/Link";
+import { getT } from "@/i18n/server";
 
 import type { ProjectDef } from "@/data/projects";
 import Container from "@/components/common/Container/Container";
@@ -16,7 +17,7 @@ export default function NextProject({ project }: NextProjectProps) {
     <section className={styles.section}>
       <Container>
         <Link href={`/projelerimiz/${project.slug}`} className={styles.link}>
-          <span className={styles.eyebrow}>SONRAKİ PROJE</span>
+          <span className={styles.eyebrow}>{getT().projects.nextProject}</span>
           <h2 className={styles.title}>
             <span>{project.title}</span>
             <b aria-hidden="true">↗</b>

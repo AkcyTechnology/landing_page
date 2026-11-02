@@ -1,10 +1,12 @@
-﻿"use client";
+"use client";
 
+import { useT } from "@/i18n/LocaleProvider";
 import styles from "./LegalPageLayout.module.scss";
 
 export default function LegalContents({sections}: {sections: {id: string; title: string}[]}) {
-  return <aside className={styles.contents}><nav aria-label="İçindekiler">
-    <span className={styles.contentsLabel}>İÇİNDEKİLER</span>
+  const t = useT().legal;
+  return <aside className={styles.contents}><nav aria-label={t.contents}>
+    <span className={styles.contentsLabel}>{t.contentsLabel}</span>
     <ol>{sections.map((section, index) => <li key={section.id}><a href={`#${section.id}`} onClick={event => {
       const target = document.getElementById(section.id);
       if (!target) return;

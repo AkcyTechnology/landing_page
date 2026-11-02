@@ -1,9 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import Link from "next/link";
+import Link from "@/i18n/Link";
+import { useLocale, useT } from "@/i18n/LocaleProvider";
 import { motion } from "motion/react";
-import { services } from "@/data/services";
+import { getAllServices } from "@/data/services";
 
 import styles from "./HeroArc.module.scss";
 
@@ -26,6 +27,9 @@ const icons: Record<string, ReactNode> = {
 };
 
 export default function HeroArc() {
+  const locale = useLocale();
+  const t = useT().home.heroArc;
+  const services = getAllServices(locale);
   const [active, setActive] = useState(0);
 
   const autoplayTimer = useRef<ReturnType<typeof setInterval>>(
@@ -37,7 +41,7 @@ export default function HeroArc() {
 
   const next = useCallback(() => {
     setActive((prev) => (prev + 1) % services.length);
-  }, []);
+  }, [services.length]);
 
   const prev = () => {
     setActive(
@@ -175,7 +179,7 @@ export default function HeroArc() {
                 className={styles.cardLink}
                 tabIndex={isActive ? 0 : -1}
               >
-                Hizmeti incele <span aria-hidden="true">↗</span>
+                {t.cardLink} <span aria-hidden="true">↗</span>
               </Link>
             </motion.article>
           );
@@ -185,7 +189,7 @@ export default function HeroArc() {
       <div className={styles.controls}>
         <button
           type="button"
-          aria-label="Önceki hizmet"
+          aria-label={t.previous}
           onClick={() => {
             pauseAutoplay();
             prev();
@@ -204,7 +208,7 @@ export default function HeroArc() {
 
         <button
           type="button"
-          aria-label="Sonraki hizmet"
+          aria-label={t.next}
           onClick={() => {
             pauseAutoplay();
             next();

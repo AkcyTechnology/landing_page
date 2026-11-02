@@ -5,6 +5,8 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 
 import type { BlogPostMeta } from "@/data/blog";
+import { dateLocale } from "@/i18n/config";
+import { useLocale, useT } from "@/i18n/LocaleProvider";
 import CategoryFilters, {
   ALL_SLUG,
 } from "@/components/blog/CategoryFilters/CategoryFilters";
@@ -56,6 +58,8 @@ function BlogListing({
 }: BlogListingClientProps & {
   searchParams: Pick<URLSearchParams, "get" | "toString">;
 }) {
+  const t = useT().blog.listing;
+  const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -139,7 +143,7 @@ function BlogListing({
   const showFeatured = Boolean(featuredPost) && !query && category === ALL_SLUG;
 
   const filtered = useMemo(() => {
-    const normalizedQuery = query.trim().toLocaleLowerCase("tr-TR");
+    const normalizedQuery = query.trim().toLocaleLowerCase(dateLocale[locale]);
 
     return allPosts.filter((post) => {
       if (showFeatured && post.slug === featuredPost?.slug) return false;
@@ -149,12 +153,12 @@ function BlogListing({
 
       const matchesQuery =
         !normalizedQuery ||
-        post.title.toLocaleLowerCase("tr-TR").includes(normalizedQuery) ||
-        post.excerpt.toLocaleLowerCase("tr-TR").includes(normalizedQuery);
+        post.title.toLocaleLowerCase(dateLocale[locale]).includes(normalizedQuery) ||
+        post.excerpt.toLocaleLowerCase(dateLocale[locale]).includes(normalizedQuery);
 
       return matchesCategory && matchesQuery;
     });
-  }, [allPosts, category, query, featuredPost, showFeatured]);
+  }, [allPosts, category, query, featuredPost, showFeatured, locale]);
 
   const totalPages = Math.max(Math.ceil(filtered.length / PAGE_SIZE), 1);
   const safePage = Math.min(page, totalPages);
@@ -210,14 +214,14 @@ function BlogListing({
           <div>
             <span className={styles.eyebrow}>
               <i aria-hidden="true" />
-              TÜM YAZILAR
+              {t.allPosts}
             </span>
             <h2 className={styles.sectionHeading}>
-              Son yazılar ve <em>rehberler</em>
+              {t.headingStart} <em>{t.headingAccent}</em>
             </h2>
           </div>
           <span className={styles.resultCount}>
-            <b>{filtered.length}</b> yazı listeleniyor
+            <b>{filtered.length}</b> {t.resultCount}
           </span>
         </Reveal>
 

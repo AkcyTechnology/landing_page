@@ -1,3 +1,4 @@
+import { getT } from "@/i18n/server";
 import Container from "@/components/common/Container/Container";
 
 import styles from "./ProjectProblemApproach.module.scss";
@@ -21,14 +22,14 @@ export default function ProjectProblemApproach({
         <div className={styles.grid}>
           {problem && (
             <div>
-              <span className={styles.label}>Challenge</span>
+              <span className={styles.label}>{getT().projects.challenge}</span>
               <p>{problem}</p>
             </div>
           )}
 
           {ourRole && ourRole.length > 0 && (
             <div>
-              <span className={styles.label}>Our Role</span>
+              <span className={styles.label}>{getT().projects.ourRole}</span>
               <ul className={styles.roleList}>
                 {ourRole.map((role) => (
                   <li key={role}>{role}</li>
@@ -40,7 +41,7 @@ export default function ProjectProblemApproach({
 
         {approach && (
           <div className={styles.approach}>
-            <span className={styles.label}>Solution</span>
+            <span className={styles.label}>{getT().projects.solution}</span>
             <p>{approach}</p>
           </div>
         )}

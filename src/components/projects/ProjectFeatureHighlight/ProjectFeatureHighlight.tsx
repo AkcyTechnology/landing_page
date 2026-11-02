@@ -1,3 +1,4 @@
+import { getT } from "@/i18n/server";
 import Image from "next/image";
 
 import type { FeatureHighlight } from "@/data/projects";
@@ -17,7 +18,7 @@ export default function ProjectFeatureHighlight({
   return (
     <section className={styles.section}>
       <Container>
-        <span className={styles.label}>Öne Çıkan Özellik</span>
+        <span className={styles.label}>{getT().projects.featureLabel}</span>
 
         <div className={styles.header}>
           <h2 className={styles.title}>{feature.title}</h2>

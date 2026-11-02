@@ -1,3 +1,4 @@
+import { getT } from "@/i18n/server";
 import Image from "next/image";
 
 import type { CaseStudyImage, CaseStudySection } from "@/data/projects";
@@ -77,7 +78,7 @@ export default function ProjectCaseStudy({
 
         {outcomes && outcomes.length > 0 && (
           <div className={styles.outcomes}>
-            <span className={styles.label}>Sonuçlar</span>
+            <span className={styles.label}>{getT().projects.outcomes}</span>
             <ul>
               {outcomes.map((outcome) => (
                 <li key={outcome}>{outcome}</li>
@@ -85,7 +86,7 @@ export default function ProjectCaseStudy({
             </ul>
           </div>
         )}
-        {liveUrl && <a className={styles.liveLink} href={liveUrl} target="_blank" rel="noopener noreferrer">Canlı Siteyi Ziyaret Et ↗</a>}
+        {liveUrl && <a className={styles.liveLink} href={liveUrl} target="_blank" rel="noopener noreferrer">{getT().projects.visitLive} ↗</a>}
       </Container>
     </section>
   );

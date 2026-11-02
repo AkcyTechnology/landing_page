@@ -1,79 +1,33 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import Link from "@/i18n/Link";
+import { useT } from "@/i18n/LocaleProvider";
+import type { Dictionary } from "@/i18n/dictionaries";
 import Container from "@/components/common/Container/Container";
 import styles from "./ProblemsSolved.module.scss";
 
 type VisualKind = "web" | "mobile" | "ai" | "software" | "integration" | "analytics";
 
-const solutions: {
-  problem: string;
-  category: string;
-  title: string;
-  description: string;
-  tags: string[];
-  visual: VisualKind;
-  href: string;
-}[] = [
-  {
-    problem: "Web siteniz sadece bir vitrin mi?",
-    category: "WEB VE DİJİTAL ÜRÜNLER",
-    title: "Kurumsal Web Siteleri ve Web Platformları",
-    description: "Markanızın yalnızca dijital vitrini değil, satış, iletişim ve operasyon süreçlerine hizmet eden yüksek performanslı web deneyimleri tasarlıyor ve geliştiriyoruz.",
-    tags: ["Kurumsal Web Sitesi", "Web Uygulaması", "E-Ticaret", "Yönetim Paneli"],
-    visual: "web",
-    href: "/hizmetler/web-gelistirme",
-  },
-  {
-    problem: "Müşterileriniz size cebinden ulaşamıyor mu?",
-    category: "MOBİL GELİŞTİRME",
-    title: "iOS ve Android Mobil Uygulamalar",
-    description: "Fikir aşamasından App Store ve Google Play yayınına kadar kullanıcı odaklı, hızlı ve ölçeklenebilir mobil ürünler geliştiriyoruz.",
-    tags: ["iOS", "Android", "Çapraz Platform", "API Entegrasyonu"],
-    visual: "mobile",
-    href: "/hizmetler/mobil-uygulamalar",
-  },
-  {
-    problem: "Ekibiniz aynı işi her gün elle mi yapıyor?",
-    category: "YAPAY ZEKÂ VE OTOMASYON",
-    title: "Yapay Zekâ ve İş Süreci Otomasyonu",
-    description: "Tekrarlayan operasyonları yapay zekâ ve otomasyonla dönüştürerek ekiplerin manuel iş yükünü azaltıyor, süreçleri daha hızlı ve ölçülebilir hale getiriyoruz.",
-    tags: ["AI Asistanları", "İş Akışı Otomasyonu", "Doküman Analizi", "Üretken Yapay Zekâ"],
-    visual: "ai",
-    href: "/hizmetler/yapay-zeka",
-  },
-  {
-    problem: "Hazır yazılımlar iş akışınıza uymuyor mu?",
-    category: "KURUMSAL YAZILIM",
-    title: "Kuruma Özel Yazılım Çözümleri",
-    description: "Hazır yazılımların karşılamadığı iş süreçlerini, şirketinize özel geliştirilen merkezi ve sürdürülebilir yazılım sistemleriyle çözüyoruz.",
-    tags: ["CRM", "ERP Modülleri", "Teklif Sistemleri", "Operasyon Yönetimi"],
-    visual: "software",
-    href: "/hizmetler/kurumsal-yazilim",
-  },
-  {
-    problem: "Sistemleriniz birbiriyle konuşmuyor mu?",
-    category: "SİSTEM ENTEGRASYONU",
-    title: "Sistem ve API Entegrasyonları",
-    description: "Birbirinden bağımsız çalışan yazılımları ve veri kaynaklarını entegre ederek tek merkezden yönetilebilen dijital bir ekosistem oluşturuyoruz.",
-    tags: ["API", "CRM / ERP", "Ödeme Sistemleri", "Harici Servisler"],
-    visual: "integration",
-    href: "/hizmetler/dijital-otomasyon",
-  },
-  {
-    problem: "Veriniz var ama karar vermek hâlâ zor mu?",
-    category: "VERİ VE ANALİTİK",
-    title: "Dashboard, Raporlama ve Veri Analitiği",
-    description: "Dağınık verileri anlaşılır dashboard ve raporlara dönüştürerek yöneticilerin operasyonları gerçek zamanlı takip etmesini sağlıyoruz.",
-    tags: ["Yönetim Paneli", "KPI Takibi", "Otomatik Raporlar", "Veri Görselleştirme"],
-    visual: "analytics",
-    href: "/hizmetler/dijital-otomasyon",
-  },
+/* Metinler sözlükte (home.problems.solutions); görsel ve bağlantılar burada */
+const solutionMeta: { visual: VisualKind; href: string }[] = [
+  { visual: "web", href: "/hizmetler/web-gelistirme" },
+  { visual: "mobile", href: "/hizmetler/mobil-uygulamalar" },
+  { visual: "ai", href: "/hizmetler/yapay-zeka" },
+  { visual: "software", href: "/hizmetler/kurumsal-yazilim" },
+  { visual: "integration", href: "/hizmetler/dijital-otomasyon" },
+  { visual: "analytics", href: "/hizmetler/dijital-otomasyon" },
 ];
 
+type ProblemsCopy = Dictionary["home"]["problems"];
+
+function useSolutions() {
+  const t = useT().home.problems;
+  return t.solutions.map((solution, index) => ({ ...solution, ...solutionMeta[index] }));
+}
+
 /* Her çözüm için kodla çizilmiş, stok fotoğraf yerine geçen mini arayüz */
-function Visual({ kind }: { kind: VisualKind }) {
+function Visual({ kind, t }: { kind: VisualKind; t: ProblemsCopy["visuals"] }) {
   switch (kind) {
     case "web":
       return (
@@ -99,7 +53,7 @@ function Visual({ kind }: { kind: VisualKind }) {
     case "ai":
       return (
         <ol className={styles.vFlow}>
-          {["Doküman", "AI analiz", "İnsan kontrolü", "Çıktı"].map((step, index) => (
+          {t.flow.map((step, index) => (
             <li key={step} style={{ animationDelay: `${index * 0.6}s` }}>
               <span>{String(index + 1).padStart(2, "0")}</span>{step}
             </li>
@@ -109,7 +63,7 @@ function Visual({ kind }: { kind: VisualKind }) {
     case "software":
       return (
         <div className={styles.vTable}>
-          {[["Teklif #1042", "Onaylandı"], ["Sipariş #2231", "Hazırlanıyor"], ["Servis #0318", "Atandı"], ["Teklif #1043", "Bekliyor"]].map(([name, status], index) => (
+          {t.table.map(([name, status], index) => (
             <div key={name} style={{ animationDelay: `${index * 0.12}s` }}>
               <span>{name}</span><b data-status={index}>{status}</b>
             </div>
@@ -125,7 +79,7 @@ function Visual({ kind }: { kind: VisualKind }) {
             ))}
           </svg>
           <span className={styles.vHubCenter}>AKCY</span>
-          {["CRM", "ERP", "E-ticaret", "Ödeme", "Muhasebe"].map((node, index) => (
+          {t.hub.map((node, index) => (
             <span key={node} className={styles.vHubNode} data-node={index}>{node}</span>
           ))}
         </div>
@@ -147,21 +101,22 @@ function Visual({ kind }: { kind: VisualKind }) {
 }
 
 function Panel({ index }: { index: number }) {
-  const solution = solutions[index];
+  const t = useT().home.problems;
+  const solution = useSolutions()[index];
   return (
     <div className={styles.panel}>
       <div className={styles.visual} aria-hidden="true">
-        <Visual kind={solution.visual} />
+        <Visual kind={solution.visual} t={t.visuals} />
       </div>
       <div className={styles.panelBody}>
         <span className={styles.category}>{solution.category}</span>
         <h3>{solution.title}</h3>
         <p>{solution.description}</p>
-        <ul className={styles.tags} aria-label="Yetkinlikler">
+        <ul className={styles.tags} aria-label={t.tagsLabel}>
           {solution.tags.map((tag) => <li key={tag}>{tag}</li>)}
         </ul>
         <Link className={styles.link} href={solution.href} data-magnetic>
-          Çözümü İncele <b aria-hidden="true">↗</b>
+          {t.cta} <b aria-hidden="true">↗</b>
         </Link>
       </div>
     </div>
@@ -169,6 +124,8 @@ function Panel({ index }: { index: number }) {
 }
 
 export default function ProblemsSolved() {
+  const t = useT().home.problems;
+  const solutions = useSolutions();
   const [active, setActive] = useState(0);
   const [inView, setInView] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
@@ -192,10 +149,10 @@ export default function ProblemsSolved() {
       <Container>
         <div className={styles.header}>
           <div>
-            <span className={styles.label}>03 / ÇÖZÜMLERİMİZ</span>
-            <h2 className={styles.heading} id="solutions-heading">Dijital problemlere<br /><span>çalışan çözümler.</span></h2>
+            <span className={styles.label}>{t.label}</span>
+            <h2 className={styles.heading} id="solutions-heading">{t.headingStart}<br /><span>{t.headingAccent}</span></h2>
           </div>
-          <p className={styles.intro}>Web platformlarından mobil uygulamalara, yapay zekâ otomasyonlarından kurumsal entegrasyonlara kadar işletmelerin dijital süreçlerini uçtan uca tasarlıyor, geliştiriyor ve ölçekliyoruz.</p>
+          <p className={styles.intro}>{t.intro}</p>
         </div>
 
         <div className={styles.layout}>

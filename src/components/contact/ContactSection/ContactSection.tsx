@@ -1,3 +1,4 @@
+import { getT } from "@/i18n/server";
 import Container from "@/components/common/Container/Container";
 import ContactInfo from "@/components/contact/ContactInfo/ContactInfo";
 import ContactForm from "@/components/contact/ContactForm/ContactForm";
@@ -5,6 +6,7 @@ import ContactForm from "@/components/contact/ContactForm/ContactForm";
 import styles from "./ContactSection.module.scss";
 
 export default function ContactSection() {
+  const t = getT().contact.section;
   return (
     <section className={styles.section} id="proje-formu">
       <Container>
@@ -13,11 +15,10 @@ export default function ContactSection() {
 
           <div className={styles.formArea}>
             <div className={styles.formHeader}>
-              <span>PROJENİZİ ANLATIN</span>
-              <h2>Nasıl yardımcı olabiliriz?</h2>
+              <span>{t.eyebrow}</span>
+              <h2>{t.heading}</h2>
               <p>
-                Projeniz hakkında birkaç detay paylaşın; ihtiyacınızı
-                inceleyip sizinle iletişime geçelim.
+                {t.description}
               </p>
             </div>
 

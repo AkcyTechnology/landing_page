@@ -2,8 +2,9 @@
 
 import { motion, useReducedMotion } from "motion/react";
 
-import { categories } from "@/data/blog";
-import { getCategoryAccent } from "@/components/blog/categoryMeta";
+import { categories } from "@/data/blogCategories";
+import { useLocale, useT } from "@/i18n/LocaleProvider";
+import { getCategoryAccent, getCategoryLabel } from "@/components/blog/categoryMeta";
 
 import styles from "./CategoryFilters.module.scss";
 
@@ -24,6 +25,8 @@ export default function CategoryFilters({
   available,
   counts,
 }: CategoryFiltersProps) {
+  const t = useT().blog.listing;
+  const locale = useLocale();
   const reduceMotion = useReducedMotion();
 
   const visible = available
@@ -35,15 +38,16 @@ export default function CategoryFilters({
     : undefined;
 
   const items = [
-    { slug: ALL_SLUG, label: "Tümü", count: total },
+    { slug: ALL_SLUG, label: t.all, count: total },
     ...visible.map((category) => ({
       ...category,
+      label: getCategoryLabel(category.slug, locale),
       count: counts?.[category.slug],
     })),
   ];
 
   return (
-    <div className={styles.filters} role="group" aria-label="Kategoriler">
+    <div className={styles.filters} role="group" aria-label={t.categoriesLabel}>
       {items.map((item) => {
         const isActive = active === item.slug;
 

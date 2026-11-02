@@ -2,7 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/i18n/Link";
+import { useLocale, useT } from "@/i18n/LocaleProvider";
 import { motion } from "motion/react";
 
 import { getClientProjects } from "@/data/projects";
@@ -14,7 +15,9 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import styles from "./ProjectShowcase.module.scss";
 
 export default function ProjectShowcase() {
-  const projects = getClientProjects();
+  const locale = useLocale();
+  const t = useT().home.showcase;
+  const projects = getClientProjects(locale);
   const wrapperRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -134,13 +137,13 @@ export default function ProjectShowcase() {
           transition={{ duration: 0.8, ease: [0.22, 0.8, 0.25, 1] }}
         >
           <div>
-            <SectionLabel>02 / SEÇİLİ PROJELER</SectionLabel>
+            <SectionLabel>{t.label}</SectionLabel>
             <h2 className={styles.heading} id="showcase-heading">
-              Üzerinde çalıştığımız bazı işler.
+              {t.heading}
             </h2>
           </div>
 
-          <ArrowLink href="/projelerimiz">Tüm Projeleri Gör</ArrowLink>
+          <ArrowLink href="/projelerimiz">{t.allProjects}</ArrowLink>
         </motion.div>
       </Container>
 
@@ -156,7 +159,7 @@ export default function ProjectShowcase() {
               <Link
                 href={`/projelerimiz/${project.slug}`}
                 className={styles.imageWrap}
-                aria-label={`${project.title} — Proje detayları`}
+                aria-label={`${project.title} — ${t.detailsLabel}`}
               >
                 <div className={styles.imageInner}>
                   <Image
@@ -198,9 +201,9 @@ export default function ProjectShowcase() {
                     <p data-reveal="text">{project.tagline ?? project.summary}</p>
 
                     <dl className={styles.meta}>
-                      <div data-reveal="meta"><dt>Sektör</dt><dd>{project.sector}</dd></div>
-                      <div data-reveal="meta"><dt>Platform</dt><dd>{project.platform}</dd></div>
-                      <div data-reveal="meta"><dt>Yıl</dt><dd>{project.year}</dd></div>
+                      <div data-reveal="meta"><dt>{t.sector}</dt><dd>{project.sector}</dd></div>
+                      <div data-reveal="meta"><dt>{t.platform}</dt><dd>{project.platform}</dd></div>
+                      <div data-reveal="meta"><dt>{t.year}</dt><dd>{project.year}</dd></div>
                     </dl>
 
                     <Link
@@ -209,7 +212,7 @@ export default function ProjectShowcase() {
                       data-magnetic
                       data-reveal="cta"
                     >
-                      Projeyi İncele <b aria-hidden="true">↗</b>
+                      {t.cta} <b aria-hidden="true">↗</b>
                     </Link>
                   </div>
 

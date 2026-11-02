@@ -1,4 +1,5 @@
 import type { FaqItem } from "@/data/blog";
+import { getT } from "@/i18n/server";
 
 import styles from "./FaqSection.module.scss";
 
@@ -8,13 +9,14 @@ interface FaqSectionProps {
 
 export default function FaqSection({ items }: FaqSectionProps) {
   if (!items.length) return null;
+  const t = getT().blog.faq;
 
   return (
     <section className={styles.wrap} aria-labelledby="sss">
-      <span className={styles.eyebrow}>SIK SORULAN SORULAR</span>
+      <span className={styles.eyebrow}>{t.eyebrow}</span>
 
       <h2 id="sss" className={styles.heading}>
-        Sık Sorulan Sorular
+        {t.heading}
       </h2>
 
       <div className={styles.list}>

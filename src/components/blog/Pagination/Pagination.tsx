@@ -1,3 +1,6 @@
+"use client";
+
+import { useT } from "@/i18n/LocaleProvider";
 import styles from "./Pagination.module.scss";
 
 interface PaginationProps {
@@ -11,6 +14,7 @@ export default function Pagination({
   totalPages,
   onChange,
 }: PaginationProps) {
+  const t = useT().blog.listing;
   // Tek sayfa varken sayfalama gösterilmez.
   if (totalPages <= 1) return null;
 
@@ -23,13 +27,13 @@ export default function Pagination({
   const canGoNext = page < totalPages;
 
   return (
-    <nav className={styles.pagination} aria-label="Sayfalama">
+    <nav className={styles.pagination} aria-label={t.pagination}>
       <button
         type="button"
         className={styles.arrow}
         disabled={!canGoPrev}
         onClick={() => canGoPrev && onChange(page - 1)}
-        aria-label="Önceki sayfa"
+        aria-label={t.previousPage}
       >
         ←
       </button>
@@ -54,7 +58,7 @@ export default function Pagination({
         className={styles.arrow}
         disabled={!canGoNext}
         onClick={() => canGoNext && onChange(page + 1)}
-        aria-label="Sonraki sayfa"
+        aria-label={t.nextPage}
       >
         →
       </button>

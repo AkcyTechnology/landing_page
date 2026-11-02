@@ -2,6 +2,7 @@
 
 import { forwardRef, useImperativeHandle, useRef } from "react";
 import Script from "next/script";
+import { useLocale } from "@/i18n/LocaleProvider";
 
 import styles from "./ContactForm.module.scss";
 
@@ -44,6 +45,7 @@ interface TurnstileWidgetProps {
 */
 const TurnstileWidget = forwardRef<TurnstileHandle, TurnstileWidgetProps>(
   function TurnstileWidget({ onToken }, ref) {
+    const locale = useLocale();
     const containerRef = useRef<HTMLDivElement>(null);
     const widgetId = useRef<string | null>(null);
 
@@ -67,7 +69,7 @@ const TurnstileWidget = forwardRef<TurnstileHandle, TurnstileWidgetProps>(
         callback: onToken,
         "expired-callback": () => onToken(""),
         "error-callback": () => onToken(""),
-        language: "tr",
+        language: locale,
         theme: "light",
       });
     };

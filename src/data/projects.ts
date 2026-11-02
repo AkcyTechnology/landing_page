@@ -1,3 +1,6 @@
+import type { Locale } from "@/i18n/config";
+import { projectCategoryLabelsEn, projectsEn } from "./en/projects";
+
 export type ProjectCategory = "web" | "mobil" | "ui-ux" | "ai" | "otomasyon";
 
 export interface ProjectCategoryDef {
@@ -46,6 +49,8 @@ export interface ProjectDef {
   cover: { src: string; alt: string };
   gallery: CaseStudyImage[];
   servicesUsed: string[];
+  /** İlgili hizmet sayfaları (hizmet slug'ları) */
+  serviceIds?: string[];
   size?: "large" | "standard";
   problem?: string;
   ourRole?: string[];
@@ -98,6 +103,7 @@ export const projects: ProjectDef[] = [
         portrait: true,
       },
     ],
+    serviceIds: ["web-gelistirme", "ui-ux-tasarim"],
     servicesUsed: [
       "Strateji",
       "Bilgi Mimarisi",
@@ -193,6 +199,7 @@ export const projects: ProjectDef[] = [
         portrait: true,
       },
     ],
+    serviceIds: ["web-gelistirme"],
     servicesUsed: [
       "UX Stratejisi",
       "Bilgi Mimarisi",
@@ -354,39 +361,57 @@ export const projects: ProjectDef[] = [
   },
 ];
 
-export function getAllProjects(): ProjectDef[] {
-  return projects;
+/* İngilizce görsellerde yazılar İngilizcedir (*.en.svg) */
+function localizedSrc(src: string) {
+  return src.startsWith("/images/projects/concepts/") ? src.replace(/\.svg$/, ".en.svg") : src;
 }
 
-export function getClientProjects(): ProjectDef[] {
-  return projects.filter((project) => project.kind === "client");
+const projectsEnglish: ProjectDef[] = projects.map((project) => {
+  const t = projectsEn[project.slug];
+  if (!t) return project;
+  const { coverAlt, gallery, ...fields } = t;
+  return {
+    ...project,
+    ...fields,
+    cover: { src: localizedSrc(project.cover.src), alt: coverAlt },
+    gallery: project.gallery.map((image, index) => ({ ...image, ...(gallery?.[index] ?? {}) })),
+  };
+});
+
+export function getProjectCategories(locale: Locale = "tr"): ProjectCategoryDef[] {
+  if (locale === "tr") return projectCategories;
+  return projectCategories.map((category) => ({ ...category, label: projectCategoryLabelsEn[category.slug] ?? category.label }));
 }
 
-export function getConceptProjects(): ProjectDef[] {
-  return projects.filter((project) => project.kind === "concept");
+/* slug alanı her dilde Türkçe (kanonik) slug'dır; adres localizePath ile çevrilir */
+export function getAllProjects(locale: Locale = "tr"): ProjectDef[] {
+  return locale === "en" ? projectsEnglish : projects;
 }
 
-export function getProjectBySlug(slug: string): ProjectDef | undefined {
-  return projects.find((project) => project.slug === slug);
+export function getClientProjects(locale: Locale = "tr"): ProjectDef[] {
+  return getAllProjects(locale).filter((project) => project.kind === "client");
 }
 
-export function getRelatedProjects(
-  current: ProjectDef,
-  count = 3
-): ProjectDef[] {
-  const rest = projects.filter((project) => project.slug !== current.slug);
-  const sameCategory = rest.filter(
-    (project) => project.category === current.category
-  );
-  const others = rest.filter(
-    (project) => project.category !== current.category
-  );
+export function getConceptProjects(locale: Locale = "tr"): ProjectDef[] {
+  return getAllProjects(locale).filter((project) => project.kind === "concept");
+}
+
+export function getProjectBySlug(slug: string, locale: Locale = "tr"): ProjectDef | undefined {
+  return getAllProjects(locale).find((project) => project.slug === slug);
+}
+
+export function getRelatedProjects(current: ProjectDef, count = 3, locale: Locale = "tr"): ProjectDef[] {
+  const all = getAllProjects(locale);
+  const rest = all.filter((project) => project.slug !== current.slug);
+  const sameCategory = rest.filter((project) => project.category === current.category);
+  const others = rest.filter((project) => project.category !== current.category);
 
   return [...sameCategory, ...others].slice(0, count);
 }
 
-export function getAdjacentProject(current: ProjectDef): ProjectDef | undefined {
-  const index = projects.findIndex((project) => project.slug === current.slug);
+export function getAdjacentProject(current: ProjectDef, locale: Locale = "tr"): ProjectDef | undefined {
+  const all = getAllProjects(locale);
+  const index = all.findIndex((project) => project.slug === current.slug);
   if (index === -1) return undefined;
-  return projects[(index + 1) % projects.length];
+  return all[(index + 1) % all.length];
 }

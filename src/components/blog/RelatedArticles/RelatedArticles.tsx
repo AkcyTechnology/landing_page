@@ -1,4 +1,5 @@
-import Link from "next/link";
+import Link from "@/i18n/Link";
+import { getT } from "@/i18n/server";
 
 import type { BlogPostMeta } from "@/data/blog";
 import BlogCard from "@/components/blog/BlogCard/BlogCard";
@@ -12,6 +13,7 @@ interface RelatedArticlesProps {
 
 export default function RelatedArticles({ posts }: RelatedArticlesProps) {
   if (posts.length === 0) return null;
+  const t = getT().blog.related;
 
   return (
     <section className={styles.related}>
@@ -20,13 +22,13 @@ export default function RelatedArticles({ posts }: RelatedArticlesProps) {
           <div>
             <span className={styles.eyebrow}>
               <i aria-hidden="true" />
-              OKUMAYA DEVAM EDİN
+              {t.eyebrow}
             </span>
-            <h2 className={styles.heading}>Bunlar da ilginizi çekebilir</h2>
+            <h2 className={styles.heading}>{t.heading}</h2>
           </div>
 
           <Link href="/blog" className={styles.all}>
-            Tüm yazılar <b aria-hidden="true">→</b>
+            {t.all} <b aria-hidden="true">→</b>
           </Link>
         </Reveal>
 

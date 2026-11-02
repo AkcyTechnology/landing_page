@@ -1,3 +1,6 @@
+"use client";
+
+import { useT } from "@/i18n/LocaleProvider";
 import styles from "./ProjectsEmptyState.module.scss";
 
 interface ProjectsEmptyStateProps {
@@ -5,14 +8,15 @@ interface ProjectsEmptyStateProps {
 }
 
 export default function ProjectsEmptyState({ onClear }: ProjectsEmptyStateProps) {
+  const t = useT().projects;
   return (
     <div className={styles.empty}>
       <p className={styles.message}>
-        Bu kategoride henüz yayınlanmış bir proje bulunmuyor.
+        {t.emptyMessage}
       </p>
 
       <button type="button" className={styles.clear} onClick={onClear}>
-        <span>Filtreleri Temizle</span>
+        <span>{t.clearFilters}</span>
       </button>
     </div>
   );

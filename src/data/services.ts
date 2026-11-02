@@ -1,3 +1,6 @@
+import type { Locale } from "@/i18n/config";
+import { servicesEn } from "./en/services";
+
 export interface ServiceProcessStep {
   number: string;
   title: string;
@@ -271,10 +274,30 @@ export const services: ServiceDef[] = serviceOrder.map((slug, index) => ({
   number: String(index + 1).padStart(2, "0"),
 }));
 
-export function getAllServices(): ServiceDef[] {
-  return services;
+/* İngilizce görsellerde yazılar İngilizcedir (*.en.svg) */
+function localizedImage(image: { src: string; alt: string }, alt: string) {
+  return { src: image.src.replace(/-workflow\.svg$/, "-workflow.en.svg"), alt };
 }
 
-export function getServiceBySlug(slug: string): ServiceDef | undefined {
-  return services.find((service) => service.slug === slug);
+const servicesEnglish: ServiceDef[] = services.map((service) => {
+  const t = servicesEn[service.slug];
+  return {
+    ...service,
+    title: t.title,
+    shortDescription: t.shortDescription,
+    heroDescription: t.heroDescription,
+    overview: t.overview,
+    offerings: t.offerings,
+    process: t.process,
+    image: localizedImage(service.image, t.imageAlt),
+  };
+});
+
+/* slug alanı her dilde Türkçe (kanonik) slug'dır; adres localizePath ile çevrilir */
+export function getAllServices(locale: Locale = "tr"): ServiceDef[] {
+  return locale === "en" ? servicesEnglish : services;
+}
+
+export function getServiceBySlug(slug: string, locale: Locale = "tr"): ServiceDef | undefined {
+  return getAllServices(locale).find((service) => service.slug === slug);
 }

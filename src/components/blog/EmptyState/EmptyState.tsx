@@ -1,3 +1,6 @@
+"use client";
+
+import { useT } from "@/i18n/LocaleProvider";
 import styles from "./EmptyState.module.scss";
 
 interface EmptyStateProps {
@@ -5,14 +8,15 @@ interface EmptyStateProps {
 }
 
 export default function EmptyState({ onClear }: EmptyStateProps) {
+  const t = useT().blog.listing;
   return (
     <div className={styles.empty}>
       <p className={styles.message}>
-        Aradığınız kriterlere uygun yazı bulunamadı.
+        {t.emptyMessage}
       </p>
 
       <button type="button" className={styles.clear} onClick={onClear}>
-        <span>Filtreleri Temizle</span>
+        <span>{t.clearFilters}</span>
       </button>
     </div>
   );

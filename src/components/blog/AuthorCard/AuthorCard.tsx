@@ -1,4 +1,5 @@
-import Link from "next/link";
+import Link from "@/i18n/Link";
+import { getLocale, getT } from "@/i18n/server";
 
 import styles from "./AuthorCard.module.scss";
 
@@ -8,25 +9,24 @@ interface AuthorCardProps {
 }
 
 export default function AuthorCard({ name, role }: AuthorCardProps) {
+  const t = getT().blog.author;
   return (
-    <aside className={styles.card} aria-label="Yazar hakkında">
+    <aside className={styles.card} aria-label={t.label}>
       <span className={styles.avatar} aria-hidden="true">
-        {name.slice(0, 2).toLocaleUpperCase("tr-TR")}
+        {name.slice(0, 2).toLocaleUpperCase(getLocale())}
       </span>
 
       <div className={styles.body}>
-        <span className={styles.eyebrow}>YAZAR</span>
+        <span className={styles.eyebrow}>{t.eyebrow}</span>
         <h2 className={styles.name}>
           {name}
           {role && <small>{role}</small>}
         </h2>
         <p className={styles.bio}>
-          AKCY; kurumsal web siteleri, WordPress projeleri, şirket süreç
-          otomasyonu ve yapay zekâ çözümleri geliştiren bir dijital ürün
-          stüdyosu. Bu blogda sahada edindiğimiz deneyimleri paylaşıyoruz.
+          {t.bio}
         </p>
         <Link href="/hakkimizda" className={styles.link}>
-          Ekibimizi tanıyın <b aria-hidden="true">→</b>
+          {t.link} <b aria-hidden="true">→</b>
         </Link>
       </div>
     </aside>

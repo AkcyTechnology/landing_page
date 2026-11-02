@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/i18n/Link";
 
 import Container from "@/components/common/Container/Container";
 import type { AboutContent } from "@/content/about";

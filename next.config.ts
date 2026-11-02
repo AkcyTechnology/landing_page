@@ -14,6 +14,12 @@ const nextConfig: NextConfig = {
   // Apache/LiteSpeed bu yapıyı ek ayar gerektirmeden sunar.
   trailingSlash: true,
 
+  // Türkçe ve İngilizce iki ayrı kök düzen kullandığı için eşleşmeyen
+  // adreslerin 404 sayfası app/global-not-found.tsx dosyasından üretilir.
+  experimental: {
+    globalNotFound: true,
+  },
+
   images: {
     // Sunucu olmadığı için görseller olduğu gibi sunulur.
     unoptimized: true,

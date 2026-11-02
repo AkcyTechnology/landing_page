@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import Link from "next/link";
+import Link from "@/i18n/Link";
 
 import styles from "./Services.module.scss";
 import { services as servicesData } from "@/data/services";

@@ -1,7 +1,8 @@
 "use client";
 
 import { useReducedMotion } from "motion/react";
-import Link from "next/link";
+import Link from "@/i18n/Link";
+import { useT } from "@/i18n/LocaleProvider";
 import Image from "next/image";
 import { motion } from "motion/react";
 
@@ -34,7 +35,8 @@ function buildItemVariants(reduceMotion: boolean) {
 }
 
 export default function Hero() {
-  const displayText = "dönüştürüyoruz.";
+  const t = useT().home.hero;
+  const displayText = t.titleDynamic;
 
   // framer-motion'ın useReducedMotion'ı SSR-safe değildir: ilk client
   // render'ında bile senkron olarak gerçek işletim sistemi tercihini
@@ -81,12 +83,12 @@ export default function Hero() {
       >
         <motion.div className={styles.eyebrow} variants={itemVariants} suppressHydrationWarning>
           <span />
-          <b>YAPAY ZEKÂ · OTOMASYON · DİJİTAL ÜRÜNLER</b>
+          <b>{t.eyebrow}</b>
         </motion.div>
 
         <h1 className={styles.heading}>
           <motion.span className={styles.heroFixed} variants={itemVariants} suppressHydrationWarning>
-            İşinizi
+            {t.titleFixed}
           </motion.span>
 
           <motion.span className={styles.heroDynamic} variants={itemVariants} suppressHydrationWarning>
@@ -95,12 +97,12 @@ export default function Hero() {
         </h1>
 
         <motion.p className={styles.description} variants={itemVariants} suppressHydrationWarning>
-          Küçük ekiplerden kurumsal yapılara kadar; yapay zekâ, otomasyon ve dijital ürünlerle iş süreçlerini daha hızlı, verimli ve ölçeklenebilir hale getiriyoruz.
+          {t.description}
         </motion.p>
 
         <motion.div className={styles.actions} variants={itemVariants} suppressHydrationWarning>
           <Link href="/iletisim" className={styles.primaryButton} data-magnetic>
-            <span>Bir Proje Başlatalım</span>
+            <span>{t.primaryCta}</span>
             <b aria-hidden="true">↗</b>
           </Link>
 
@@ -108,13 +110,13 @@ export default function Hero() {
             href="/projelerimiz"
             className={styles.secondaryButton}
           >
-            Projelerimizi Keşfet
+            {t.secondaryCta}
             <span aria-hidden="true">→</span>
           </Link>
         </motion.div>
 
         <motion.div className={styles.scrollHint} variants={itemVariants} suppressHydrationWarning>
-          <span>KEŞFETMEK İÇİN KAYDIR</span>
+          <span>{t.scrollHint}</span>
           <span className={styles.scrollLine} />
         </motion.div>
       </motion.div>

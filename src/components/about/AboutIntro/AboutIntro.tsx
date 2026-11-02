@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
+import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
 
 import Container from "@/components/common/Container/Container";
 import type { AboutContent } from "@/content/about";
@@ -20,7 +20,6 @@ function Word({ children, progress, range }: { children: string; progress: Motio
 
 export default function AboutIntro({ id, content }: AboutIntroProps) {
   const statementRef = useRef<HTMLParagraphElement>(null);
-  const reduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: statementRef,
     offset: ["start 0.9", "end 0.45"],
@@ -43,17 +42,16 @@ export default function AboutIntro({ id, content }: AboutIntroProps) {
 
         {/* Yalnızca bu büyük vurgu cümlesinde kelimeler kaydırmayla koyulaşır */}
         <p ref={statementRef} className={styles.statement}>
-          {reduceMotion
-            ? content.statement
-            : words.map((word, index) => (
-                <Word
-                  key={`${word}-${index}`}
-                  progress={scrollYProgress}
-                  range={[index / words.length, (index + 1) / words.length]}
-                >
-                  {word}
-                </Word>
-              ))}
+          {/* Hareket azaltma tercihinde renk CSS ile sabitlenir (sunucu ve istemci aynı HTML'i üretir) */}
+          {words.map((word, index) => (
+            <Word
+              key={`${word}-${index}`}
+              progress={scrollYProgress}
+              range={[index / words.length, (index + 1) / words.length]}
+            >
+              {word}
+            </Word>
+          ))}
         </p>
       </Container>
     </section>

@@ -42,6 +42,12 @@
   overflow-wrap: break-word;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .statement span {
+    color: $ink !important;
+  }
+}
+
 @media (max-width: 1050px) {
   .section {
     padding: 100px 0;

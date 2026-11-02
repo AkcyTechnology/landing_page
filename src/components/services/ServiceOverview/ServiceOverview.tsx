@@ -1,4 +1,5 @@
 import type { ServiceDef } from "@/data/services";
+import { getT } from "@/i18n/server";
 import Container from "@/components/common/Container/Container";
 import SectionLabel from "@/components/common/SectionLabel/SectionLabel";
 
@@ -14,12 +15,12 @@ export default function ServiceOverview({ service }: ServiceOverviewProps) {
       <Container>
         <div className={styles.grid}>
           <div>
-            <SectionLabel>01 / Genel Bakış</SectionLabel>
+            <SectionLabel>{getT().services.overviewLabel}</SectionLabel>
             <p className={styles.text}>{service.overview}</p>
           </div>
 
           <div>
-            <SectionLabel>02 / Neler Yapıyoruz</SectionLabel>
+            <SectionLabel>{getT().services.offeringsLabel}</SectionLabel>
 
             <ul className={styles.offerings}>
               {service.offerings.map((offering) => (

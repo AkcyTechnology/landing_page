@@ -1,4 +1,5 @@
-import Link from "next/link";
+import Link from "@/i18n/Link";
+import { getLocale, getT } from "@/i18n/server";
 
 import type { BlogPost } from "@/data/blog";
 import {
@@ -15,7 +16,10 @@ interface DetailHeroProps {
 }
 
 export default function DetailHero({ post }: DetailHeroProps) {
-  const categoryLabel = getCategoryLabel(post.category);
+  const locale = getLocale();
+  const t = getT();
+  const b = t.blog.card;
+  const categoryLabel = getCategoryLabel(post.category, locale);
   const authorName = post.author?.name ?? "AKCY";
 
   return (
@@ -32,10 +36,10 @@ export default function DetailHero({ post }: DetailHeroProps) {
         </div>
 
         <div className={styles.container}>
-          <nav className={styles.breadcrumb} aria-label="Sayfa yolu">
-            <Link href="/">Ana Sayfa</Link>
+          <nav className={styles.breadcrumb} aria-label={t.blog.detail.breadcrumb}>
+            <Link href="/">{t.nav.home}</Link>
             <span aria-hidden="true">/</span>
-            <Link href="/blog">Blog</Link>
+            <Link href="/blog">{t.nav.blog}</Link>
             <span aria-hidden="true">/</span>
             <Link href={`/blog?category=${post.category}`}>{categoryLabel}</Link>
           </nav>
@@ -45,7 +49,7 @@ export default function DetailHero({ post }: DetailHeroProps) {
               <i aria-hidden="true" />
               {categoryLabel}
             </span>
-            <span className={styles.chip}>{post.readingTime} dk okuma</span>
+            <span className={styles.chip}>{b.readingTime.replace("{minutes}", String(post.readingTime))}</span>
           </div>
 
           <h1 className={styles.title}>{post.title}</h1>
@@ -55,7 +59,7 @@ export default function DetailHero({ post }: DetailHeroProps) {
           <div className={styles.meta}>
             <div className={styles.author}>
               <span className={styles.avatar} aria-hidden="true">
-                {authorName.slice(0, 2).toLocaleUpperCase("tr-TR")}
+                {authorName.slice(0, 2).toLocaleUpperCase(locale)}
               </span>
               <span>
                 <b>{authorName}</b>
@@ -65,26 +69,26 @@ export default function DetailHero({ post }: DetailHeroProps) {
 
             <dl className={styles.facts}>
               <div>
-                <dt>Yayın tarihi</dt>
+                <dt>{t.blog.detail.published}</dt>
                 <dd>
-                  <time dateTime={post.date}>{formatPostDate(post.date)}</time>
+                  <time dateTime={post.date}>{formatPostDate(post.date, locale)}</time>
                 </dd>
               </div>
 
               {post.updatedDate && post.updatedDate !== post.date && (
                 <div>
-                  <dt>Güncelleme</dt>
+                  <dt>{t.blog.detail.updated}</dt>
                   <dd>
                     <time dateTime={post.updatedDate}>
-                      {formatPostDate(post.updatedDate)}
+                      {formatPostDate(post.updatedDate, locale)}
                     </time>
                   </dd>
                 </div>
               )}
 
               <div>
-                <dt>Okuma süresi</dt>
-                <dd>{post.readingTime} dakika</dd>
+                <dt>{t.blog.detail.readingTimeLabel}</dt>
+                <dd>{t.blog.detail.minutes.replace("{minutes}", String(post.readingTime))}</dd>
               </div>
             </dl>
           </div>

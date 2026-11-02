@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
+import { useT } from "@/i18n/LocaleProvider";
 
 import SectionLabel from "@/components/common/SectionLabel/SectionLabel";
 import Container from "@/components/common/Container/Container";
@@ -8,6 +9,7 @@ import Container from "@/components/common/Container/Container";
 import styles from "./ServicesHero.module.scss";
 
 export default function ServicesHero() {
+  const t = useT().services;
   return (
     <section className={styles.hero}>
       <Container>
@@ -17,15 +19,14 @@ export default function ServicesHero() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.8, ease: [0.22, 0.8, 0.25, 1] }}
         >
-          <SectionLabel>Hizmetler</SectionLabel>
+          <SectionLabel>{t.heroLabel}</SectionLabel>
 
           <h1 className={styles.heading}>
-            Fikirden ürüne, dijital sürecin her aşamasında yanınızdayız.
+            {t.heroTitle}
           </h1>
 
           <p className={styles.description}>
-            Web, mobil, tasarım, yapay zekâ ve otomasyon çözümlerini tek
-            bir ürün yaklaşımı altında bir araya getiriyoruz.
+            {t.heroDescription}
           </p>
         </motion.div>
       </Container>

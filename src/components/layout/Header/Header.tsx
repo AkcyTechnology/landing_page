@@ -1,15 +1,22 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import Link from "next/link";
+import Link from "@/i18n/Link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 import styles from "./Header.module.scss";
-import { navigation, services } from "@/data/navigation";
+import { getServiceLinks, navigation } from "@/data/navigation";
+import { canonicalPath } from "@/i18n/config";
+import { useLocale, useT } from "@/i18n/LocaleProvider";
+import LanguageSwitcher from "@/components/layout/LanguageSwitcher/LanguageSwitcher";
 
 export default function Header() {
-  const pathname = usePathname();
+  const locale = useLocale();
+  const t = useT();
+  const services = getServiceLinks(locale);
+  /* Etkin menü öğesi Türkçe (kanonik) adres üzerinden bulunur */
+  const pathname = canonicalPath(usePathname() || "/").replace(/(.)\/$/, "$1");
   const isHome = pathname === "/";
 
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -89,7 +96,7 @@ export default function Header() {
           <Link
             href="/"
             className={styles.logo}
-            aria-label="AKCY Ana Sayfa"
+            aria-label={t.header.homeLabel}
           >
             <Image
               src="/images/brand/logo.svg"
@@ -103,15 +110,15 @@ export default function Header() {
           {/* DESKTOP NAVIGATION */}
           <nav
             className={styles.desktopNav}
-            aria-label="Ana navigasyon"
+            aria-label={t.header.mainNav}
           >
             {navigation.map((item) => {
-              const hasChildren = Boolean(item.children);
+              const hasChildren = Boolean(item.hasChildren);
 
               if (hasChildren) {
                 return (
                   <div
-                    key={item.title}
+                    key={item.key}
                     className={styles.navDropdown}
                   >
                     <Link
@@ -123,7 +130,7 @@ export default function Header() {
                           : ""
                       }`}
                     >
-                      {item.title}
+                      {t.nav[item.key]}
 
                       <svg
                         width="12"
@@ -147,26 +154,23 @@ export default function Header() {
                       <div className={styles.megaInner}>
                         <div className={styles.megaIntro}>
                           <span className={styles.megaEyebrow}>
-                            NELER YAPIYORUZ?
+                            {t.header.megaEyebrow}
                           </span>
 
                           <h3>
-                            Fikirden yayına,
-                            <span> tek ekip.</span>
+                            {t.header.megaTitle}
+                            <span> {t.header.megaTitleAccent}</span>
                           </h3>
 
                           <p>
-                            Tasarımdan geliştirmeye,
-                            yapay zekâdan otomasyona kadar
-                            dijital ürününüzün tüm sürecinde
-                            yanınızdayız.
+                            {t.header.megaText}
                           </p>
 
                           <Link
                             href="/hizmetler"
                             className={styles.allServices}
                           >
-                            Tüm hizmetleri keşfet
+                            {t.header.allServices}
                             <span aria-hidden="true">↗</span>
                           </Link>
                         </div>
@@ -220,7 +224,7 @@ export default function Header() {
                       : ""
                   }`}
                 >
-                  {item.title}
+                  {t.nav[item.key]}
                 </Link>
               );
             })}
@@ -228,12 +232,13 @@ export default function Header() {
 
           {/* DESKTOP CTA */}
           <div className={styles.headerActions}>
+            <LanguageSwitcher />
             <Link
               href="/iletisim"
               className={styles.cta}
               data-magnetic
             >
-              <span>Proje Başlatalım</span>
+              <span>{t.header.cta}</span>
 
               <span className={styles.ctaIcon}>
                 ↗
@@ -254,8 +259,8 @@ export default function Header() {
             }
             aria-label={
               mobileOpen
-                ? "Menüyü kapat"
-                : "Menüyü aç"
+                ? t.header.closeMenu
+                : t.header.openMenu
             }
             aria-expanded={mobileOpen}
           >
@@ -282,32 +287,37 @@ export default function Header() {
         }`}
       >
         <div className={styles.mobileMenuInner}>
-          <nav className={styles.mobileNav} aria-label="Mobil navigasyon">
+          <nav className={styles.mobileNav} aria-label={t.header.mobileNav}>
             {navigation.map((item, index) => (
               <div key={item.href}>
                 <div className={styles.mobileServiceHeader}>
                   <Link href={item.href} className={styles.mobileLink} aria-current={pathname === item.href ? "page" : undefined}>
-                    <span>{String(index + 1).padStart(2, "0")}</span>{item.title}
+                    <span>{String(index + 1).padStart(2, "0")}</span>{t.nav[item.key]}
                   </Link>
-                  {item.children && <button type="button" className={styles.serviceToggle} onClick={() => setServicesOpen(open => !open)} aria-expanded={servicesOpen} aria-controls="mobile-service-links" aria-label={servicesOpen ? "Hizmet alt menüsünü kapat" : "Hizmet alt menüsünü aç"}>
+                  {item.hasChildren && <button type="button" className={styles.serviceToggle} onClick={() => setServicesOpen(open => !open)} aria-expanded={servicesOpen} aria-controls="mobile-service-links" aria-label={servicesOpen ? t.header.closeServices : t.header.openServices}>
                     <span className={servicesOpen ? styles.mobileArrowOpen : ""} aria-hidden="true">+</span>
                   </button>}
                 </div>
-                {item.children && <div id="mobile-service-links" inert={!servicesOpen} aria-hidden={!servicesOpen} className={`${styles.mobileServiceList} ${servicesOpen ? styles.mobileServiceListOpen : ""}`}>
+                {item.hasChildren && <div id="mobile-service-links" inert={!servicesOpen} aria-hidden={!servicesOpen} className={`${styles.mobileServiceList} ${servicesOpen ? styles.mobileServiceListOpen : ""}`}>
                   {services.map(service => <Link href={service.href} key={service.href}><span>{service.number}</span>{service.title}</Link>)}
-                  <Link href={item.href} className={styles.mobileAllServices}>Tüm Hizmetler <span aria-hidden="true">↗</span></Link>
+                  <Link href={item.href} className={styles.mobileAllServices}>{t.common.allServices} <span aria-hidden="true">↗</span></Link>
                 </div>}
               </div>
             ))}
           </nav>
 
           <div className={styles.mobileBottom}>
+            <div className={styles.mobileLanguage}>
+              <p>{t.language.menuTitle}</p>
+              <LanguageSwitcher variant="menu" />
+            </div>
+
             <p>
-              Bir fikrin mi var?
+              {t.header.mobileIdea}
             </p>
 
             <Link href="/iletisim">
-              Birlikte hayata geçirelim
+              {t.header.mobileCta}
               <span aria-hidden="true">↗</span>
             </Link>
           </div>

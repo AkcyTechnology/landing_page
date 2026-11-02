@@ -1,5 +1,7 @@
 "use client";
 
+import { useT } from "@/i18n/LocaleProvider";
+
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
@@ -19,6 +21,7 @@ export default function TableOfContents({
 }: TableOfContentsProps) {
   const [activeId, setActiveId] = useState(headings[0]?.id);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const t = useT().blog.toc;
 
   useEffect(() => {
     const elements = headings
@@ -89,9 +92,9 @@ export default function TableOfContents({
   return (
     <>
       <div className={styles.desktopToc}>
-        <nav className={styles.card} aria-label="İçindekiler">
+        <nav className={styles.card} aria-label={t.title}>
           <div className={styles.cardHead}>
-            <span className={styles.title}>İçindekiler</span>
+            <span className={styles.title}>{t.title}</span>
             <span className={styles.counter}>
               {activeIndex + 1}/{headings.length}
             </span>
@@ -109,7 +112,7 @@ export default function TableOfContents({
           onClick={() => setMobileOpen((prev) => !prev)}
           aria-expanded={mobileOpen}
         >
-          <span>İçindekiler</span>
+          <span>{t.title}</span>
           <span
             className={`${styles.icon} ${
               mobileOpen ? styles.iconOpen : ""

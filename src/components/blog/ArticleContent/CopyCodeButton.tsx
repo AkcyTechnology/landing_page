@@ -1,6 +1,7 @@
 "use client";
 
 import { useCopyToClipboard } from "@/lib/useCopyToClipboard";
+import { useT } from "@/i18n/LocaleProvider";
 
 import styles from "./ArticleContent.module.scss";
 
@@ -10,6 +11,7 @@ interface CopyCodeButtonProps {
 
 export default function CopyCodeButton({ code }: CopyCodeButtonProps) {
   const { copied, copy } = useCopyToClipboard();
+  const t = useT().blog.article;
 
   return (
     <button
@@ -17,7 +19,7 @@ export default function CopyCodeButton({ code }: CopyCodeButtonProps) {
       className={styles.copyButton}
       onClick={() => copy(code)}
     >
-      {copied ? "Kopyalandı" : "Kopyala"}
+      {copied ? t.copied : t.copy}
     </button>
   );
 }

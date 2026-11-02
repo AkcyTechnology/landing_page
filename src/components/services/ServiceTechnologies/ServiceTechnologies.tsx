@@ -1,3 +1,4 @@
+import { getT } from "@/i18n/server";
 import Container from "@/components/common/Container/Container";
 import SectionLabel from "@/components/common/SectionLabel/SectionLabel";
 
@@ -15,7 +16,7 @@ export default function ServiceTechnologies({
   return (
     <section className={styles.technologies}>
       <Container>
-        <SectionLabel>04 / Teknolojiler</SectionLabel>
+        <SectionLabel>{getT().services.technologies}</SectionLabel>
 
         <ul className={styles.list}>
           {technologies.map((tech) => (

@@ -1,7 +1,8 @@
 "use client";
 
 import { Fragment, useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import Link from "@/i18n/Link";
+import { useT } from "@/i18n/LocaleProvider";
 import {
   animate,
   motion,
@@ -27,20 +28,6 @@ interface BlogHeroProps {
 
 const EASE = [0.22, 0.8, 0.25, 1] as const;
 
-const HEADING_LEAD = "Dijital ürünler, otomasyon ve yapay zekâ üzerine";
-const HEADING_ACCENT = "uygulanabilir rehberler.";
-
-const MARQUEE_ITEMS = [
-  "Yapay Zekâ",
-  "Süreç Otomasyonu",
-  "WordPress",
-  "n8n & Entegrasyon",
-  "Core Web Vitals",
-  "UI / UX",
-  "Belge İşleme",
-  "Kurumsal Web",
-];
-
 function CountUp({ value }: { value: number }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true });
@@ -59,7 +46,8 @@ function CountUp({ value }: { value: number }) {
     return () => controls.stop();
   }, [inView, reduceMotion, value]);
 
-  return <span ref={ref}>{reduceMotion ? value : display}</span>;
+  // inView sunucuda ve ilk istemci render'ında false olduğu için hidrasyon uyumludur
+  return <span ref={ref}>{inView && reduceMotion ? value : display}</span>;
 }
 
 export default function BlogHero({
@@ -67,6 +55,7 @@ export default function BlogHero({
   totalMinutes,
   topics,
 }: BlogHeroProps) {
+  const t = useT().blog.hero;
   const heroRef = useRef<HTMLElement>(null);
   const reduceMotion = useReducedMotion();
 
@@ -98,13 +87,13 @@ export default function BlogHero({
     </Fragment>
   );
 
-  const leadWords = HEADING_LEAD.split(" ");
-  const accentWords = HEADING_ACCENT.split(" ");
+  const leadWords = t.headingLead.split(" ");
+  const accentWords = t.headingAccent.split(" ");
 
   const stats = [
-    { value: postCount, label: "Rehber yazı" },
-    { value: topics.length, label: "Konu başlığı" },
-    { value: totalMinutes, label: "Dakika içerik" },
+    { value: postCount, label: t.statPosts },
+    { value: topics.length, label: t.statTopics },
+    { value: totalMinutes, label: t.statMinutes },
   ];
 
   return (
@@ -129,7 +118,7 @@ export default function BlogHero({
             transition={{ duration: 0.6, ease: EASE }}
           >
             <i aria-hidden="true" />
-            AKCY BLOG · BİLGİ MERKEZİ
+            {t.eyebrow}
           </motion.span>
 
           <h1 className={styles.heading}>
@@ -145,9 +134,7 @@ export default function BlogHero({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.7, ease: EASE }}
           >
-            Web, WordPress, şirket süreç otomasyonu ve yapay zekâ projelerinde
-            edindiğimiz deneyimleri; karar vermenizi kolaylaştıracak net ve
-            pratik yazılara dönüştürüyoruz.
+            {t.description}
           </motion.p>
 
           <motion.dl
@@ -174,8 +161,8 @@ export default function BlogHero({
           transition={{ duration: 0.9, delay: 0.35, ease: EASE }}
         >
           <div className={styles.panelHead}>
-            <span>KONULARA GÖZ ATIN</span>
-            <b>{postCount} yazı</b>
+            <span>{t.topicsTitle}</span>
+            <b>{t.postCount.replace("{count}", String(postCount))}</b>
           </div>
 
           <ul className={styles.topics}>
@@ -220,7 +207,7 @@ export default function BlogHero({
 
       <div className={styles.marquee} aria-hidden="true">
         <div className={styles.marqueeTrack}>
-          {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, index) => (
+          {[...t.marquee, ...t.marquee].map((item, index) => (
             <span key={index}>
               {item}
               <i />

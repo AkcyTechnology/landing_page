@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { getLocale } from "@/i18n/server";
 
 import type { ServiceDef } from "@/data/services";
 import Container from "@/components/common/Container/Container";
@@ -16,7 +17,7 @@ export default function ServiceDetailHero({ service }: ServiceDetailHeroProps) {
         <div className={styles.grid}>
           <div className={styles.content}>
             <span className={styles.eyebrow}>
-              {service.number} / {service.title.toLocaleUpperCase("tr")}
+              {service.number} / {service.title.toLocaleUpperCase(getLocale())}
             </span>
 
             <h1 className={styles.heading}>{service.heroDescription}</h1>

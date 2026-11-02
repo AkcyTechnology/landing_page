@@ -3,31 +3,15 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
-import { services } from "@/data/services";
+import { getAllServices } from "@/data/services";
+import { useLocale, useT } from "@/i18n/LocaleProvider";
+import type { Dictionary } from "@/i18n/dictionaries";
 import FormField from "./FormField";
 import TurnstileWidget, {
   TURNSTILE_SITE_KEY,
   type TurnstileHandle,
 } from "./TurnstileWidget";
 import styles from "./ContactForm.module.scss";
-
-const projectTypes = [...services.map(service => service.title), "Diğer"];
-
-const budgetRanges = [
-  "Henüz belirlenmedi",
-  "25.000 TL – 50.000 TL",
-  "50.000 TL – 100.000 TL",
-  "100.000 TL – 250.000 TL",
-  "250.000 TL+",
-  "Görüşelim",
-];
-
-const startTimelines = [
-  "En kısa sürede",
-  "1 ay içinde",
-  "1–3 ay",
-  "Henüz planlama aşamasında",
-];
 
 interface FormValues {
   name: string;
@@ -56,21 +40,23 @@ const initialValues: FormValues = {
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function validate(values: FormValues): FormErrors {
+type FormCopy = Dictionary["contact"]["form"];
+
+function validate(values: FormValues, t: FormCopy): FormErrors {
   const errors: FormErrors = {};
 
   if (!values.name.trim()) {
-    errors.name = "Lütfen adınızı ve soyadınızı girin.";
+    errors.name = t.errors.name;
   }
 
   if (!values.email.trim()) {
-    errors.email = "Lütfen e-posta adresinizi girin.";
+    errors.email = t.errors.emailRequired;
   } else if (!EMAIL_PATTERN.test(values.email.trim())) {
-    errors.email = "Geçerli bir e-posta adresi girin.";
+    errors.email = t.errors.emailInvalid;
   }
 
   if (!values.message.trim()) {
-    errors.message = "Lütfen projeniz hakkında birkaç bilgi paylaşın.";
+    errors.message = t.errors.message;
   }
 
   return errors;
@@ -82,6 +68,13 @@ interface SpamGuard {
   // Formun açılmasından gönderime kadar geçen süre (çok hızlıysa bot).
   elapsedMs: number;
   turnstileToken: string;
+}
+
+/* Sunucu hata kodu; mesaj seçili dilde istemcide gösterilir */
+class SubmitError extends Error {
+  constructor(public status: number, message: string) {
+    super(message);
+  }
 }
 
 async function submitContactForm(
@@ -99,11 +92,14 @@ async function submitContactForm(
       error?: string;
     } | null;
 
-    throw new Error(data?.error ?? "Mail gönderilemedi.");
+    throw new SubmitError(response.status, data?.error ?? "");
   }
 }
 
 export default function ContactForm() {
+  const locale = useLocale();
+  const t = useT().contact.form;
+  const projectTypes = [...getAllServices(locale).map((service) => service.title), t.otherType];
   const [values, setValues] = useState<FormValues>(initialValues);
   const [errors, setErrors] = useState<FormErrors>({});
   const [status, setStatus] = useState<SubmitStatus>("idle");
@@ -144,7 +140,7 @@ export default function ContactForm() {
 
     if (isSubmitting) return;
 
-    const validationErrors = validate(values);
+    const validationErrors = validate(values, t);
 
     setErrors(validationErrors);
 
@@ -166,7 +162,16 @@ export default function ContactForm() {
       setValues(initialValues);
       setStatus("success");
     } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : "");
+      /*
+        Türkçe sayfada sunucunun açıklaması (Türkçe) gösterilir; İngilizce
+        sayfada hata koduna göre İngilizce açıklama kullanılır.
+      */
+      if (error instanceof SubmitError) {
+        if (locale === "tr") setErrorMessage(error.message);
+        else setErrorMessage(t.serverErrors[String(error.status) as keyof typeof t.serverErrors] ?? "");
+      } else {
+        setErrorMessage("");
+      }
       setStatus("error");
     } finally {
       turnstile.current?.reset();
@@ -186,11 +191,10 @@ export default function ContactForm() {
       >
         <div className={styles.successIcon}>✓</div>
 
-        <h3>Mesajınızı aldık.</h3>
+        <h3>{t.successTitle}</h3>
 
         <p>
-          Teşekkür ederiz. Projenizi inceleyip en kısa sürede sizinle
-          iletişime geçeceğiz.
+          {t.successText}
         </p>
 
         <button
@@ -198,7 +202,7 @@ export default function ContactForm() {
           className={styles.resetLink}
           onClick={() => setStatus("idle")}
         >
-          Yeni mesaj gönder
+          {t.newMessage}
           <span aria-hidden="true">→</span>
         </button>
       </motion.div>
@@ -214,7 +218,7 @@ export default function ContactForm() {
     >
       {/* Botlar için tuzak alan; kullanıcılara ve ekran okuyuculara gizli. */}
       <div className={styles.honeypot} aria-hidden="true">
-        <label htmlFor="contact-website">Web siteniz</label>
+        <label htmlFor="contact-website">{t.honeypot}</label>
         <input
           id="contact-website"
           name="website"
@@ -229,9 +233,9 @@ export default function ContactForm() {
       <div className={styles.row}>
         <FormField
           id="contact-name"
-          label="Ad Soyad"
+          label={t.name}
           required
-          placeholder="Adınız ve soyadınız"
+          placeholder={t.namePlaceholder}
           value={values.name}
           onChange={(event) => setField("name", event.target.value)}
           error={errors.name}
@@ -241,10 +245,10 @@ export default function ContactForm() {
 
         <FormField
           id="contact-email"
-          label="E-posta"
+          label={t.email}
           type="email"
           required
-          placeholder="ornek@email.com"
+          placeholder={t.emailPlaceholder}
           value={values.email}
           onChange={(event) => setField("email", event.target.value)}
           error={errors.email}
@@ -256,7 +260,7 @@ export default function ContactForm() {
       <div className={styles.row}>
         <FormField
           id="contact-phone"
-          label="Telefon"
+          label={t.phone}
           type="tel"
           placeholder="+90 5XX XXX XX XX"
           value={values.phone}
@@ -267,8 +271,8 @@ export default function ContactForm() {
 
         <FormField
           id="contact-company"
-          label="Firma / Marka"
-          placeholder="Firma veya marka adı"
+          label={t.company}
+          placeholder={t.companyPlaceholder}
           value={values.company}
           onChange={(event) => setField("company", event.target.value)}
           disabled={isSubmitting}
@@ -280,8 +284,8 @@ export default function ContactForm() {
         <FormField
           id="contact-project-type"
           as="select"
-          label="Proje türü"
-          placeholder="Bir hizmet seçin"
+          label={t.projectType}
+          placeholder={t.projectTypePlaceholder}
           value={values.projectType}
           onChange={(event) => setField("projectType", event.target.value)}
           disabled={isSubmitting}
@@ -294,12 +298,12 @@ export default function ContactForm() {
         <FormField
           id="contact-budget"
           as="select"
-          label="Tahmini bütçe"
-          placeholder="Bir aralık seçin"
+          label={t.budget}
+          placeholder={t.budgetPlaceholder}
           value={values.budget}
           onChange={(event) => setField("budget", event.target.value)}
           disabled={isSubmitting}
-          options={budgetRanges.map((range) => ({
+          options={t.budgetRanges.map((range) => ({
             value: range,
             label: range,
           }))}
@@ -309,12 +313,12 @@ export default function ContactForm() {
       <FormField
         id="contact-start-timeline"
         as="select"
-        label="Tahmini başlangıç"
-        placeholder="Bir zaman aralığı seçin"
+        label={t.timeline}
+        placeholder={t.timelinePlaceholder}
         value={values.startTimeline}
         onChange={(event) => setField("startTimeline", event.target.value)}
         disabled={isSubmitting}
-        options={startTimelines.map((timeline) => ({
+        options={t.timelines.map((timeline) => ({
           value: timeline,
           label: timeline,
         }))}
@@ -323,9 +327,9 @@ export default function ContactForm() {
       <FormField
         id="contact-message"
         as="textarea"
-        label="Projenizden bahsedin"
+        label={t.message}
         required
-        placeholder="Projenizin amacı, ihtiyacınız ve varsa hedeflediğiniz zaman planından kısaca bahsedebilirsiniz."
+        placeholder={t.messagePlaceholder}
         rows={6}
         value={values.message}
         onChange={(event) => setField("message", event.target.value)}
@@ -344,18 +348,16 @@ export default function ContactForm() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            {errorMessage && errorMessage !== "Mail gönderilemedi."
-              ? `${errorMessage} `
-              : "Mesajınız gönderilemedi. "}
-            Tekrar deneyebilir veya{" "}
-            <a href="mailto:akcyglobal@gmail.com">akcyglobal@gmail.com</a> adresine yazabilirsiniz.
+            {errorMessage ? `${errorMessage} ` : `${t.errorGeneric} `}
+            {t.errorRetryStart}{" "}
+            <a href="mailto:akcyglobal@gmail.com">akcyglobal@gmail.com</a>{t.errorRetryEnd}
           </motion.p>
         )}
       </AnimatePresence>
 
       <div className={styles.footer}>
         <p>
-          Formu göndererek sizinle iletişime geçmemizi kabul etmiş olursunuz.
+          {t.consent}
         </p>
 
         <button
@@ -366,10 +368,10 @@ export default function ContactForm() {
         >
           <span>
             {isSubmitting
-              ? "Gönderiliyor..."
+              ? t.submitting
               : awaitingVerification
-                ? "Doğrulama bekleniyor..."
-                : "Mesaj Gönder"}
+                ? t.verifying
+                : t.submit}
           </span>
 
           <b aria-hidden="true">↗</b>

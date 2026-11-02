@@ -1,6 +1,7 @@
 "use client";
 
 import { useCopyToClipboard } from "@/lib/useCopyToClipboard";
+import { useLocalizedHref, useT } from "@/i18n/LocaleProvider";
 
 import styles from "./ShareBlock.module.scss";
 
@@ -11,10 +12,12 @@ interface ShareBlockProps {
 
 export default function ShareBlock({ title, slug }: ShareBlockProps) {
   const { copied, copy } = useCopyToClipboard();
+  const t = useT().blog.share;
+  const path = useLocalizedHref()(`/blog/${slug}/`);
 
   const getUrl = () => {
-    if (typeof window === "undefined") return `/blog/${slug}`;
-    return `${window.location.origin}/blog/${slug}`;
+    if (typeof window === "undefined") return path;
+    return `${window.location.origin}${path}`;
   };
 
   const shareLinkedIn = () => {
@@ -48,12 +51,12 @@ export default function ShareBlock({ title, slug }: ShareBlockProps) {
   return (
     <div className={styles.share}>
       <div className={styles.intro}>
-        <span className={styles.label}>Yazıyı paylaş</span>
-        <p>Faydalı bulduysanız ekibinizle paylaşın.</p>
+        <span className={styles.label}>{t.label}</span>
+        <p>{t.text}</p>
       </div>
 
       <div className={styles.actions}>
-        <button type="button" onClick={shareLinkedIn} aria-label="LinkedIn'de paylaş">
+        <button type="button" onClick={shareLinkedIn} aria-label={t.linkedin}>
           <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
             <path
               fill="currentColor"
@@ -63,7 +66,7 @@ export default function ShareBlock({ title, slug }: ShareBlockProps) {
           <span>LinkedIn</span>
         </button>
 
-        <button type="button" onClick={shareX} aria-label="X'te paylaş">
+        <button type="button" onClick={shareX} aria-label={t.x}>
           <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true">
             <path
               fill="currentColor"
@@ -73,7 +76,7 @@ export default function ShareBlock({ title, slug }: ShareBlockProps) {
           <span>X</span>
         </button>
 
-        <button type="button" onClick={shareWhatsApp} aria-label="WhatsApp'ta paylaş">
+        <button type="button" onClick={shareWhatsApp} aria-label={t.whatsapp}>
           <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
             <path
               fill="currentColor"
@@ -108,7 +111,7 @@ export default function ShareBlock({ title, slug }: ShareBlockProps) {
               />
             )}
           </svg>
-          <span aria-live="polite">{copied ? "Kopyalandı" : "Linki kopyala"}</span>
+          <span aria-live="polite">{copied ? t.copied : t.copyLink}</span>
         </button>
       </div>
     </div>

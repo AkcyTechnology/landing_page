@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { getT } from "@/i18n/server";
 
 import type { ContentBlock } from "@/data/blog";
 import { parseInlineMarkdown } from "./inlineMarkdown";
@@ -136,7 +137,7 @@ function Block({ block }: { block: ContentBlock }) {
           </span>
           <div>
             <span className={styles.calloutLabel}>
-              {block.variant === "info" ? "İpucu" : "Dikkat"}
+              {block.variant === "info" ? getT().blog.article.tip : getT().blog.article.note}
             </span>
             <p>{parseInlineMarkdown(block.text)}</p>
           </div>

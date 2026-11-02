@@ -6,6 +6,10 @@
 Options -Indexes
 DirectoryIndex index.html
 ErrorDocument 404 /404.html
+# İngilizce sayfalarda bulunamayan adresler için İngilizce 404 sayfası
+<If "%{REQUEST_URI} =~ m#^/en(/|$)#">
+  ErrorDocument 404 /en/404/index.html
+</If>
 
 # --- Gizli dosyalar: tarayıcıdan erişilemez --------------------------
 <FilesMatch "^(config\.php|config\.example\.php)$">

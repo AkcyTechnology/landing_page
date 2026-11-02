@@ -1,3 +1,6 @@
+"use client";
+
+import { useT } from "@/i18n/LocaleProvider";
 import styles from "./SearchInput.module.scss";
 
 interface SearchInputProps {
@@ -9,8 +12,9 @@ interface SearchInputProps {
 export default function SearchInput({
   value,
   onChange,
-  placeholder = "Yazılarda ara...",
+  placeholder,
 }: SearchInputProps) {
+  const t = useT().blog.listing;
   return (
     <label className={styles.search}>
       <svg
@@ -39,8 +43,8 @@ export default function SearchInput({
         type="search"
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        placeholder={placeholder}
-        aria-label="Yazılarda ara"
+        placeholder={placeholder ?? t.searchPlaceholder}
+        aria-label={t.searchLabel}
       />
     </label>
   );

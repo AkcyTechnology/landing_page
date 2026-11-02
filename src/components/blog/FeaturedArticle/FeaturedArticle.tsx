@@ -1,7 +1,9 @@
 "use client";
 
+import { useLocale, useT } from "@/i18n/LocaleProvider";
+
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/i18n/Link";
 
 import type { BlogPostMeta } from "@/data/blog";
 import {
@@ -18,6 +20,8 @@ interface FeaturedArticleProps {
 }
 
 export default function FeaturedArticle({ post }: FeaturedArticleProps) {
+  const locale = useLocale();
+  const t = useT().blog.card;
   return (
     <Link
       href={`/blog/${post.slug}`}
@@ -40,7 +44,7 @@ export default function FeaturedArticle({ post }: FeaturedArticleProps) {
 
           <span className={styles.badge}>
             <i aria-hidden="true" />
-            Öne çıkan yazı
+            {t.featured}
           </span>
 
           <span className={styles.readTime}>
@@ -61,14 +65,14 @@ export default function FeaturedArticle({ post }: FeaturedArticleProps) {
                 strokeLinecap="round"
               />
             </svg>
-            {post.readingTime} dk okuma
+            {t.readingTime.replace("{minutes}", String(post.readingTime))}
           </span>
         </div>
 
         <div className={styles.content}>
           <span className={styles.category}>
             <i aria-hidden="true" />
-            {getCategoryLabel(post.category)}
+            {getCategoryLabel(post.category, locale)}
           </span>
 
           <h2 className={styles.title}>{post.title}</h2>
@@ -81,13 +85,13 @@ export default function FeaturedArticle({ post }: FeaturedArticleProps) {
                 AK
               </span>
               <span>
-                <b>AKCY Editör</b>
-                <time dateTime={post.date}>{formatPostDate(post.date)}</time>
+                <b>{t.editor}</b>
+                <time dateTime={post.date}>{formatPostDate(post.date, locale)}</time>
               </span>
             </span>
 
             <span className={styles.cta}>
-              <span>Yazıyı oku</span>
+              <span>{t.readMore}</span>
               <b aria-hidden="true">→</b>
             </span>
           </div>

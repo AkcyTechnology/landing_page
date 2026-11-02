@@ -1,13 +1,15 @@
+import { getT } from "@/i18n/server";
 import styles from "./ContactInfo.module.scss";
 
-const items = [
+function getItems(t: { email: string; phone: string; location: string; locationValue: string }) {
+  return [
   {
-    label: "E-posta",
+    label: t.email,
     value: "akcyglobal@gmail.com",
     href: "mailto:akcyglobal@gmail.com",
   },
   {
-    label: "Telefon",
+    label: t.phone,
     value: "+90 552 629 04 20",
     href: "tel:+905526290420",
   },
@@ -17,20 +19,22 @@ const items = [
     href: "https://www.instagram.com/akcytechnology/",
   },
   {
-    label: "Konum",
-    value: "İstanbul, Türkiye",
+    label: t.location,
+    value: t.locationValue,
     href: undefined,
   },
 ];
+}
 
 export default function ContactInfo() {
+  const t = getT().contact.info;
+  const items = getItems(t);
   return (
     <aside className={styles.info}>
-      <h2 className={styles.heading}>Birlikte başlayalım.</h2>
+      <h2 className={styles.heading}>{t.heading}</h2>
 
       <p className={styles.intro}>
-        Yeni projeler ve iş birlikleri için bize ulaşabilirsiniz. Mesajınıza
-        en kısa sürede dönüş yapıyoruz.
+        {t.intro}
       </p>
 
       <div className={styles.contactGroup}>

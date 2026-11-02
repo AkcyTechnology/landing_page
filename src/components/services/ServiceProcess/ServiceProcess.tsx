@@ -1,5 +1,6 @@
 import type { ServiceProcessStep } from "@/data/services";
 import Container from "@/components/common/Container/Container";
+import { getT } from "@/i18n/server";
 import SectionLabel from "@/components/common/SectionLabel/SectionLabel";
 
 import styles from "./ServiceProcess.module.scss";
@@ -12,9 +13,9 @@ export default function ServiceProcess({ steps }: ServiceProcessProps) {
   return (
     <section className={styles.process}>
       <Container>
-        <SectionLabel>03 / Süreç</SectionLabel>
+        <SectionLabel>{getT().services.processLabel}</SectionLabel>
 
-        <h2 className={styles.heading}>Nasıl ilerliyoruz</h2>
+        <h2 className={styles.heading}>{getT().services.processHeading}</h2>
 
         <div className={styles.list}>
           {steps.map((step) => (

@@ -1,4 +1,5 @@
 import type { ProjectDef } from "@/data/projects";
+import { getT } from "@/i18n/server";
 import Container from "@/components/common/Container/Container";
 import SectionLabel from "@/components/common/SectionLabel/SectionLabel";
 import ProjectCard from "@/components/projects/ProjectCard/ProjectCard";
@@ -11,13 +12,14 @@ interface RelatedProjectsProps {
 
 export default function RelatedProjects({ projects }: RelatedProjectsProps) {
   if (projects.length === 0) return null;
+  const t = getT().services;
 
   return (
     <section className={styles.related}>
       <Container>
-        <SectionLabel>05 / İlgili Projeler</SectionLabel>
+        <SectionLabel>{t.relatedLabel}</SectionLabel>
 
-        <h2 className={styles.heading}>Bu hizmetle üretilenler</h2>
+        <h2 className={styles.heading}>{t.relatedHeading}</h2>
 
         <div className={styles.grid}>
           {projects.map((project) => (

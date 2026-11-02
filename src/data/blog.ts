@@ -1,28 +1,10 @@
-export type BlogCategory =
-  | "yazilim"
-  | "ui-ux"
-  | "web"
-  | "yapay-zeka"
-  | "otomasyon"
-  | "wordpress"
-  | "projeler"
-  | "notlar";
+import type { Locale } from "@/i18n/config";
+import { blogPostsEn } from "./en/blog";
+import { blogCategoryLabelsEn } from "./blogCategories";
 
-export interface CategoryDef {
-  slug: BlogCategory;
-  label: string;
-}
-
-export const categories: CategoryDef[] = [
-  { slug: "yazilim", label: "Yazılım" },
-  { slug: "ui-ux", label: "UI / UX" },
-  { slug: "web", label: "Web" },
-  { slug: "yapay-zeka", label: "Yapay Zekâ" },
-  { slug: "otomasyon", label: "Süreç Otomasyonu" },
-  { slug: "wordpress", label: "WordPress" },
-  { slug: "projeler", label: "Projeler" },
-  { slug: "notlar", label: "Notlar" },
-];
+export { categories, type BlogCategory, type CategoryDef } from "./blogCategories";
+import type { BlogCategory, CategoryDef } from "./blogCategories";
+import { categories } from "./blogCategories";
 
 export type ContentBlock =
   | { type: "paragraph"; text: string }
@@ -2627,8 +2609,31 @@ export const blogPosts = editorialDrafts.filter((post) =>
   PUBLISHED_SLUGS.includes(post.slug)
 );
 
-export function getAllPosts(): BlogPostMeta[] {
-  return blogPosts
+/* İngilizce yazılar: yapı ve görseller ortaktır, metinler en/blog.ts dosyasındadır */
+const blogPostsEnglish: BlogPost[] = blogPosts
+  .filter((post) => blogPostsEn[post.slug])
+  .map((post) => {
+    const { coverAlt, authorRole, ...fields } = blogPostsEn[post.slug];
+    return {
+      ...post,
+      ...fields,
+      coverImage: { ...post.coverImage, alt: coverAlt },
+      author: post.author ? { ...post.author, role: authorRole ?? post.author.role } : post.author,
+    };
+  });
+
+/* slug alanı her dilde Türkçe (kanonik) slug'dır; adres localizePath ile çevrilir */
+export function getBlogPosts(locale: Locale = "tr"): BlogPost[] {
+  return locale === "en" ? blogPostsEnglish : blogPosts;
+}
+
+export function getCategories(locale: Locale = "tr"): CategoryDef[] {
+  if (locale === "tr") return categories;
+  return categories.map((category) => ({ ...category, label: blogCategoryLabelsEn[category.slug] ?? category.label }));
+}
+
+export function getAllPosts(locale: Locale = "tr"): BlogPostMeta[] {
+  return getBlogPosts(locale)
     .map((post): BlogPostMeta => {
       const { slug, title, category, date, excerpt, coverImage, readingTime, featured, size } = post;
       return { slug, title, category, date, excerpt, coverImage, readingTime, featured, size };
@@ -2636,33 +2641,26 @@ export function getAllPosts(): BlogPostMeta[] {
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
-export function getPostBySlug(slug: string): BlogPost | undefined {
-  return blogPosts.find((post) => post.slug === slug);
+export function getPostBySlug(slug: string, locale: Locale = "tr"): BlogPost | undefined {
+  return getBlogPosts(locale).find((post) => post.slug === slug);
 }
 
-export function getFeaturedPost(): BlogPostMeta | undefined {
-  const featured = blogPosts.find((post) => post.featured);
-  return getAllPosts().find(
-    (post) => post.slug === (featured ?? blogPosts[0])?.slug
-  );
+export function getFeaturedPost(locale: Locale = "tr"): BlogPostMeta | undefined {
+  const posts = getBlogPosts(locale);
+  const featured = posts.find((post) => post.featured);
+  return getAllPosts(locale).find((post) => post.slug === (featured ?? posts[0])?.slug);
 }
 
-export function getRelatedPosts(
-  current: BlogPost,
-  count = 3
-): BlogPostMeta[] {
-  const all = getAllPosts().filter((post) => post.slug !== current.slug);
-
-  const sameCategory = all.filter(
-    (post) => post.category === current.category
-  );
+export function getRelatedPosts(current: BlogPost, locale: Locale = "tr", count = 3): BlogPostMeta[] {
+  const all = getAllPosts(locale).filter((post) => post.slug !== current.slug);
+  const sameCategory = all.filter((post) => post.category === current.category);
   const rest = all.filter((post) => post.category !== current.category);
 
   return [...sameCategory, ...rest].slice(0, count);
 }
 
-export function getAdjacentPost(current: BlogPost): BlogPostMeta | undefined {
-  const all = getAllPosts();
+export function getAdjacentPost(current: BlogPost, locale: Locale = "tr"): BlogPostMeta | undefined {
+  const all = getAllPosts(locale);
   const index = all.findIndex((post) => post.slug === current.slug);
 
   if (index === -1) return undefined;

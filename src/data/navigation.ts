@@ -1,45 +1,32 @@
-import { services as serviceDefs } from "./services";
+import type { Locale } from "@/i18n/config";
+import { getAllServices } from "./services";
 
-export const services = serviceDefs.map((service) => ({
-  number: service.number,
-  title: service.title,
-  description: service.shortDescription,
-  href: `/hizmetler/${service.slug}`,
-}));
+/* Menü başlıkları sözlükten (t.nav) okunur; adresler Türkçe (kanonik) yazılır */
+export type NavKey = "home" | "services" | "projects" | "about" | "blog" | "contact";
 
-export const navigation = [
-  {
-    title: "Ana Sayfa",
-    href: "/",
-  },
-  {
-    title: "Hizmetler",
-    href: "/hizmetler",
-    children: services,
-  },
-  {
-    title: "Projelerimiz",
-    href: "/projelerimiz",
-  },
-  {
-    title: "Hakkımızda",
-    href: "/hakkimizda",
-  },
-  {
-    title: "Blog",
-    href: "/blog",
-  },
-  {
-    title: "İletişim",
-    href: "/iletisim",
-  },
+export function getServiceLinks(locale: Locale = "tr") {
+  return getAllServices(locale).map((service) => ({
+    number: service.number,
+    title: service.title,
+    description: service.shortDescription,
+    href: `/hizmetler/${service.slug}`,
+  }));
+}
+
+export const navigation: { key: NavKey; href: string; hasChildren?: boolean }[] = [
+  { key: "home", href: "/" },
+  { key: "services", href: "/hizmetler", hasChildren: true },
+  { key: "projects", href: "/projelerimiz" },
+  { key: "about", href: "/hakkimizda" },
+  { key: "blog", href: "/blog" },
+  { key: "contact", href: "/iletisim" },
 ];
 
-export const footerNavigation = [
-  { title: "Ana Sayfa", href: "/" },
-  { title: "Hakkımızda", href: "/hakkimizda" },
-  { title: "Hizmetler", href: "/hizmetler" },
-  { title: "Projelerimiz", href: "/projelerimiz" },
-  { title: "Blog", href: "/blog" },
-  { title: "İletişim", href: "/iletisim" },
+export const footerNavigation: { key: NavKey; href: string }[] = [
+  { key: "home", href: "/" },
+  { key: "about", href: "/hakkimizda" },
+  { key: "services", href: "/hizmetler" },
+  { key: "projects", href: "/projelerimiz" },
+  { key: "blog", href: "/blog" },
+  { key: "contact", href: "/iletisim" },
 ];
