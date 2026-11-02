@@ -1,0 +1,168 @@
+@use "../tokens" as *;
+
+.section {
+  background: $off-white;
+  color: $ink;
+  padding: 128px 0;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 80px;
+}
+
+/* Başlık yalnızca bu bölüm boyunca sabit kalır */
+.sticky {
+  position: sticky;
+  top: 140px;
+}
+
+.eyebrow {
+  @include eyebrow;
+  margin: 0 0 20px;
+}
+
+.title {
+  @include section-title;
+}
+
+.description {
+  max-width: 420px;
+  margin: 24px 0 0;
+  color: $ink-soft;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.steps {
+  position: relative;
+  margin: 0;
+  padding: 0 0 0 48px;
+}
+
+.stepList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.track {
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  left: 7px;
+  width: 1px;
+  background: $line;
+}
+
+.progress {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: $primary;
+  transform-origin: top;
+}
+
+.step {
+  position: relative;
+  padding: 0 0 72px;
+
+  &:last-of-type {
+    padding-bottom: 0;
+  }
+}
+
+.marker {
+  position: absolute;
+  top: 6px;
+  left: -48px;
+  width: 15px;
+  height: 15px;
+  border: 1px solid $line;
+  border-radius: 50%;
+  background: $off-white;
+  transition: background-color 0.35s ease, border-color 0.35s ease;
+}
+
+.number {
+  display: block;
+  margin-bottom: 12px;
+  color: $ink-faint;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  font-variant-numeric: tabular-nums;
+}
+
+.stepTitle {
+  margin: 0;
+  color: $ink-faint;
+  font-size: clamp(28px, 3.4vw, 48px);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  transition: color 0.35s ease;
+}
+
+.stepText {
+  max-width: 520px;
+  margin: 14px 0 0;
+  color: $ink-soft;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.stepActive {
+  .marker {
+    border-color: $primary;
+    background: $primary;
+  }
+
+  .stepTitle {
+    color: $ink;
+  }
+}
+
+.step[aria-current="step"] .marker {
+  border-color: $blue;
+  background: $blue;
+}
+
+@media (max-width: 1050px) {
+  .section {
+    padding: 100px 0;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .sticky {
+    position: static;
+  }
+}
+
+@media (max-width: 700px) {
+  .section {
+    padding: 80px 0;
+  }
+
+  .steps {
+    padding-left: 36px;
+  }
+
+  .marker {
+    left: -36px;
+  }
+
+  .step {
+    padding-bottom: 48px;
+  }
+
+  .stepText,
+  .description {
+    font-size: 16px;
+  }
+}
