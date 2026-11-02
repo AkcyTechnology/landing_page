@@ -1,3 +1,4 @@
+@use "../../../styles/buttons" as btn;
 .header {
   position: fixed;
   top: 0;
@@ -51,23 +52,6 @@
 
   .logo img {
     filter: brightness(0) invert(1);
-  }
-
-  .cta {
-    background: rgba(255, 255, 255, 0.12);
-
-    border: 1px solid rgba(255, 255, 255, 0.3);
-
-    backdrop-filter: blur(6px);
-
-    &:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
-  }
-
-  .ctaIcon {
-    background: #ffffff;
-    color: #071b46;
   }
 
   .menuButton {
@@ -283,29 +267,6 @@
   line-height: 1.7;
 }
 
-.allServices {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-
-  color: #071b46;
-
-  text-decoration: none;
-
-  font-size: 13px;
-  font-weight: 650;
-
-  span {
-    color: var(--color-accent);
-
-    transition: transform 0.25s ease;
-  }
-
-  &:hover span {
-    transform: translate(3px, -3px);
-  }
-}
-
 /* =========================
    SERVICE GRID
 ========================= */
@@ -419,55 +380,6 @@
 
 .transparent .headerActions {
   color: #ffffff;
-}
-
-.cta {
-  height: 46px;
-
-  padding: 0 7px 0 19px;
-
-  display: inline-flex;
-  align-items: center;
-  gap: 13px;
-
-  border-radius: 100px;
-
-  background: #071b46;
-
-  color: #ffffff;
-
-  font-size: 12px;
-  font-weight: 600;
-
-  text-decoration: none;
-
-  transition: background 0.25s ease;
-
-  &:hover {
-    background: #123a7a;
-
-    .ctaIcon {
-      transform: rotate(45deg);
-    }
-  }
-}
-
-.ctaIcon {
-  width: 34px;
-  height: 34px;
-
-  border-radius: 50%;
-
-  display: grid;
-  place-items: center;
-
-  background: #ffffff;
-
-  color: #071b46;
-
-  font-size: 15px;
-
-  transition: transform 0.3s ease;
 }
 
 /* =========================
@@ -695,22 +607,7 @@
     font-size: 12px;
   }
 
-  a {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
 
-    color: #071b46;
-
-    font-size: 17px;
-    font-weight: 600;
-
-    text-decoration: none;
-
-    span {
-      color: var(--color-accent);
-    }
-  }
 }
 
 /* =========================
@@ -777,9 +674,7 @@
   .megaMenu,
   .serviceItem,
   .mobileMenu,
-  .mobileServiceList,
-  .cta,
-  .ctaIcon {
+  .mobileServiceList {
     transition-duration: 0.01ms !important;
   }
 }
@@ -801,4 +696,22 @@
   font-size: 23px;
   cursor: pointer;
   span { display: block; transition: transform .3s ease; }
+}
+
+/* Ortak buton standardı (src/styles/_buttons.scss) */
+.cta {
+  @include btn.primary;
+}
+
+.allServices {
+  @include btn.text;
+}
+
+.transparent .cta {
+  @include btn.on-dark;
+}
+
+.mobileCta {
+  @include btn.text;
+  font-size: 17px;
 }

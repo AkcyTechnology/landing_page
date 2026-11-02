@@ -1,3 +1,4 @@
+@use "../../../styles/buttons" as btn;
 .hero {
   position: relative;
 
@@ -243,146 +244,6 @@
   margin-top: 40px;
 }
 
-.primaryButton {
-  height: 56px;
-
-  display: inline-flex;
-  align-items: center;
-  gap: 16px;
-
-  padding: 0 8px 0 22px;
-
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 100px;
-
-  background: #ffffff;
-
-  color: #06101f;
-
-  text-decoration: none;
-
-  font-size: 13px;
-  font-weight: 650;
-  letter-spacing: 0.01em;
-
-  transition:
-    transform 0.3s cubic-bezier(0.23, 1, 0.320, 1),
-    box-shadow 0.3s ease;
-
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-  }
-
-  b {
-    width: 40px;
-    height: 40px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 50%;
-
-    background: #06101f;
-
-    color: #ffffff;
-
-    font-size: 17px;
-    font-weight: 400;
-
-    transition:
-      background 0.3s ease,
-      color 0.3s ease,
-      transform 0.3s cubic-bezier(0.23, 1, 0.320, 1);
-
-    @media (prefers-reduced-motion: reduce) {
-      transition: none;
-    }
-  }
-
-  &:hover {
-    transform: none;
-
-    box-shadow: none;
-
-    b {
-      background: #16c3ce;
-      color: #06101f;
-
-      transform: rotate(45deg);
-    }
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-}
-
-.secondaryButton {
-  position: relative;
-
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-
-  padding: 12px 0;
-
-  color: #ffffff;
-
-  text-decoration: none;
-
-  font-size: 13px;
-  font-weight: 550;
-  letter-spacing: 0.01em;
-
-  transition: color 0.3s ease;
-
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-  }
-
-  &::after {
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-    bottom: 6px;
-
-    width: 100%;
-    height: 1px;
-
-    background: rgba(255, 255, 255, 0.32);
-
-    transition: background 0.3s ease;
-
-    @media (prefers-reduced-motion: reduce) {
-      transition: none;
-    }
-  }
-
-  span {
-    color: #0d9aa3;
-
-    transition: transform 0.3s cubic-bezier(0.23, 1, 0.320, 1);
-
-    @media (prefers-reduced-motion: reduce) {
-      transition: none;
-    }
-  }
-
-  &:hover {
-    color: #0d9aa3;
-
-    &::after {
-      background: #16c3ce;
-    }
-
-    span {
-      transform: translateX(4px);
-    }
-  }
-}
-
 /* ==========================
    SCROLL HINT
 ========================== */
@@ -561,29 +422,6 @@
     margin-top: 32px;
   }
 
-  .primaryButton {
-    height: 52px;
-
-    font-size: 12px;
-
-    padding: 0 6px 0 18px;
-
-    gap: 14px;
-
-    b {
-      width: 38px;
-      height: 38px;
-
-      font-size: 15px;
-    }
-  }
-
-  .secondaryButton {
-    font-size: 12px;
-
-    padding: 11px 0;
-  }
-
   .scrollHint {
     margin-top: 40px;
 
@@ -627,4 +465,13 @@
 
     gap: 12px;
   }
+}
+
+/* Ortak buton standardı (src/styles/_buttons.scss) */
+.primaryButton {
+  @include btn.on-dark;
+}
+
+.secondaryButton {
+  @include btn.ghost-dark;
 }

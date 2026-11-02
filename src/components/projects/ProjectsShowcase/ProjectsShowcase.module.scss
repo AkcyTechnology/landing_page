@@ -1,4 +1,5 @@
 @use "../../about/tokens" as *;
+@use "../../../styles/buttons" as btn;
 
 /* ==========================
    AÇILIŞ (kısa tutulur; ilk proje ekranın devamında görünür)
@@ -154,33 +155,6 @@
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 26px;
-}
-
-.primary {
-  @include button-base;
-  min-height: 44px;
-  padding: 0 18px;
-  background: $primary;
-  color: $white;
-  font-size: 14px;
-
-  &:hover {
-    background: $blue;
-  }
-}
-
-.secondary {
-  @include button-base;
-  min-height: 44px;
-  padding: 0 18px;
-  border: 1px solid $line;
-  color: $ink;
-  font-size: 14px;
-
-  &:hover {
-    border-color: $blue;
-    color: $blue;
-  }
 }
 
 /* ==========================
@@ -494,4 +468,13 @@
   .actions a {
     flex: 1 1 100%;
   }
+}
+
+/* Ortak buton standardı (src/styles/_buttons.scss) */
+.primary {
+  @include btn.primary;
+}
+
+.secondary {
+  @include btn.secondary;
 }

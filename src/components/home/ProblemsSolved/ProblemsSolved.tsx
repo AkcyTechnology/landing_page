@@ -115,7 +115,7 @@ function Panel({ index }: { index: number }) {
         <ul className={styles.tags} aria-label={t.tagsLabel}>
           {solution.tags.map((tag) => <li key={tag}>{tag}</li>)}
         </ul>
-        <Link className={styles.link} href={solution.href} data-magnetic>
+        <Link className={styles.link} href={solution.href}>
           {t.cta} <b aria-hidden="true">↗</b>
         </Link>
       </div>

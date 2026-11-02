@@ -1,3 +1,4 @@
+@use "../../../styles/buttons" as btn;
 .form {
   display: flex;
   flex-direction: column;
@@ -95,60 +96,6 @@
   }
 }
 
-.submit {
-  height: 56px;
-
-  display: inline-flex;
-  align-items: center;
-  gap: 16px;
-
-  padding: 0 8px 0 26px;
-
-  border: 0;
-  border-radius: var(--radius-pill);
-
-  background: #071b46;
-  color: #ffffff;
-
-  font-size: 0.88rem;
-  font-weight: 600;
-
-  cursor: pointer;
-
-  transition: background 0.25s ease;
-
-  b {
-    width: 40px;
-    height: 40px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 50%;
-
-    background: #ffffff;
-    color: #071b46;
-
-    font-size: 1.05rem;
-    font-weight: 400;
-
-    transition: transform 0.3s ease;
-  }
-
-  &:hover:not(:disabled) {
-    background: #123a7a;
-
-    b {
-      transform: rotate(45deg);
-    }
-  }
-
-  &:disabled {
-    opacity: 0.55;
-    cursor: not-allowed;
-  }
-}
-
 /* ==========================
    ALAN + HATA MESAJI
 ========================== */
@@ -239,31 +186,6 @@
   font-size: 1.25rem;
 }
 
-.resetLink {
-  margin-top: 34px;
-  padding: 0;
-
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-
-  border: 0;
-  background: transparent;
-
-  color: var(--foreground);
-  font: inherit;
-
-  cursor: pointer;
-
-  span {
-    transition: transform 0.2s ease;
-  }
-
-  &:hover span {
-    transform: translateX(4px);
-  }
-}
-
 @media (max-width: 700px) {
   .row {
     grid-template-columns: 1fr;
@@ -278,11 +200,6 @@
     }
   }
 
-  .submit {
-    width: 100%;
-    justify-content: space-between;
-  }
-
   .success {
     min-height: 360px;
   }
@@ -294,4 +211,34 @@
   &:empty {
     min-height: 0;
   }
+}
+
+/* Ortak buton standardı (src/styles/_buttons.scss) */
+.submit {
+  @include btn.primary;
+}
+
+.resetLink {
+  @include btn.text;
+}
+
+/* Yerleşim */
+.submit {
+  flex-shrink: 0;
+}
+
+.resetLink {
+  margin-top: 24px;
+}
+
+.submitLabel {
+  display: inline-grid;
+
+  > span {
+    grid-area: 1 / 1;
+  }
+}
+
+.labelHidden {
+  visibility: hidden;
 }

@@ -363,15 +363,14 @@ export default function ContactForm() {
         <button
           type="submit"
           className={styles.submit}
-          data-magnetic
-          disabled={isSubmitting || awaitingVerification}
+          disabled={awaitingVerification}
+          aria-busy={isSubmitting || undefined}
         >
-          <span>
-            {isSubmitting
-              ? t.submitting
-              : awaitingVerification
-                ? t.verifying
-                : t.submit}
+          {/* Tüm etiketler aynı hücrede: en uzun metne göre yer ayrılır, genişlik değişmez */}
+          <span className={styles.submitLabel}>
+            <span className={isSubmitting ? undefined : styles.labelHidden}>{t.submitting}</span>
+            <span className={awaitingVerification && !isSubmitting ? undefined : styles.labelHidden}>{t.verifying}</span>
+            <span className={!isSubmitting && !awaitingVerification ? undefined : styles.labelHidden}>{t.submit}</span>
           </span>
 
           <b aria-hidden="true">↗</b>

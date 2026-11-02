@@ -1,63 +1,6 @@
+@use "../../../styles/buttons" as btn;
+
+/* Ortak buton standardı (src/styles/_buttons.scss) */
 .link {
-  position: relative;
-
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-
-  padding-bottom: 6px;
-
-  color: var(--color-text-primary);
-
-  text-decoration: none;
-
-  font-size: 14px;
-  font-weight: 600;
-
-  span {
-    position: relative;
-
-    &::after {
-      content: "";
-
-      position: absolute;
-
-      left: 0;
-      bottom: -6px;
-
-      width: 100%;
-      height: 1px;
-
-      background: rgba(6, 16, 31, 0.28);
-
-      transition: background var(--duration-fast) ease;
-    }
-  }
-
-  b {
-    display: inline-block;
-
-    color: var(--color-accent);
-
-    font-weight: 500;
-
-    transition: transform var(--duration-fast) ease;
-  }
-
-  &:hover {
-    span::after {
-      background: var(--color-accent-hover);
-    }
-
-    b {
-      transform: translateX(5px);
-    }
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .link span::after,
-  .link b {
-    transition: none;
-  }
+  @include btn.text;
 }

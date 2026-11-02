@@ -209,7 +209,6 @@ export default function ProjectShowcase() {
                     <Link
                       href={`/projelerimiz/${project.slug}`}
                       className={styles.cta}
-                      data-magnetic
                       data-reveal="cta"
                     >
                       {t.cta} <b aria-hidden="true">↗</b>

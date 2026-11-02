@@ -101,7 +101,7 @@ export default function Hero() {
         </motion.p>
 
         <motion.div className={styles.actions} variants={itemVariants} suppressHydrationWarning>
-          <Link href="/iletisim" className={styles.primaryButton} data-magnetic>
+          <Link href="/iletisim" className={styles.primaryButton}>
             <span>{t.primaryCta}</span>
             <b aria-hidden="true">↗</b>
           </Link>

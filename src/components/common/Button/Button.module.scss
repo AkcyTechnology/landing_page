@@ -1,79 +1,33 @@
+@use "../../../styles/buttons" as btn;
+
 .button {
-  height: 58px;
-
-  display: inline-flex;
-  align-items: center;
-  gap: 18px;
-
-  padding: 0 8px 0 23px;
-
-  border: 0;
-  border-radius: 12px;
-
-  background: var(--color-text-primary);
-
-  color: #ffffff;
-
-  text-decoration: none;
-
-  font-size: 13px;
-  font-weight: 650;
-
-  cursor: pointer;
-
-  transition:
-    transform var(--duration-fast) ease,
-    box-shadow var(--duration-fast) ease,
-    opacity var(--duration-fast) ease;
-
-  b {
-    width: 42px;
-    height: 42px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 50%;
-
-    background: #ffffff;
-
-    color: var(--color-text-primary);
-
-    font-size: 17px;
-    font-weight: 400;
-
-    transition:
-      background var(--duration-fast) ease,
-      color var(--duration-fast) ease,
-      transform var(--duration-fast) ease;
-  }
-
-  &:hover {
-    background: #183047;
-
-    box-shadow: none;
-
-    b {
-      background: var(--color-accent-hover);
-      color: var(--color-text-primary);
-
-      transform: rotate(45deg);
-    }
-  }
-
-  &:disabled {
-    opacity: 0.6;
-
-    cursor: default;
-
-    transform: none;
-    box-shadow: none;
-  }
+  @include btn.primary;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .button,
-  .button b {
-    transition: none;
-  }
+.primary {
+  @include btn.primary;
+}
+
+.secondary {
+  @include btn.secondary;
+}
+
+.on-dark {
+  @include btn.on-dark;
+}
+
+.ghost-dark {
+  @include btn.ghost-dark;
+}
+
+.text {
+  @include btn.text;
+}
+
+.text-on-dark {
+  @include btn.text-on-dark;
+}
+
+.small {
+  @include btn.small;
 }

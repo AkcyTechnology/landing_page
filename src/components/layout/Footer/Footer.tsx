@@ -42,7 +42,7 @@ export default function Footer() {
           <motion.p className={styles.ctaEyebrow} {...reveal()}>{f.eyebrow}</motion.p>
           <motion.h2 className={styles.ctaHeading} {...reveal(0.08)}>{f.headingStart}<br /><span>{f.headingAccent}</span><br />{f.headingEnd}</motion.h2>
           <motion.p className={styles.ctaDescription} {...reveal(0.16)}>{f.description}</motion.p>
-          <motion.div {...reveal(0.24)}><Link href="/iletisim" className={styles.ctaButton} data-magnetic>{f.cta} <Icon name="arrow" /></Link></motion.div>
+          <motion.div {...reveal(0.24)}><Link href="/iletisim" className={styles.ctaButton}>{f.cta} <Icon name="arrow" /></Link></motion.div>
         </div>
 
         <div className={styles.grid}>

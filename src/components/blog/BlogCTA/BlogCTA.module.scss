@@ -1,3 +1,4 @@
+@use "../../../styles/buttons" as btn;
 .section {
   width: 100%;
 
@@ -81,60 +82,6 @@
   gap: 22px;
 }
 
-.primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-
-  padding: 14px 24px;
-
-  border-radius: 999px;
-
-  background: #16c3ce;
-
-  color: #06101f;
-
-  font-size: 14px;
-  font-weight: 650;
-
-  text-decoration: none;
-
-  transition: background 0.3s ease;
-
-  b {
-    font-weight: 500;
-
-    transition: transform 0.3s ease;
-  }
-
-  &:hover {
-    background: #72d7d8;
-
-    b {
-      transform: translateX(4px);
-    }
-  }
-}
-
-.secondary {
-  color: #fff;
-
-  font-size: 14px;
-  font-weight: 600;
-
-  text-decoration: none;
-
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-
-  padding-bottom: 4px;
-
-  transition: border-color 0.3s ease;
-
-  &:hover {
-    border-color: #72d7d8;
-  }
-}
-
 @media (max-width: 1050px) {
   .container {
     width: calc(100% - 40px);
@@ -170,10 +117,11 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .primary,
-  .primary b,
-  .secondary {
-    transition: none;
-  }
+/* Ortak buton standardı (src/styles/_buttons.scss) */
+.primary {
+  @include btn.on-dark;
+}
+
+.secondary {
+  @include btn.ghost-dark;
 }

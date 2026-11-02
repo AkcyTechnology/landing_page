@@ -1,3 +1,4 @@
+@use "../../../styles/buttons" as btn;
 .showcase {
   position: relative;
 
@@ -274,62 +275,6 @@
   }
 }
 
-.cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-
-  padding: 8px 8px 8px 24px;
-
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  border-radius: var(--radius-pill);
-
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(8px);
-
-  color: #ffffff;
-
-  font-size: 14px;
-  font-weight: 600;
-
-  transition: background 0.35s var(--ease-standard), border-color 0.35s ease, color 0.35s ease;
-
-  b {
-    width: 38px;
-    height: 38px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 50%;
-
-    background: #ffffff;
-
-    color: #06101f;
-
-    font-size: 15px;
-    font-weight: 500;
-
-    transition: transform 0.35s var(--ease-standard), background 0.35s ease;
-  }
-
-  &:hover {
-    border-color: #16c3ce;
-
-    background: #16c3ce;
-
-    color: #06101f;
-
-    b {
-      background: #06101f;
-
-      color: #ffffff;
-
-      transform: rotate(45deg);
-    }
-  }
-}
-
 /* Büyük dış hatlı proje numarası */
 .counter {
   display: flex;
@@ -465,12 +410,13 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cta,
-  .cta b {
-    transition: none;
-  }
 
   .hostChip {
     display: none;
   }
+}
+
+/* Ortak buton standardı (src/styles/_buttons.scss) */
+.cta {
+  @include btn.on-dark;
 }

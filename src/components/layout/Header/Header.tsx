@@ -236,13 +236,10 @@ export default function Header() {
             <Link
               href="/iletisim"
               className={styles.cta}
-              data-magnetic
             >
               <span>{t.header.cta}</span>
 
-              <span className={styles.ctaIcon}>
-                ↗
-              </span>
+              <span aria-hidden="true">↗</span>
             </Link>
           </div>
 
@@ -316,7 +313,7 @@ export default function Header() {
               {t.header.mobileIdea}
             </p>
 
-            <Link href="/iletisim">
+            <Link href="/iletisim" className={styles.mobileCta}>
               {t.header.mobileCta}
               <span aria-hidden="true">↗</span>
             </Link>

@@ -1,3 +1,4 @@
+@use "../../../styles/buttons" as btn;
 .pagination {
   display: flex;
   align-items: center;
@@ -15,56 +16,13 @@
   gap: 6px;
 }
 
-.arrow,
-.page {
-  display: inline-grid;
-  place-items: center;
 
-  width: 42px;
-  height: 42px;
 
-  border: 1px solid rgba(6, 16, 31, 0.1);
-  border-radius: 50%;
 
-  background: #fff;
 
-  color: #06101f;
 
-  font-size: 14px;
-  font-variant-numeric: tabular-nums;
 
-  cursor: pointer;
 
-  transition: background 0.25s ease, color 0.25s ease,
-    border-color 0.25s ease, opacity 0.25s ease;
-
-  &:hover:not(:disabled) {
-    border-color: #16c3ce;
-
-    color: #0d9aa3;
-  }
-}
-
-.arrow:disabled {
-  opacity: 0.35;
-
-  cursor: default;
-}
-
-.page {
-  color: rgba(6, 16, 31, 0.6);
-}
-
-.pageActive,
-.pageActive:hover:not(:disabled) {
-  border-color: #06101f;
-
-  background: #06101f;
-
-  color: #fff;
-
-  font-weight: 600;
-}
 
 @media (max-width: 700px) {
   .pagination {
@@ -85,4 +43,17 @@
   .page {
     transition: none;
   }
+}
+
+.arrow,
+.page {
+  @include btn.secondary;
+  @include btn.small;
+  @include btn.icon-only;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Etkin sayfa: birincil renk */
+.pageActive {
+  @include btn.paint(var(--btn-primary), var(--btn-primary), var(--btn-white));
 }

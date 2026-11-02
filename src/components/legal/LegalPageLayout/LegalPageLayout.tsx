@@ -28,7 +28,7 @@ export default function LegalPageLayout({ title, introduction, sections }: Legal
           <h2 id={`${section.id}-heading`}>{section.title}</h2>
           {section.content}
         </section>)}
-        <div className={styles.contact}><h2>{t.questionTitle}</h2><p>{t.questionText}</p><Link href="/iletisim">{t.cta} <span aria-hidden="true">↗</span></Link></div>
+        <div className={styles.contact}><h2>{t.questionTitle}</h2><p>{t.questionText}</p><Link href="/iletisim" className={styles.contactCta}>{t.cta} <span aria-hidden="true">↗</span></Link></div>
       </article>
     </div></Container>
   </div>;

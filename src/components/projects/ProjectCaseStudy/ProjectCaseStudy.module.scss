@@ -1,4 +1,5 @@
-.liveLink { display: inline-block; margin-top: 36px; padding: 16px 0; color: var(--color-accent); }
+@use "../../../styles/buttons" as btn;
+
 
 .caseStudy {
   position: relative;
@@ -216,4 +217,14 @@
   .outcomes ul {
     grid-template-columns: 1fr;
   }
+}
+
+/* Ortak buton standardı (src/styles/_buttons.scss) */
+.liveLink {
+  @include btn.primary;
+}
+
+/* Yerleşim */
+.liveLink {
+  margin-top: 36px;
 }

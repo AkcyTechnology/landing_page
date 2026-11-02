@@ -1,3 +1,4 @@
+@use "../../../styles/buttons" as btn;
 @property --featured-angle {
   syntax: "<angle>";
   initial-value: 0deg;
@@ -28,7 +29,6 @@
   color: inherit;
 
   text-decoration: none;
-
 
   animation: spin-border 8s linear infinite;
 
@@ -315,42 +315,6 @@
   letter-spacing: 0.02em;
 }
 
-.cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-
-  padding: 12px 20px;
-
-  border-radius: 999px;
-
-  background: #16c3ce;
-
-  color: #06101f;
-
-  font-size: 14px;
-  font-weight: 650;
-
-  transition: background 0.3s ease, box-shadow 0.3s ease;
-
-  b {
-    display: inline-block;
-
-    font-weight: 500;
-
-    transition: transform 0.3s ease;
-  }
-}
-
-.featured:hover .cta {
-  background: #72d7d8;
-
-
-  b {
-    transform: translateX(4px);
-  }
-}
-
 @keyframes spin-border {
   to {
     --featured-angle: 360deg;
@@ -435,8 +399,6 @@
 
   .featured,
   .img,
-  .cta,
-  .cta b,
   .inner::after {
     transition: none;
   }
@@ -444,4 +406,9 @@
   .featured:hover {
     transform: none;
   }
+}
+
+/* Ortak buton standardı (src/styles/_buttons.scss) */
+.cta {
+  @include btn.text-on-dark;
 }

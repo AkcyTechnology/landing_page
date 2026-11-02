@@ -1,4 +1,5 @@
 @use "../tokens" as *;
+@use "../../../styles/buttons" as btn;
 
 .section {
   position: relative;
@@ -154,38 +155,6 @@
   }
 }
 
-.replay {
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 40px;
-  padding: 0 14px;
-  border: 1px solid $line;
-  border-radius: $radius;
-  background: $white;
-  color: $ink;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: border-color 0.25s ease, color 0.25s ease;
-  @include focus-ring;
-
-  &:hover {
-    border-color: $blue;
-    color: $blue;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .replay {
-    display: none;
-  }
-}
-
 /* ==========================
    İLETİŞİM BANDI
 ========================== */
@@ -217,30 +186,6 @@
   color: rgba(255, 255, 255, 0.8);
   font-size: 17px;
   line-height: 1.6;
-}
-
-.bandCta {
-  @include button-base;
-  flex-shrink: 0;
-  background: $white;
-  color: $primary-dark;
-
-  &:focus-visible {
-    outline-color: $white;
-  }
-
-  span {
-    transition: transform 0.25s $ease;
-  }
-
-  &:hover {
-    background: $blue;
-    color: $white;
-
-    span {
-      transform: translateX(3px);
-    }
-  }
 }
 
 @media (max-width: 1050px) {
@@ -277,7 +222,6 @@
     font-size: 15px;
   }
 
-
   .band {
     padding: 56px 0;
   }
@@ -290,4 +234,22 @@
   .bandText {
     font-size: 16px;
   }
+}
+
+/* Ortak buton standardı (src/styles/_buttons.scss) */
+.bandCta {
+  @include btn.on-dark;
+}
+
+.replay {
+  @include btn.secondary;
+  @include btn.small;
+}
+
+/* Yerleşim */
+.replay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
 }

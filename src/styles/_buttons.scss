@@ -1,0 +1,214 @@
+// ============================================================
+// AKCY ortak buton standardı
+// Renk ve ölçüler src/app/globals.css içindeki --btn-* değişkenlerindedir.
+// Kullanım:  @use "@/styles/buttons" as btn;   .cta { @include btn.primary; }
+//   primary      : ana işlem (dolu, ana renk)
+//   secondary    : ikincil işlem (şeffaf, ana renk çerçeve)
+//   on-dark      : koyu zeminde ana işlem (beyaz)
+//   ghost-dark   : koyu zeminde ikincil işlem (şeffaf, beyaz çerçeve)
+//   text         : metin butonu (zeminsiz)
+//   text-on-dark : koyu zeminde metin butonu
+//   small        : 40 px küçük boyut (dokunmatikte en az 44 px)
+// ============================================================
+
+// Hover yalnızca fareli cihazlarda; dokunmatikte renk takılı kalmaz
+@mixin hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover:not(:disabled):not([aria-disabled="true"]):not([aria-busy="true"]) {
+      @content;
+    }
+  }
+}
+
+@mixin pressed {
+  &:active:not(:disabled):not([aria-disabled="true"]):not([aria-busy="true"]) {
+    @content;
+  }
+}
+
+@mixin paint($bg, $border, $fg) {
+  background-color: $bg;
+  border-color: $border;
+  color: $fg;
+}
+
+@mixin base {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--btn-gap);
+  min-height: var(--btn-height);
+  padding: 0 var(--btn-padding-x);
+  margin: 0;
+  border: 1px solid transparent;
+  border-radius: var(--btn-radius);
+  background: transparent;
+  font-family: inherit;
+  font-size: var(--btn-font-size);
+  font-weight: var(--btn-font-weight);
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-align: center;
+  text-decoration: none;
+  white-space: normal;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transform: none;
+  box-shadow: none;
+  transition:
+    background-color var(--btn-transition),
+    border-color var(--btn-transition),
+    color var(--btn-transition);
+
+  // İkonlar: 18 px, metinle 8 px boşluk (gap), ortalı
+  svg,
+  > [aria-hidden="true"] {
+    flex-shrink: 0;
+    width: var(--btn-icon-size);
+    height: var(--btn-icon-size);
+    display: inline-grid;
+    place-items: center;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    color: currentColor;
+    font-size: var(--btn-icon-size);
+    font-weight: 400;
+    line-height: 1;
+    transform: none;
+    transition: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--btn-focus);
+    outline-offset: 3px;
+  }
+
+  // Yükleniyor: genişlik korunur, tekrar gönderim engellenir
+  &[aria-busy="true"] {
+    cursor: progress;
+  }
+
+  @media (max-width: 700px) {
+    padding: 0 var(--btn-padding-x-mobile);
+  }
+}
+
+// Pasif: hover yok, işlem tetiklenmez (varyant renklerinden sonra uygulanır)
+@mixin disabled {
+  &:disabled,
+  &[aria-disabled="true"] {
+    @include paint(var(--btn-disabled-bg), var(--btn-disabled-bg), var(--btn-disabled-fg));
+    cursor: not-allowed;
+  }
+
+  &[aria-disabled="true"] {
+    pointer-events: none;
+  }
+}
+
+@mixin primary {
+  @include base;
+  @include paint(var(--btn-primary), var(--btn-primary), var(--btn-white));
+  @include hover { @include paint(var(--btn-hover), var(--btn-hover), var(--btn-white)); }
+  @include pressed { @include paint(var(--btn-active), var(--btn-active), var(--btn-white)); }
+  @include disabled;
+}
+
+@mixin secondary {
+  @include base;
+  @include paint(transparent, var(--btn-primary), var(--btn-primary));
+  @include hover { @include paint(var(--btn-hover), var(--btn-hover), var(--btn-white)); }
+  @include pressed { @include paint(var(--btn-active), var(--btn-active), var(--btn-white)); }
+  @include disabled;
+}
+
+@mixin on-dark {
+  @include base;
+  @include paint(var(--btn-white), var(--btn-white), var(--btn-primary));
+  @include hover { @include paint(var(--btn-hover), var(--btn-hover), var(--btn-white)); }
+  @include pressed { @include paint(var(--btn-active), var(--btn-active), var(--btn-white)); }
+  @include disabled;
+
+  &:focus-visible {
+    outline-color: var(--btn-focus-on-dark);
+  }
+}
+
+@mixin ghost-dark {
+  @include base;
+  @include paint(transparent, rgba(255, 255, 255, 0.72), var(--btn-white));
+  @include hover { @include paint(var(--btn-hover), var(--btn-hover), var(--btn-white)); }
+  @include pressed { @include paint(var(--btn-active), var(--btn-active), var(--btn-white)); }
+  @include disabled;
+
+  &:focus-visible {
+    outline-color: var(--btn-focus-on-dark);
+  }
+}
+
+@mixin text {
+  @include base;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  @include paint(transparent, transparent, var(--btn-primary));
+  @include hover { color: var(--btn-hover); }
+  @include pressed { color: var(--btn-active); }
+
+  &:disabled,
+  &[aria-disabled="true"] {
+    background: transparent;
+    color: var(--btn-disabled-fg);
+    cursor: not-allowed;
+  }
+
+  &[aria-disabled="true"] {
+    pointer-events: none;
+  }
+
+  @media (max-width: 700px) {
+    padding: 0;
+  }
+}
+
+@mixin text-on-dark {
+  @include text;
+  color: var(--btn-white);
+  @include hover { color: var(--btn-hover-on-dark); }
+  @include pressed { color: var(--btn-active-on-dark); }
+
+  &:focus-visible {
+    outline-color: var(--btn-focus-on-dark);
+  }
+}
+
+@mixin small {
+  min-height: var(--btn-height-sm);
+  font-size: 14px;
+
+  // Dokunmatikte tıklama alanı en az 44 × 44 px
+  @media (pointer: coarse) {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+// Yalnızca ikon içeren kare buton
+@mixin icon-only {
+  width: var(--btn-height-sm);
+  min-height: var(--btn-height-sm);
+  padding: 0;
+
+  @media (pointer: coarse) {
+    width: 44px;
+    min-height: 44px;
+  }
+
+  @media (max-width: 700px) {
+    padding: 0;
+  }
+}

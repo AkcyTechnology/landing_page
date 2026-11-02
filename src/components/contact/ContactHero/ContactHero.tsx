@@ -8,7 +8,7 @@ export default function ContactHero() {
   return <section className={styles.hero}><Container><div className={styles.layout}>
     <div className={styles.content}><span>{t.eyebrow}</span><h1>{t.titleLine1}<br />{t.titleLine2}</h1>
       <p>{t.description}</p>
-      <a href="#proje-formu">{t.cta} ↗</a></div>
+      <a href="#proje-formu" className={styles.cta}>{t.cta} <span aria-hidden="true">↓</span></a></div>
     <div className={styles.visual}>
       <span className={styles.visualLabel}>{t.processLabel}</span>
       <ol>{steps.map((step, index) => <li key={step.title}><b>{String(index + 1).padStart(2, "0")}</b><div><strong>{step.title}</strong><p>{step.text}</p></div></li>)}</ol>

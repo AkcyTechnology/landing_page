@@ -39,6 +39,29 @@
   --duration-medium: 0.5s;
   --duration-slow: 0.8s;
 
+  /* ---------- Buton standardı (src/styles/_buttons.scss) ---------- */
+  --btn-primary: #00595d;
+  --btn-hover: #0077b6;
+  --btn-active: #005f92;
+  --btn-white: #ffffff;
+  /* Koyu zeminde metin butonları: #0077B6 koyu zeminde okunmadığı için açık tonları */
+  --btn-hover-on-dark: #7cc8ef;
+  --btn-active-on-dark: #b9e2f7;
+  --btn-disabled-bg: #e5e7eb;
+  --btn-disabled-fg: #6b7280;
+  --btn-focus: #0077b6;
+  --btn-focus-on-dark: #ffffff;
+  --btn-radius: 4px;
+  --btn-height: 48px;
+  --btn-height-sm: 40px;
+  --btn-padding-x: 24px;
+  --btn-padding-x-mobile: 20px;
+  --btn-font-size: 15px;
+  --btn-font-weight: 600;
+  --btn-icon-size: 18px;
+  --btn-gap: 8px;
+  --btn-transition: 180ms ease;
+
   --background: var(--color-bg);
   --foreground: var(--color-text-primary);
   --foreground-rgb: 6, 16, 31;

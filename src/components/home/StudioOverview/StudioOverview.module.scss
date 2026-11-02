@@ -1,3 +1,4 @@
+@use "../../../styles/buttons" as btn;
 ﻿.label { font-size: 11px; letter-spacing: .15em; font-weight: 600; color: var(--color-accent); }
 .process { background: #061522; color: #fff; padding: var(--space-section) 0 40px; }
 .process .label { color: #39d9df; }
@@ -29,7 +30,6 @@
 .approachIndex { font-size: 11px; letter-spacing: .12em; color: var(--color-accent); }
 .skills { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); column-gap: 30px; list-style: none; margin-top: 38px; border-top: 1px solid var(--color-border); li { display: flex; align-items: center; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--color-border); font-size: 13px; span { color: var(--color-accent); font-size: 11px; font-variant-numeric: tabular-nums; } b { margin-left: auto; font-size: 16px; font-weight: 400; color: var(--color-text-muted); } } }
 .sectors { display: grid; grid-template-columns: .8fr 1fr auto; align-items: center; gap: 60px; margin-top: 72px; border-top: 1px solid var(--color-border); padding-top: 36px; h3 { font-size: 14px; font-weight: 500; } p { font-size: 12px; color: var(--color-text-secondary); line-height: 1.6; margin-top: 10px; } ul { display: flex; flex-wrap: wrap; gap: 10px 22px; list-style: none; font-size: 11px; color: var(--color-text-secondary); } }
-.link { display: inline-flex; align-items: center; gap: 24px; padding: 12px 0; border-bottom: 1px solid var(--color-border-strong); font-size: 12px; font-weight: 500; white-space: nowrap; transition: color .25s; span { font-size: 20px; transition: transform .25s; } &:hover { color: var(--color-accent); span { transform: translate(3px,-3px); } } }
 @media(max-width: 1050px) {
   .process, .capabilities { padding-top: var(--space-section-tablet); }
   .processHeader { grid-template-columns: 1fr 1fr; }
@@ -62,9 +62,8 @@
   .approaches { grid-template-columns: 1fr; gap: 30px; }
   .skills { column-gap: 20px; li { font-size: 11px; gap: 10px; } }
   .sectors { grid-template-columns: 1fr; gap: 22px; margin-top: 42px; p br { display: none; } }
-  .link { justify-self: start; }
 }
-@media(prefers-reduced-motion: reduce) { .link, .link span { transition: none; } }
+
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .roadmap::before { animation: processFill linear both; animation-timeline: view(); animation-range: entry 30% cover 60%; }
@@ -75,3 +74,14 @@
 @keyframes processFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes processLight { from { color: rgba(255,255,255,.12); } to { color: rgba(255,255,255,.4); } }
 @keyframes processNode { from { background: #061522; box-shadow: none; } to { background: #39d9df; box-shadow: 0 0 0 5px rgba(57,217,223,.18); } }
+
+/* Ortak buton standardı (src/styles/_buttons.scss) */
+.link {
+  @include btn.text;
+}
+
+/* Yerleşim */
+.link {
+  justify-self: start;
+  white-space: nowrap;
+}

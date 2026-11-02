@@ -1,3 +1,4 @@
+@use "../../../styles/buttons" as btn;
 .empty {
   display: flex;
   flex-direction: column;
@@ -21,50 +22,12 @@
   font-size: 17px;
 }
 
+/* Ortak buton standardı (src/styles/_buttons.scss) */
 .clear {
-  position: relative;
-
-  margin-top: 24px;
-
-  padding-bottom: 6px;
-
-  border: 0;
-  background: transparent;
-
-  color: #06101f;
-
-  font-size: 14px;
-  font-weight: 600;
-
-  cursor: pointer;
-
-  span {
-    position: relative;
-
-    &::after {
-      content: "";
-
-      position: absolute;
-
-      left: 0;
-      bottom: -6px;
-
-      width: 100%;
-      height: 1px;
-
-      background: rgba(6, 16, 31, 0.28);
-
-      transition: background 0.3s ease;
-    }
-  }
-
-  &:hover span::after {
-    background: #16c3ce;
-  }
+  @include btn.secondary;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .clear span::after {
-    transition: none;
-  }
+/* Yerleşim */
+.clear {
+  margin-top: 24px;
 }

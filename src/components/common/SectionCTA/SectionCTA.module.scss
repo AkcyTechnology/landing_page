@@ -29,9 +29,11 @@
   align-items: center;
   gap: 20px;
 
-  color: var(--color-text-primary);
+  color: var(--btn-primary);
 
   text-decoration: none;
+
+  transition: color var(--btn-transition);
 
   font-size: clamp(30px, 3.6vw, 48px);
   line-height: 1.1;
@@ -43,15 +45,17 @@
   b {
     display: inline-block;
 
-    color: var(--color-accent);
-
     font-weight: 400;
-
-    transition: transform var(--duration-fast) ease;
   }
 
-  &:hover b {
-    transform: translate(4px, -4px);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      color: var(--btn-hover);
+    }
+  }
+
+  &:active {
+    color: var(--btn-active);
   }
 }
 
