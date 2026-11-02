@@ -23,7 +23,7 @@ export const en: Dictionary = {
     },
     projects: {
       title: "Projects",
-      description: "Selected work we have delivered across web, mobile, design and digital products.",
+      description: "Explore the projects we’ve built, from apps that make everyday life easier to digital solutions tailored to businesses.",
     },
     blog: {
       title: "Blog",

@@ -5,18 +5,15 @@ import { canonicalSlug, localizeSlug, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { setRequestLocale } from "@/i18n/server";
 import { pageMetadata } from "@/lib/metadata";
-import { getAdjacentProject, getAllProjects, getClientProjects, getConceptProjects, getProjectBySlug } from "@/data/projects";
-import Container from "@/components/common/Container/Container";
-import ProjectsHero from "@/components/projects/ProjectsHero/ProjectsHero";
-import ProjectsListingClient from "@/components/projects/ProjectsListingClient/ProjectsListingClient";
-import ProjectGrid from "@/components/projects/ProjectGrid/ProjectGrid";
+import { getAdjacentProject, getAllProjects, getProjectBySlug } from "@/data/projects";
+import { projectsPage } from "@/content/projects-page";
+import ProjectsShowcase from "@/components/projects/ProjectsShowcase/ProjectsShowcase";
 import ProjectDetailHero from "@/components/projects/ProjectDetailHero/ProjectDetailHero";
 import ProjectProblemApproach from "@/components/projects/ProjectProblemApproach/ProjectProblemApproach";
 import ProjectFeatureHighlight from "@/components/projects/ProjectFeatureHighlight/ProjectFeatureHighlight";
 import ProjectCaseStudy from "@/components/projects/ProjectCaseStudy/ProjectCaseStudy";
 import NextProject from "@/components/projects/NextProject/NextProject";
 
-import styles from "./ProjectsView.module.scss";
 
 export function projectsMetadata(locale: Locale) {
   const t = getDictionary(locale).pages.projects;
@@ -25,34 +22,7 @@ export function projectsMetadata(locale: Locale) {
 
 export default function ProjectsView({ locale }: { locale: Locale }) {
   setRequestLocale(locale);
-  const t = getDictionary(locale).projects;
-  const clientProjects = getClientProjects(locale);
-  const conceptProjects = getConceptProjects(locale);
-
-  return (
-    <>
-      <ProjectsHero />
-
-      <section className={styles.listing}>
-        <Container>
-          <ProjectsListingClient allProjects={clientProjects} />
-        </Container>
-      </section>
-
-      {conceptProjects.length > 0 && (
-        <section className={styles.lab}>
-          <Container>
-            <div className={styles.labHeader}>
-              <span className={styles.labLabel}>{t.labLabel}</span>
-              <p className={styles.labDescription}>{t.labDescription}</p>
-            </div>
-
-            <ProjectGrid projects={conceptProjects} />
-          </Container>
-        </section>
-      )}
-    </>
-  );
+  return <ProjectsShowcase content={projectsPage[locale]} />;
 }
 
 /* ---------- Proje detayı ---------- */

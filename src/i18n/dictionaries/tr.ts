@@ -25,7 +25,7 @@ export const tr = {
     },
     projects: {
       title: "Projelerimiz",
-      description: "Web, mobil, tasarım ve dijital ürün alanlarında geliştirdiğimiz seçili çalışmalar.",
+      description: "Günlük yaşamı kolaylaştıran uygulamalardan işletmelere özel dijital çözümlere kadar geliştirdiğimiz projeleri keşfedin.",
     },
     blog: {
       title: "Blog",
