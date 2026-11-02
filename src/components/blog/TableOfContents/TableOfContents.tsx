@@ -9,9 +9,14 @@ import styles from "./TableOfContents.module.scss";
 
 interface TableOfContentsProps {
   headings: HeadingItem[];
+  // Masaüstünde içindekiler kartının altında, birlikte sabit kalan içerik.
+  children?: React.ReactNode;
 }
 
-export default function TableOfContents({ headings }: TableOfContentsProps) {
+export default function TableOfContents({
+  headings,
+  children,
+}: TableOfContentsProps) {
   const [activeId, setActiveId] = useState(headings[0]?.id);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -42,8 +47,20 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 
   if (headings.length < 3) return null;
 
+  const activeIndex = Math.max(
+    headings.findIndex((heading) => heading.id === activeId),
+    0
+  );
+
   const list = (
-    <ol className={styles.list}>
+    <ol
+      className={styles.list}
+      style={
+        {
+          "--progress": (activeIndex + 1) / headings.length,
+        } as React.CSSProperties
+      }
+    >
       {headings.map((heading, index) => (
         <li
           key={heading.id}
@@ -52,7 +69,11 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
           <a
             href={`#${heading.id}`}
             className={`${styles.link} ${
-              activeId === heading.id ? styles.linkActive : ""
+              index === activeIndex
+                ? styles.linkActive
+                : index < activeIndex
+                  ? styles.linkPassed
+                  : ""
             }`}
           >
             <span className={styles.number}>
@@ -67,10 +88,19 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 
   return (
     <>
-      <nav className={styles.desktopToc} aria-label="İçindekiler">
-        <span className={styles.title}>İçindekiler</span>
-        {list}
-      </nav>
+      <div className={styles.desktopToc}>
+        <nav className={styles.card} aria-label="İçindekiler">
+          <div className={styles.cardHead}>
+            <span className={styles.title}>İçindekiler</span>
+            <span className={styles.counter}>
+              {activeIndex + 1}/{headings.length}
+            </span>
+          </div>
+          {list}
+        </nav>
+
+        {children}
+      </div>
 
       <div className={styles.mobileToc}>
         <button

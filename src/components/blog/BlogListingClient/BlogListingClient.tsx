@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 
@@ -13,36 +13,58 @@ import FeaturedArticle from "@/components/blog/FeaturedArticle/FeaturedArticle";
 import BlogGrid from "@/components/blog/BlogGrid/BlogGrid";
 import Pagination from "@/components/blog/Pagination/Pagination";
 import EmptyState from "@/components/blog/EmptyState/EmptyState";
+import Reveal from "@/components/blog/Reveal/Reveal";
 
 import styles from "./BlogListingClient.module.scss";
 
 interface BlogListingClientProps {
   allPosts: BlogPostMeta[];
-  initialCategory: string;
-  initialQuery: string;
-  initialPage: number;
+  availableCategories?: string[];
+  categoryCounts?: Record<string, number>;
   featuredPost?: BlogPostMeta;
 }
 
-// 3 kolonlu ızgarada tek kart açıkta kalmasın.
-const PAGE_SIZE = 6;
+// İlk kart geniş gösterildiğinde 8 kart 3 kolonlu ızgarayı tam doldurur.
+const PAGE_SIZE = 8;
 
-export default function BlogListingClient({
+const NO_PARAMS = new URLSearchParams();
+
+/*
+  Site statik HTML olarak yayınlandığı için URL parametreleri (kategori,
+  arama, sayfa) sunucuda değil tarayıcıda okunur. Statik HTML'e filtresiz
+  liste basılır; tarayıcıda URL'deki filtre uygulanır.
+*/
+export default function BlogListingClient(props: BlogListingClientProps) {
+  return (
+    <Suspense fallback={<BlogListing {...props} searchParams={NO_PARAMS} />}>
+      <BlogListingWithParams {...props} />
+    </Suspense>
+  );
+}
+
+function BlogListingWithParams(props: BlogListingClientProps) {
+  const searchParams = useSearchParams();
+  return <BlogListing {...props} searchParams={searchParams} />;
+}
+
+function BlogListing({
   allPosts,
-  initialCategory,
-  initialQuery,
-  initialPage,
+  availableCategories,
+  categoryCounts,
   featuredPost,
-}: BlogListingClientProps) {
+  searchParams,
+}: BlogListingClientProps & {
+  searchParams: Pick<URLSearchParams, "get" | "toString">;
+}) {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
-  const [query, setQuery] = useState(initialQuery);
+  const [query, setQuery] = useState(searchParams.get("q") ?? "");
   const skipNextDebounce = useRef(false);
+  const listTop = useRef<HTMLDivElement>(null);
 
-  const category = searchParams.get("category") ?? initialCategory;
-  const page = Number(searchParams.get("page") ?? initialPage) || 1;
+  const category = searchParams.get("category") ?? ALL_SLUG;
+  const page = Number(searchParams.get("page")) || 1;
 
   const pushParams = (
     next: Partial<{ category: string; q: string; page: number }>
@@ -101,6 +123,9 @@ export default function BlogListingClient({
 
   const handlePageChange = (nextPage: number) => {
     pushParams({ page: nextPage });
+
+    // Yeni sayfanın kartları görünsün diye yazı listesinin başına kaydır.
+    listTop.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const handleClear = () => {
@@ -109,23 +134,27 @@ export default function BlogListingClient({
     pushParams({ category: ALL_SLUG, q: "", page: 1 });
   };
 
+  // Öne çıkan yazı yalnızca filtresiz görünümde ayrı kartta gösterilir;
+  // filtre veya arama varken normal sonuçların arasında yer alır.
+  const showFeatured = Boolean(featuredPost) && !query && category === ALL_SLUG;
+
   const filtered = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase();
+    const normalizedQuery = query.trim().toLocaleLowerCase("tr-TR");
 
     return allPosts.filter((post) => {
-      if (featuredPost && post.slug === featuredPost.slug) return false;
+      if (showFeatured && post.slug === featuredPost?.slug) return false;
 
       const matchesCategory =
         category === ALL_SLUG || post.category === category;
 
       const matchesQuery =
         !normalizedQuery ||
-        post.title.toLowerCase().includes(normalizedQuery) ||
-        post.excerpt.toLowerCase().includes(normalizedQuery);
+        post.title.toLocaleLowerCase("tr-TR").includes(normalizedQuery) ||
+        post.excerpt.toLocaleLowerCase("tr-TR").includes(normalizedQuery);
 
       return matchesCategory && matchesQuery;
     });
-  }, [allPosts, category, query, featuredPost]);
+  }, [allPosts, category, query, featuredPost, showFeatured]);
 
   const totalPages = Math.max(Math.ceil(filtered.length / PAGE_SIZE), 1);
   const safePage = Math.min(page, totalPages);
@@ -158,18 +187,49 @@ export default function BlogListingClient({
   return (
     <section className={styles.listing}>
       <div className={styles.container}>
-        {featuredPost && !query && category === ALL_SLUG && (
-          <div className={styles.featuredWrap}>
-            <FeaturedArticle post={featuredPost} />
+        <AnimatePresence initial={false}>
+          {showFeatured && featuredPost && (
+            <motion.div
+              key="featured"
+              className={styles.featuredCollapse}
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.5, ease: [0.22, 0.8, 0.25, 1] }}
+            >
+              <Reveal y={40} className={styles.featuredWrap}>
+                <FeaturedArticle post={featuredPost} />
+              </Reveal>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <div ref={listTop} className={styles.listTop} aria-hidden="true" />
+
+        <Reveal className={styles.headingRow}>
+          <div>
+            <span className={styles.eyebrow}>
+              <i aria-hidden="true" />
+              TÜM YAZILAR
+            </span>
+            <h2 className={styles.sectionHeading}>
+              Son yazılar ve <em>rehberler</em>
+            </h2>
           </div>
-        )}
+          <span className={styles.resultCount}>
+            <b>{filtered.length}</b> yazı listeleniyor
+          </span>
+        </Reveal>
 
         <div className={styles.controls}>
-          <CategoryFilters active={category} onChange={handleCategoryChange} />
+          <CategoryFilters
+            active={category}
+            onChange={handleCategoryChange}
+            available={availableCategories}
+            counts={categoryCounts}
+          />
           <SearchInput value={query} onChange={setQuery} />
         </div>
-
-        <h2 className={styles.sectionHeading}>Son Yazılar</h2>
 
         <AnimatePresence mode="wait">
           <motion.div

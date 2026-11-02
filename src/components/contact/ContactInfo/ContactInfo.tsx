@@ -12,6 +12,11 @@ const items = [
     href: "tel:+905526290420",
   },
   {
+    label: "Instagram",
+    value: "@akcytechnology",
+    href: "https://www.instagram.com/akcytechnology/",
+  },
+  {
     label: "Konum",
     value: "İstanbul, Türkiye",
     href: undefined,
@@ -34,7 +39,13 @@ export default function ContactInfo() {
             <span className={styles.label}>{item.label}</span>
 
             {item.href ? (
-              <a href={item.href} className={styles.value}>
+              <a
+                href={item.href}
+                className={styles.value}
+                {...(item.href.startsWith("http")
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
+              >
                 {item.value}
                 <span aria-hidden="true">↗</span>
               </a>

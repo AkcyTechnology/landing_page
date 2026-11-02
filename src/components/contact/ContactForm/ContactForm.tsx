@@ -1,10 +1,14 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 import { services } from "@/data/services";
 import FormField from "./FormField";
+import TurnstileWidget, {
+  TURNSTILE_SITE_KEY,
+  type TurnstileHandle,
+} from "./TurnstileWidget";
 import styles from "./ContactForm.module.scss";
 
 const projectTypes = [...services.map(service => service.title), "Diğer"];
@@ -72,15 +76,30 @@ function validate(values: FormValues): FormErrors {
   return errors;
 }
 
-async function submitContactForm(values: FormValues, website: string): Promise<void> {
-  const response = await fetch("/api/contact", {
+interface SpamGuard {
+  // Botlar için tuzak alan; gerçek kullanıcıda her zaman boş kalır.
+  website: string;
+  // Formun açılmasından gönderime kadar geçen süre (çok hızlıysa bot).
+  elapsedMs: number;
+  turnstileToken: string;
+}
+
+async function submitContactForm(
+  values: FormValues,
+  guard: SpamGuard
+): Promise<void> {
+  const response = await fetch("/api/contact.php", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...values, website }),
+    body: JSON.stringify({ ...values, ...guard }),
   });
 
   if (!response.ok) {
-    throw new Error("Mail gönderilemedi.");
+    const data = (await response.json().catch(() => null)) as {
+      error?: string;
+    } | null;
+
+    throw new Error(data?.error ?? "Mail gönderilemedi.");
   }
 }
 
@@ -89,8 +108,19 @@ export default function ContactForm() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const [website, setWebsite] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
+
+  const startedAt = useRef(0);
+  const turnstile = useRef<TurnstileHandle>(null);
+
+  // Form her görünür olduğunda süre sayacı yeniden başlar.
+  useEffect(() => {
+    if (status === "idle") startedAt.current = Date.now();
+  }, [status]);
 
   const isSubmitting = status === "submitting";
+  const awaitingVerification = Boolean(TURNSTILE_SITE_KEY) && !turnstileToken;
 
   const setField = <K extends keyof FormValues>(
     key: K,
@@ -122,15 +152,24 @@ export default function ContactForm() {
       return;
     }
 
+    if (awaitingVerification) return;
+
     setStatus("submitting");
 
     try {
-      await submitContactForm(values, website);
+      await submitContactForm(values, {
+        website,
+        elapsedMs: Date.now() - startedAt.current,
+        turnstileToken,
+      });
 
       setValues(initialValues);
       setStatus("success");
-    } catch {
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : "");
       setStatus("error");
+    } finally {
+      turnstile.current?.reset();
     }
   };
 
@@ -294,6 +333,8 @@ export default function ContactForm() {
         disabled={isSubmitting}
       />
 
+      <TurnstileWidget ref={turnstile} onToken={setTurnstileToken} />
+
       <AnimatePresence>
         {status === "error" && (
           <motion.p
@@ -303,7 +344,10 @@ export default function ContactForm() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            Mesajınız gönderilemedi. Tekrar deneyebilir veya {" "}
+            {errorMessage && errorMessage !== "Mail gönderilemedi."
+              ? `${errorMessage} `
+              : "Mesajınız gönderilemedi. "}
+            Tekrar deneyebilir veya{" "}
             <a href="mailto:akcyglobal@gmail.com">akcyglobal@gmail.com</a> adresine yazabilirsiniz.
           </motion.p>
         )}
@@ -318,10 +362,14 @@ export default function ContactForm() {
           type="submit"
           className={styles.submit}
           data-magnetic
-          disabled={isSubmitting}
+          disabled={isSubmitting || awaitingVerification}
         >
           <span>
-            {isSubmitting ? "Gönderiliyor..." : "Mesaj Gönder"}
+            {isSubmitting
+              ? "Gönderiliyor..."
+              : awaitingVerification
+                ? "Doğrulama bekleniyor..."
+                : "Mesaj Gönder"}
           </span>
 
           <b aria-hidden="true">↗</b>

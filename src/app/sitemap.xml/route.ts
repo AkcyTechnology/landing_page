@@ -2,6 +2,9 @@ import { getAllServices } from "@/data/services";
 import { getAllProjects } from "@/data/projects";
 import { getAllPosts } from "@/data/blog";
 
+// Statik export: site haritası build sırasında dosya olarak üretilir.
+export const dynamic = "force-static";
+
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://akcy.com.tr";
 
 function generateSiteMap() {
@@ -63,7 +66,7 @@ function generateSiteMap() {
        .map(({ url, changefreq, priority }) => {
          return `
        <url>
-           <loc>${escapeXml(url)}</loc>
+           <loc>${escapeXml(url.endsWith("/") ? url : `${url}/`)}</loc>
            <changefreq>${changefreq}</changefreq>
            <priority>${priority}</priority>
        </url>

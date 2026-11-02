@@ -5,21 +5,31 @@
   align-items: center;
   gap: 10px;
 
-  width: 220px;
+  width: 240px;
   flex-shrink: 0;
 
-  padding-bottom: 9px;
+  padding: 10px 16px;
 
-  border-bottom: 1px solid rgba(6, 16, 31, 0.16);
+  border: 1px solid rgba(6, 16, 31, 0.1);
+  border-radius: 999px;
+
+  background: #f4f6f9;
 
   color: rgba(6, 16, 31, 0.45);
 
-  transition: border-color 0.3s ease;
+  transition: width 0.45s cubic-bezier(0.22, 0.8, 0.25, 1),
+    border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
 
   &:focus-within {
+    width: 300px;
+
     border-color: #16c3ce;
 
-    color: #16c3ce;
+    background: #fff;
+
+    box-shadow: 0 0 0 4px rgba(22, 195, 206, 0.12);
+
+    color: #0d9aa3;
   }
 
   svg {
@@ -49,7 +59,8 @@
 }
 
 @media (max-width: 700px) {
-  .search {
+  .search,
+  .search:focus-within {
     width: 100%;
   }
 }

@@ -5,15 +5,46 @@
 .desktopToc {
   position: sticky;
 
-  top: 120px;
+  top: 112px;
 
   align-self: start;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 16px;
+
+  max-height: calc(100vh - 136px);
+
+  overflow-y: auto;
+
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.card {
+  padding: 22px 20px 16px;
+
+  border: 1px solid rgba(6, 16, 31, 0.07);
+  border-radius: 20px;
+
+  background: #fff;
+
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 14px;
 }
 
 .title {
   display: block;
-
-  margin-bottom: 18px;
 
   color: #06101f;
 
@@ -24,13 +55,57 @@
   text-transform: uppercase;
 }
 
+.counter {
+  padding: 3px 9px;
+
+  border-radius: 999px;
+
+  background: rgba(13, 154, 163, 0.1);
+
+  color: #0b7f87;
+
+  font-size: 11.5px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
 .list {
+  --progress: 0;
+
+  position: relative;
+
   margin: 0;
   padding: 0;
 
   list-style: none;
 
-  border-left: 1px solid rgba(6, 16, 31, 0.12);
+  /* Okunan bölüme kadar dolan dikey ilerleme çizgisi */
+  &::before,
+  &::after {
+    content: "";
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 2px;
+    height: 100%;
+
+    border-radius: 2px;
+  }
+
+  &::before {
+    background: rgba(6, 16, 31, 0.08);
+  }
+
+  &::after {
+    background: linear-gradient(180deg, #16c3ce, #8b7cf6);
+
+    transform: scaleY(var(--progress));
+    transform-origin: top;
+
+    transition: transform 0.5s cubic-bezier(0.22, 0.8, 0.25, 1);
+  }
 
   li {
     margin: 0;
@@ -46,44 +121,57 @@
 }
 
 .link {
+  position: relative;
+
   display: flex;
   align-items: baseline;
   gap: 10px;
 
-  padding: 8px 0 8px 18px;
+  padding: 8px 6px 8px 18px;
 
-  margin-left: -1px;
+  border-radius: 0 8px 8px 0;
 
-  border-left: 2px solid transparent;
-
-  color: rgba(6, 16, 31, 0.55);
+  color: rgba(6, 16, 31, 0.5);
 
   text-decoration: none;
 
-  font-size: 14px;
-  line-height: 1.4;
+  font-size: 13.5px;
+  line-height: 1.45;
 
-  transition: color 0.3s ease, border-color 0.3s ease;
+  transition: color 0.3s ease, background 0.3s ease;
 
   &:hover {
+    background: rgba(6, 16, 31, 0.03);
+
     color: #06101f;
   }
 }
 
+.linkPassed {
+  color: rgba(6, 16, 31, 0.72);
+}
+
 .linkActive {
+  background: linear-gradient(90deg, rgba(22, 195, 206, 0.1), transparent);
+
   color: #06101f;
 
   font-weight: 600;
 
-  border-left-color: #16c3ce;
+  .number {
+    color: #0d9aa3;
+  }
 }
 
 .number {
   flex-shrink: 0;
 
-  color: rgba(6, 16, 31, 0.4);
+  color: rgba(6, 16, 31, 0.35);
 
-  font-size: 12px;
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+
+  transition: color 0.3s ease;
 }
 
 /* ==========================
@@ -92,6 +180,14 @@
 
 .mobileToc {
   display: none;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(6, 16, 31, 0.08);
+  border-radius: 18px;
+
+  background: #fff;
+
 }
 
 .mobileHeader {
@@ -101,10 +197,9 @@
   align-items: center;
   justify-content: space-between;
 
-  padding: 18px 0;
+  padding: 16px 18px;
 
-  border-top: 1px solid rgba(6, 16, 31, 0.12);
-  border-bottom: 1px solid rgba(6, 16, 31, 0.12);
+  border: 0;
 
   background: transparent;
 
@@ -133,9 +228,8 @@
   overflow: hidden;
 
   .list {
-    padding: 20px 0 4px;
-
-    border-left: 0;
+    margin: 0 18px 16px;
+    padding-top: 4px;
   }
 
   .link {
@@ -156,6 +250,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .list::after,
+  .number,
   .link,
   .icon {
     transition: none;

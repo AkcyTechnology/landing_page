@@ -3,6 +3,8 @@ export type BlogCategory =
   | "ui-ux"
   | "web"
   | "yapay-zeka"
+  | "otomasyon"
+  | "wordpress"
   | "projeler"
   | "notlar";
 
@@ -16,6 +18,8 @@ export const categories: CategoryDef[] = [
   { slug: "ui-ux", label: "UI / UX" },
   { slug: "web", label: "Web" },
   { slug: "yapay-zeka", label: "Yapay Zekâ" },
+  { slug: "otomasyon", label: "Süreç Otomasyonu" },
+  { slug: "wordpress", label: "WordPress" },
   { slug: "projeler", label: "Projeler" },
   { slug: "notlar", label: "Notlar" },
 ];
@@ -819,7 +823,6 @@ const editorialDrafts: BlogPost[] = [
     ],
     category: "ui-ux",
     date: "2026-10-20",
-    featured: true,
     size: "large",
     excerpt:
       "Bir web sitesindeki içeriğin büyük kısmı metindir. Doğru yazı tipi, ölçek, satır uzunluğu ve kontrast; sitenizin hem daha profesyonel görünmesini hem de daha kolay okunmasını sağlar.",
@@ -1555,6 +1558,1053 @@ h2   { font-size: var(--text-h2); line-height: 1.15; }`,
       },
     ],
   },
+  {
+    slug: "wordpress-ile-kurumsal-web-sitesi",
+    title: "WordPress ile Kurumsal Web Sitesi: Doğru Kurulum, Güvenlik ve Performans Rehberi",
+    seoTitle: "WordPress ile Kurumsal Web Sitesi: Kurulum, Güvenlik ve Hız | AKCY",
+    metaDescription:
+      "WordPress kurumsal web sitesi için doğru seçim mi? Tema ve eklenti seçimi, güvenlik, hız optimizasyonu, bakım ve headless WordPress yaklaşımı hakkında uygulanabilir rehber.",
+    focusKeyword: "WordPress kurumsal web sitesi",
+    secondaryKeywords: [
+      "WordPress güvenliği",
+      "WordPress hız optimizasyonu",
+      "WordPress eklenti seçimi",
+      "headless WordPress",
+      "WordPress bakım",
+    ],
+    category: "wordpress",
+    date: "2026-10-28",
+    excerpt:
+      "WordPress hangi durumlarda kurumsal bir site için doğru tercih? Tema ve eklenti seçiminden güvenliğe, hız optimizasyonundan bakım planına kadar sağlam bir WordPress sitesinin nasıl kurulacağını anlatıyoruz.",
+    coverImage: {
+      src: "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=1600&auto=format&fit=crop",
+      alt: "Masa üzerinde açık dizüstü bilgisayarda web sitesi düzenleme ekranı",
+    },
+    readingTime: 11,
+    author: { name: "AKCY", role: "Web Ekibi" },
+    content: [
+      {
+        type: "paragraph",
+        text: "**WordPress**, dünyadaki web sitelerinin çok büyük bir bölümünü çalıştıran açık kaynaklı bir içerik yönetim sistemidir. Bu yaygınlığın arkasında basit bir neden var: İçerik ekibinin teknik bilgi gerektirmeden sayfa ekleyebilmesi, geniş eklenti ekosistemi ve neredeyse her hosting firmasında çalışabilmesi.",
+      },
+      {
+        type: "paragraph",
+        text: "Ancak aynı esneklik, yanlış kurulduğunda ciddi bir dezavantaja dönüşebilir. Onlarca eklentiyle yavaşlamış, güncellenmediği için güvenlik açığı oluşmuş veya hazır temanın sınırlarına sıkışmış siteler, WordPress’in değil kurulum ve bakım tercihlerinin sonucudur. Bu yazıda kurumsal bir WordPress sitesini baştan doğru kurmanın yollarını ele alıyoruz.",
+      },
+      { type: "h2", text: "WordPress ne zaman doğru tercih?" },
+      {
+        type: "paragraph",
+        text: "Her proje için tek bir doğru teknoloji yoktur. WordPress özellikle içeriğin sık güncellendiği, birden fazla kişinin sayfa ve yazı yönettiği, bütçe ve sürenin makul tutulması gereken projelerde güçlü bir seçenektir.",
+      },
+      {
+        type: "table",
+        headers: ["Durum", "WordPress", "Özel yazılım / Headless"],
+        rows: [
+          ["Kurumsal tanıtım sitesi, blog", "Çok uygun", "Gerekmeyebilir"],
+          ["Sık içerik güncellemesi", "Çok uygun", "CMS ile uygun"],
+          ["Karmaşık kullanıcı paneli, iş kuralları", "Sınırlı", "Daha uygun"],
+          ["Çok yüksek trafik ve özel performans hedefi", "Doğru mimariyle mümkün", "Daha esnek"],
+          ["Mevcut sistemlerle derin entegrasyon", "Eklenti/API ile kısmen", "Daha uygun"],
+        ],
+      },
+      {
+        type: "callout",
+        variant: "info",
+        text: "Karar verirken “Hangi teknoloji daha iyi?” yerine “Siteyi kim, ne sıklıkla ve hangi amaçla yönetecek?” sorusunu sormak daha doğru sonuç verir.",
+      },
+      { type: "h2", text: "Tema seçimi: Hazır tema mı, özel tema mı?" },
+      {
+        type: "paragraph",
+        text: "Hazır temalar hızlı başlangıç sağlar; ancak çoğu, olabildiğince fazla kullanıcıya hitap etmek için yüzlerce özellikle gelir. Kullanılmayan bu özellikler sayfaya gereksiz CSS ve JavaScript yükler, siteyi yavaşlatır ve tasarımı markaya özgü hale getirmeyi zorlaştırır.",
+      },
+      {
+        type: "paragraph",
+        text: "Kurumsal projelerde daha sürdürülebilir yaklaşım; markanın tasarım sistemine göre geliştirilmiş, yalnızca ihtiyaç duyulan bileşenleri içeren hafif bir özel tema veya **blok tabanlı (Gutenberg) bir tema** kullanmaktır. Böylece içerik ekibi önceden tasarlanmış bloklarla sayfa oluştururken tasarım tutarlılığı da korunur.",
+      },
+      { type: "h2", text: "Eklenti seçiminde altın kural: Az ama doğru" },
+      {
+        type: "paragraph",
+        text: "Her eklenti siteye yeni kod, yeni bir güncelleme takvimi ve potansiyel bir güvenlik riski ekler. Bu nedenle eklenti sayısını değil, her eklentinin gerçekten neden gerekli olduğunu sorgulamak gerekir.",
+      },
+      {
+        type: "list",
+        style: "unordered",
+        items: [
+          "Son güncelleme tarihine ve WordPress sürüm uyumluluğuna bakın",
+          "Aktif kurulum sayısı ve destek forumundaki yanıt hızını kontrol edin",
+          "Aynı işi yapan birden fazla eklenti kullanmayın",
+          "Birkaç satır kodla çözülebilecek ihtiyaçlar için eklenti kurmayın",
+          "Kullanılmayan eklentileri yalnızca devre dışı bırakmayın, tamamen kaldırın",
+        ],
+      },
+      { type: "h2", text: "WordPress güvenliği için temel kontrol listesi" },
+      {
+        type: "paragraph",
+        text: "WordPress sitelerinde yaşanan güvenlik sorunlarının büyük kısmı çekirdekten değil; güncellenmemiş eklentilerden, zayıf parolalardan ve güvenilir olmayan kaynaklardan indirilen temalardan kaynaklanır.",
+      },
+      {
+        type: "list",
+        style: "ordered",
+        items: [
+          "WordPress çekirdeğini, temaları ve eklentileri düzenli olarak güncelleyin",
+          "Yönetici hesaplarında güçlü parola ve iki adımlı doğrulama kullanın",
+          "Her kullanıcıya yalnızca ihtiyaç duyduğu yetkiyi verin",
+          "Lisanssız veya “nulled” tema ve eklentileri asla kullanmayın",
+          "Otomatik ve sunucu dışında saklanan yedekleme planı oluşturun",
+          "Giriş denemelerini sınırlayın ve bir web uygulama güvenlik duvarı (WAF) kullanın",
+          "Sunucuda güncel ve desteklenen bir PHP sürümü çalıştırın",
+        ],
+      },
+      {
+        type: "callout",
+        variant: "note",
+        text: "Yedek almak kadar yedekten geri dönebilmek de önemlidir. Yedekleme planını, en az bir kez test ortamında geri yükleme yaparak doğrulayın.",
+      },
+      { type: "h2", text: "WordPress hız optimizasyonu" },
+      {
+        type: "paragraph",
+        text: "Yavaş bir WordPress sitesi genellikle tek bir sorundan değil, küçük sorunların birikmesinden kaynaklanır. Hız optimizasyonuna şu sırayla yaklaşmak en hızlı sonucu verir:",
+      },
+      {
+        type: "list",
+        style: "ordered",
+        items: [
+          "**Hosting:** Paylaşımlı ucuz paketler yerine WordPress için optimize edilmiş, yeterli kaynak sunan bir altyapı seçin",
+          "**Önbellek:** Sayfa önbelleği ve mümkünse nesne önbelleği (Redis vb.) kullanın",
+          "**Görseller:** Görselleri WebP veya AVIF formatında, gösterildikleri boyutta sunun",
+          "**Script yükü:** Kullanılmayan eklenti ve tema script’lerini kaldırın, kritik olmayanları erteleyin",
+          "**CDN:** Statik dosyaları ziyaretçiye yakın sunuculardan dağıtın",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Optimizasyon sonrası değişimi ölçmek için Core Web Vitals metriklerini takip etmek gerekir. Bu metrikleri ve eşik değerlerini [Core Web Vitals rehberimizde](/blog/core-web-vitals-rehberi) detaylı olarak anlattık.",
+      },
+      { type: "h2", text: "Headless WordPress: İki dünyanın en iyisi" },
+      {
+        type: "paragraph",
+        text: "Headless yaklaşımda WordPress yalnızca içerik yönetim paneli olarak kullanılır; sitenin ön yüzü ise Next.js gibi modern bir framework ile ayrı olarak geliştirilir. İçerik ekibi alıştığı WordPress panelinde çalışmaya devam ederken ziyaretçiler çok daha hızlı ve özelleştirilmiş bir arayüzle karşılaşır.",
+      },
+      {
+        type: "list",
+        style: "unordered",
+        items: [
+          "Ön yüz, tema ve eklenti kısıtlarından bağımsız tasarlanabilir",
+          "Statik üretim ve önbellekleme sayesinde performans belirgin şekilde artar",
+          "Yönetim paneli ziyaretçilere açık olmadığı için saldırı yüzeyi küçülür",
+          "Aynı içerik web sitesi, mobil uygulama ve diğer kanallarda kullanılabilir",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Bununla birlikte headless mimari daha fazla geliştirme emeği gerektirir ve bazı eklentilerin ön yüz özellikleri doğrudan çalışmaz. Bu nedenle her proje için değil, performans ve özelleştirme ihtiyacının yüksek olduğu projeler için önerilir.",
+      },
+      { type: "h2", text: "Yayından sonra: Bakım planı şart" },
+      {
+        type: "paragraph",
+        text: "Bir WordPress sitesi yayına alındığında iş bitmez. Düzenli güncellemeler, yedek kontrolü, güvenlik taramaları, hız ölçümleri ve kırık bağlantı kontrolleri sitenin sağlıklı kalmasını sağlar. Bakım sorumluluğunun kimde olacağını proje başlamadan netleştirmek, ileride oluşabilecek pahalı sorunların önüne geçer.",
+      },
+      {
+        type: "quote",
+        text: "İyi bir WordPress sitesi, kurulduğu gün değil, iki yıl sonra hâlâ hızlı ve güvenli çalıştığında başarılıdır.",
+      },
+      { type: "divider" },
+      {
+        type: "paragraph",
+        text: "Yeni bir WordPress sitesi kurmayı, mevcut sitenizi hızlandırmayı veya headless bir yapıya geçmeyi düşünüyorsanız; [kurumsal web sitesi yaptırmadan önce](/blog/kurumsal-web-sitesi-yaptirmadan-once) rehberimize göz atabilir ya da [bizimle iletişime geçebilirsiniz](/iletisim).",
+      },
+    ],
+    faq: [
+      {
+        question: "WordPress kurumsal siteler için yeterince güvenli mi?",
+        answer:
+          "Evet, doğru kurulup düzenli bakım yapıldığında. Güvenlik sorunlarının büyük kısmı güncellenmeyen eklentilerden, zayıf parolalardan ve lisanssız temalardan kaynaklanır. Güncelleme, yedekleme, iki adımlı doğrulama ve WAF kullanımı riski önemli ölçüde azaltır.",
+      },
+      {
+        question: "Bir WordPress sitesinde kaç eklenti olmalı?",
+        answer:
+          "Belirli bir sayı yoktur. Önemli olan her eklentinin gerçek bir ihtiyaca karşılık gelmesi, güncel ve güvenilir olmasıdır. Aynı işi yapan birden fazla eklentiden ve kullanılmayan eklentilerden kaçınılmalıdır.",
+      },
+      {
+        question: "Headless WordPress nedir?",
+        answer:
+          "Headless WordPress, WordPress’in yalnızca içerik yönetim paneli olarak kullanıldığı, sitenin ön yüzünün ise Next.js gibi ayrı bir teknolojiyle geliştirildiği mimaridir. Daha yüksek performans ve tasarım esnekliği sağlar.",
+      },
+      {
+        question: "WordPress sitem neden yavaş?",
+        answer:
+          "En yaygın nedenler yetersiz hosting, önbellek eksikliği, optimize edilmemiş görseller, ağır hazır temalar ve çok sayıda eklentinin yüklediği script’lerdir. Hız sorununu çözmek için önce ölçüm yapıp en büyük darboğazdan başlamak gerekir.",
+      },
+    ],
+  },
+  {
+    slug: "kurumsal-yapay-zeka-asistani-nasil-kurulur",
+    title: "Kurumsal Yapay Zekâ Asistanı Nasıl Kurulur? Şirket Bilgisinden Doğru Cevaplar",
+    seoTitle: "Kurumsal Yapay Zekâ Asistanı Nasıl Kurulur? RAG Rehberi | AKCY",
+    metaDescription:
+      "Şirket dokümanlarınızdan doğru cevap veren bir yapay zekâ asistanı nasıl kurulur? RAG mimarisi, veri hazırlığı, yetkilendirme, güvenlik ve başarı ölçümü hakkında rehber.",
+    focusKeyword: "kurumsal yapay zekâ asistanı",
+    secondaryKeywords: [
+      "RAG nedir",
+      "şirket içi AI asistanı",
+      "yapay zekâ chatbot",
+      "büyük dil modelleri",
+      "kurumsal bilgi yönetimi",
+    ],
+    category: "yapay-zeka",
+    date: "2026-10-24",
+    excerpt:
+      "Genel amaçlı sohbet botları şirketinizin ürünlerini, prosedürlerini ve geçmiş projelerini bilmez. Şirket bilgisine dayanarak doğru ve kaynaklı cevaplar veren bir yapay zekâ asistanının nasıl kurulduğunu adım adım anlatıyoruz.",
+    coverImage: {
+      src: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1600&auto=format&fit=crop",
+      alt: "Yapay zekâ ve sinir ağlarını temsil eden soyut dijital görsel",
+    },
+    readingTime: 10,
+    author: { name: "AKCY", role: "Yapay Zekâ Ekibi" },
+    content: [
+      {
+        type: "paragraph",
+        text: "Bir çalışanın aradığı bilgiye ulaşmak için paylaşılan klasörlerde dosya araması, eski e-postaları taraması veya bir meslektaşına sorması günde onlarca dakikaya mal olabilir. Bilgi şirkette vardır; ancak dağınık, bulunması zor ve çoğu zaman belirli kişilerin hafızasındadır.",
+      },
+      {
+        type: "paragraph",
+        text: "**Kurumsal yapay zekâ asistanı**, bu dağınık bilgiyi doğal dilde sorulabilen bir kaynağa dönüştürür. Çalışan “X ürününün teslim süresi nedir?” diye sorar; asistan ilgili dokümanı bulur, cevabı oluşturur ve kaynağını gösterir.",
+      },
+      { type: "h2", text: "Neden genel bir chatbot yeterli değil?" },
+      {
+        type: "paragraph",
+        text: "Genel amaçlı büyük dil modelleri dili çok iyi anlar ve üretir; ancak şirketinizin fiyat listesini, iç prosedürlerini veya müşteri sözleşmelerini bilmez. Bilmediği bir konuda soru sorulduğunda ise kulağa doğru gelen ama gerçeğe dayanmayan cevaplar üretebilir. Bu duruma **halüsinasyon** denir ve kurumsal kullanımda kabul edilemez bir risktir.",
+      },
+      {
+        type: "callout",
+        variant: "info",
+        text: "Kurumsal bir asistanın değeri, modelin ne kadar “akıllı” olduğundan çok, doğru bilgiye ne kadar güvenilir şekilde erişebildiğinden gelir.",
+      },
+      { type: "h2", text: "RAG nedir ve nasıl çalışır?" },
+      {
+        type: "paragraph",
+        text: "**RAG (Retrieval-Augmented Generation)**, yapay zekâ modelinin cevap üretmeden önce şirket dokümanları içinde arama yapmasını ve cevabı bu dokümanlara dayandırmasını sağlayan mimaridir. Model, bilgiyi ezberlemek yerine her soruda ilgili kaynaklara bakar.",
+      },
+      {
+        type: "list",
+        style: "ordered",
+        items: [
+          "Dokümanlar (PDF, Word, wiki sayfaları, e-postalar) sisteme alınır ve anlamlı parçalara bölünür",
+          "Her parça, anlamını temsil eden sayısal bir vektöre dönüştürülerek bir vektör veritabanında saklanır",
+          "Kullanıcı soru sorduğunda sistem soruya anlamca en yakın doküman parçalarını bulur",
+          "Bulunan parçalar soruyla birlikte dil modeline verilir",
+          "Model cevabı yalnızca bu kaynaklara dayanarak oluşturur ve kaynakları belirtir",
+        ],
+      },
+      {
+        type: "table",
+        headers: ["Yaklaşım", "Avantaj", "Dezavantaj"],
+        rows: [
+          ["Genel chatbot", "Hızlı kurulum", "Şirket bilgisini bilmez, halüsinasyon riski"],
+          ["Modeli şirket verisiyle eğitmek (fine-tuning)", "Üslup ve formatı öğrenir", "Pahalı, bilgi güncellemesi zor"],
+          ["RAG", "Güncel bilgi, kaynak gösterme, yetki kontrolü", "İyi veri hazırlığı gerektirir"],
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Çoğu kurumsal senaryoda RAG en dengeli seçenektir: Yeni bir doküman eklendiğinde modelin yeniden eğitilmesi gerekmez, cevaplar kaynak gösterilerek doğrulanabilir.",
+      },
+      { type: "h2", text: "Başarının %80’i: Veri hazırlığı" },
+      {
+        type: "paragraph",
+        text: "Asistanın kalitesi, beslendiği dokümanların kalitesiyle sınırlıdır. Aynı konuda birbiriyle çelişen üç farklı prosedür dokümanı varsa asistan da tutarsız cevaplar verir.",
+      },
+      {
+        type: "list",
+        style: "unordered",
+        items: [
+          "Güncelliğini yitirmiş ve tekrarlanan dokümanları ayıklayın",
+          "Her dokümanın sahibini ve son güncelleme tarihini belirleyin",
+          "Taranmış PDF’leri metin tabanlı hale getirin (OCR)",
+          "Tablolar ve teknik şartnameler gibi yapılandırılmış içerikleri ayrıca ele alın",
+          "Dokümanların güncel tutulması için bir süreç tanımlayın",
+        ],
+      },
+      { type: "h2", text: "Yetkilendirme ve veri güvenliği" },
+      {
+        type: "paragraph",
+        text: "Kurumsal asistanlarda en kritik konu, kimin hangi bilgiye erişebileceğidir. İnsan kaynakları dokümanları veya finansal raporlar her çalışana açık olmamalıdır. İyi tasarlanmış bir sistemde asistan, soruyu soran kullanıcının erişim yetkisi olmayan dokümanları aramaya hiç dahil etmez.",
+      },
+      {
+        type: "list",
+        style: "unordered",
+        items: [
+          "Mevcut kimlik sistemiyle (ör. Microsoft 365, Google Workspace) tek oturum açma",
+          "Doküman bazında erişim yetkisi kontrolü",
+          "Kişisel verilerin KVKK’ya uygun şekilde işlenmesi ve maskelenmesi",
+          "Kullanılan model sağlayıcısının verileri eğitim için kullanmadığından emin olunması",
+          "Tüm soru ve cevapların denetim amacıyla kayıt altına alınması",
+        ],
+      },
+      {
+        type: "callout",
+        variant: "note",
+        text: "Asistanın bir bilgiyi bulamadığında “Bu konuda kaynak bulamadım” demesi, tahmin yürütmesinden çok daha değerlidir. Bu davranış sistem tasarımında açıkça tanımlanmalıdır.",
+      },
+      { type: "h2", text: "Hangi alanlarda kullanılabilir?" },
+      {
+        type: "list",
+        style: "unordered",
+        items: [
+          "**Satış:** ürün özellikleri, fiyat koşulları ve geçmiş tekliflere hızlı erişim",
+          "**Müşteri destek:** destek ekibine kaynaklı cevap taslakları önerme",
+          "**İnsan kaynakları:** izin, yan haklar ve prosedür sorularının yanıtlanması",
+          "**Teknik ekip:** teknik doküman, kurulum kılavuzu ve arıza kayıtlarında arama",
+          "**Yeni çalışan uyumu:** şirket bilgisine kendi kendine erişim",
+        ],
+      },
+      { type: "h2", text: "Başarı nasıl ölçülür?" },
+      {
+        type: "paragraph",
+        text: "Asistanı yayına almadan önce gerçek çalışan sorularından oluşan bir test seti hazırlamak gerekir. Bu sorulara verilen cevaplar doğruluk, kaynak gösterme ve “bilmiyorum” deme davranışı açısından değerlendirilir. Yayından sonra ise şu metrikler takip edilebilir:",
+      },
+      {
+        type: "table",
+        headers: ["Metrik", "Neyi gösterir?"],
+        rows: [
+          ["Doğru cevap oranı", "Asistanın güvenilirliği"],
+          ["Kaynak bulunamayan soru oranı", "Eksik dokümantasyon alanları"],
+          ["Kullanıcı geri bildirimi (faydalı / değil)", "Gerçek kullanım değeri"],
+          ["Aktif kullanıcı sayısı", "Benimsenme düzeyi"],
+          ["Destek ekibine düşen tekrar soru sayısı", "Operasyonel kazanım"],
+        ],
+      },
+      { type: "h2", text: "Küçük başlayın, kapsamı genişletin" },
+      {
+        type: "paragraph",
+        text: "Tüm şirket bilgisini tek seferde asistana yüklemek yerine tek bir departman ve sınırlı bir doküman setiyle başlamak en sağlıklı yoldur. Pilot süreçte toplanan geri bildirimler hem veri kalitesini hem de sistem davranışını iyileştirmek için kullanılır. Başarılı olan yapı daha sonra diğer departmanlara genişletilir.",
+      },
+      {
+        type: "paragraph",
+        text: "Yapay zekânın iş süreçlerine genel olarak nasıl entegre edildiğini merak ediyorsanız [yapay zekâ ile iş süreçleri otomasyonu](/blog/yapay-zeka-ile-is-surecleri-otomasyonu) yazımıza göz atabilirsiniz.",
+      },
+      { type: "divider" },
+      {
+        type: "paragraph",
+        text: "AKCY olarak şirketlerin mevcut doküman ve sistemlerine bağlı, yetki kontrollü ve kaynak gösteren yapay zekâ asistanları geliştiriyoruz. Kendi verinizle nasıl bir asistan kurulabileceğini konuşmak için [bizimle iletişime geçin](/iletisim).",
+      },
+    ],
+    faq: [
+      {
+        question: "Kurumsal yapay zekâ asistanı nedir?",
+        answer:
+          "Şirketin kendi dokümanları, prosedürleri ve bilgi kaynaklarına bağlanarak çalışanların doğal dilde sorduğu sorulara kaynaklı cevaplar veren yapay zekâ sistemidir.",
+      },
+      {
+        question: "RAG nedir?",
+        answer:
+          "RAG (Retrieval-Augmented Generation), yapay zekâ modelinin cevap üretmeden önce ilgili dokümanları aramasını ve cevabını bu dokümanlara dayandırmasını sağlayan mimaridir. Halüsinasyon riskini azaltır ve kaynak gösterilmesini mümkün kılar.",
+      },
+      {
+        question: "Şirket verilerim yapay zekâ modelini eğitmek için kullanılır mı?",
+        answer:
+          "Doğru kurulmuş bir sistemde hayır. Kurumsal model sağlayıcıları genellikle API üzerinden gönderilen verileri eğitim için kullanmama seçeneği sunar. Proje başında bu koşullar ve verilerin nerede işlendiği açıkça belirlenmelidir.",
+      },
+      {
+        question: "Asistan her çalışana tüm bilgileri gösterir mi?",
+        answer:
+          "Göstermemelidir. İyi tasarlanmış bir sistem, mevcut kullanıcı yetkilerini dikkate alır ve kişinin erişim yetkisi olmayan dokümanları arama sonuçlarına dahil etmez.",
+      },
+    ],
+  },
+  {
+    slug: "sirket-surec-otomasyonu-rehberi",
+    title: "Şirket Süreç Otomasyonu: Onay Akışlarından Entegrasyonlara Adım Adım Rehber",
+    seoTitle: "Şirket Süreç Otomasyonu Nedir? Adım Adım Rehber | AKCY",
+    metaDescription:
+      "Şirket süreç otomasyonu nedir, hangi süreçlerle başlanmalı? Onay akışları, sistem entegrasyonları, otomatik raporlama, araç seçimi ve ROI hesaplama için uygulanabilir rehber.",
+    focusKeyword: "şirket süreç otomasyonu",
+    secondaryKeywords: [
+      "iş akışı otomasyonu",
+      "onay süreçleri otomasyonu",
+      "sistem entegrasyonu",
+      "otomatik raporlama",
+      "dijital dönüşüm",
+    ],
+    category: "otomasyon",
+    date: "2026-10-14",
+    excerpt:
+      "Excel’den Excel’e veri kopyalamak, e-postayla onay beklemek, her ay aynı raporu elle hazırlamak… Şirket süreçlerini otomasyonla nasıl hızlandıracağınızı, hangi süreçten başlayacağınızı ve doğru aracı nasıl seçeceğinizi anlatıyoruz.",
+    coverImage: {
+      src: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1600&auto=format&fit=crop",
+      alt: "Ekranda iş süreçlerine ait grafik ve raporlardan oluşan kontrol paneli",
+    },
+    readingTime: 10,
+    author: { name: "AKCY", role: "Otomasyon Ekibi" },
+    content: [
+      {
+        type: "paragraph",
+        text: "Birçok şirkette operasyonun önemli bir kısmı hâlâ insanların sistemler arasında köprü görevi görmesiyle ilerler. Bir form doldurulur, bilgiler başka bir tabloya kopyalanır, onay için e-posta atılır, cevap beklenir, sonuç bir başka sisteme elle girilir.",
+      },
+      {
+        type: "paragraph",
+        text: "**Şirket süreç otomasyonu**, bu tekrar eden adımların yazılım tarafından, tanımlı kurallara göre ve insan müdahalesine yalnızca gerektiğinde ihtiyaç duyularak yürütülmesidir. Amaç çalışanları ortadan kaldırmak değil; onları kopyala-yapıştır işlerinden kurtarıp gerçekten değer üreten işlere odaklamaktır.",
+      },
+      { type: "h2", text: "Otomasyona en uygun süreçler" },
+      {
+        type: "paragraph",
+        text: "Bir sürecin otomasyona uygun olup olmadığını anlamak için dört soruya bakmak yeterlidir: Sık tekrarlanıyor mu? Kuralları net mi? Birden fazla sistem veya kişi arasında veri taşınıyor mu? Hata yapıldığında maliyeti yüksek mi?",
+      },
+      {
+        type: "list",
+        style: "unordered",
+        items: [
+          "**Onay akışları:** satın alma talepleri, izin talepleri, masraf onayları, sözleşme onayları",
+          "**Veri aktarımı:** web formundan CRM’e, e-ticaret sitesinden ERP’ye, tablodan muhasebe sistemine",
+          "**Raporlama:** haftalık satış raporu, günlük stok özeti, aylık performans tabloları",
+          "**Bildirimler:** stok kritik seviyeye düştüğünde, ödeme geciktiğinde, teklif yanıtsız kaldığında uyarı",
+          "**Belge üretimi:** teklif, sözleşme ve sipariş formlarının şablondan otomatik oluşturulması",
+          "**Müşteri yaşam döngüsü:** yeni müşteri karşılama, hatırlatma ve memnuniyet anketleri",
+        ],
+      },
+      {
+        type: "callout",
+        variant: "info",
+        text: "İlk otomasyon için en iyi aday, herkesin şikâyet ettiği ama kimsenin sahiplenmediği süreçtir. Kazanım hem hızlı hem de herkes tarafından görünür olur.",
+      },
+      { type: "h2", text: "Örnek: Satın alma onay süreci" },
+      {
+        type: "paragraph",
+        text: "Manuel bir satın alma sürecinde çalışan talebini e-postayla iletir, yönetici e-postayı gözden kaçırabilir, finans ekibi hangi talebin onaylandığını takip etmekte zorlanır ve süreç günlerce sürebilir. Otomasyonla aynı süreç şu hale gelir:",
+      },
+      {
+        type: "list",
+        style: "ordered",
+        items: [
+          "Çalışan talebini standart bir form üzerinden oluşturur",
+          "Sistem tutara ve departmana göre doğru onaylayıcıyı belirler",
+          "Onaylayıcıya e-posta veya mobil bildirim gider; tek tıkla onaylar ya da reddeder",
+          "Belirli bir tutarın üzerindeki talepler otomatik olarak ikinci onaya yönlendirilir",
+          "Onaylanan talep satın alma sistemine aktarılır ve talep sahibine bilgi verilir",
+          "Belirli süre yanıtlanmayan talepler için hatırlatma gönderilir",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Sonuçta süreç hızlanır, her talebin durumu anlık izlenebilir ve kimin neyi ne zaman onayladığı kayıt altına alınır.",
+      },
+      { type: "h2", text: "Entegrasyon: Sistemleri birbiriyle konuşturmak" },
+      {
+        type: "paragraph",
+        text: "Şirketlerin çoğu tek bir yazılım kullanmaz: CRM, ERP, muhasebe programı, e-ticaret altyapısı, e-posta ve dosya depolama sistemleri bir arada çalışır. Bu sistemler birbirinden habersiz olduğunda aradaki boşluğu çalışanlar doldurur.",
+      },
+      {
+        type: "paragraph",
+        text: "Entegrasyon, bu sistemlerin API’ler veya webhook’lar aracılığıyla birbirine veri göndermesini sağlar. Örneğin e-ticaret sitesinde verilen bir sipariş otomatik olarak ERP’de sipariş kaydı oluşturabilir, stok düşebilir, fatura kesilebilir ve kargo firmasına gönderi bilgisi iletilebilir.",
+      },
+      { type: "h2", text: "Doğru araç nasıl seçilir?" },
+      {
+        type: "paragraph",
+        text: "Otomasyon için tek bir doğru araç yoktur. Sürecin karmaşıklığı, işlem hacmi, veri hassasiyeti ve mevcut sistemler seçimi belirler.",
+      },
+      {
+        type: "table",
+        headers: ["Yaklaşım", "Örnekler", "Ne zaman uygun?"],
+        rows: [
+          ["No-code otomasyon platformları", "Zapier, Make", "Basit, düşük hacimli akışlar ve hızlı denemeler"],
+          ["Low-code / açık kaynak", "n8n, Power Automate", "Orta karmaşıklıkta akışlar, kendi sunucunuzda çalıştırma ihtiyacı"],
+          ["Mevcut yazılımın özellikleri", "CRM / ERP iş akışı modülleri", "Süreç tek bir sistem içinde kalıyorsa"],
+          ["Özel geliştirme", "API tabanlı özel servisler", "Karmaşık iş kuralları, yüksek hacim, kritik veriler"],
+        ],
+      },
+      {
+        type: "callout",
+        variant: "note",
+        text: "Hazır platformlar hızlı başlangıç sağlar ancak işlem sayısı arttıkça maliyet yükselebilir ve karmaşık akışların bakımı zorlaşabilir. Uzun vadeli maliyeti seçim aşamasında hesaba katın.",
+      },
+      { type: "h2", text: "Adım adım otomasyon projesi" },
+      {
+        type: "list",
+        style: "ordered",
+        items: [
+          "**Süreci haritalayın:** Mevcut adımları, kişileri, sistemleri ve süreleri olduğu gibi yazın",
+          "**Sadeleştirin:** Gereksiz onayları ve tekrarlanan adımları otomasyondan önce kaldırın",
+          "**Ölçün:** Sürecin bugünkü süresini, hacmini ve hata oranını kaydedin",
+          "**Pilot kurun:** Tek bir süreç veya departmanla küçük bir otomasyon geliştirin",
+          "**İstisnaları tanımlayın:** Kuralların dışına çıkan durumlarda sürecin kime düşeceğini belirleyin",
+          "**Eğitin ve yayına alın:** Kullanıcıları sürece dahil edin, geri bildirim toplayın",
+          "**İzleyin ve genişletin:** Hata kayıtlarını takip edin, başarılı yapıyı diğer süreçlere taşıyın",
+        ],
+      },
+      {
+        type: "quote",
+        text: "Kötü bir süreci otomatikleştirmek, onu yalnızca daha hızlı kötü hale getirir. Önce sadeleştirin, sonra otomatikleştirin.",
+      },
+      { type: "h2", text: "Kazanımı nasıl hesaplarsınız?" },
+      {
+        type: "paragraph",
+        text: "Basit bir hesapla başlayabilirsiniz: Sürecin bir kez yapılması kaç dakika sürüyor, ayda kaç kez tekrarlanıyor ve kaç kişi bu işe dahil? Örneğin her biri 15 dakika süren ve ayda 400 kez tekrarlanan bir işlem, ayda 100 saatlik emeğe karşılık gelir.",
+      },
+      {
+        type: "paragraph",
+        text: "Buna hata düzeltme süreleri, gecikmelerden doğan kayıplar ve büyüme durumunda gerekecek ek personel ihtiyacı da eklendiğinde otomasyonun gerçek değeri ortaya çıkar. Otomasyon yatırımını bu kazanımla karşılaştırmak, hangi süreçten başlanacağına karar vermeyi kolaylaştırır.",
+      },
+      { type: "h2", text: "Klasik otomasyon ve yapay zekâ birlikte" },
+      {
+        type: "paragraph",
+        text: "Kuralları net süreçlerde klasik otomasyon hem daha ucuz hem de daha güvenilirdir. Ancak e-posta, PDF veya serbest metin gibi yapılandırılmamış verilerin işin içine girdiği adımlarda yapay zekâ devreye girebilir. En verimli sistemler genellikle ikisini birlikte kullanır. Bu konuyu [yapay zekâ ile iş süreçleri otomasyonu](/blog/yapay-zeka-ile-is-surecleri-otomasyonu) yazımızda detaylı olarak ele aldık.",
+      },
+      { type: "divider" },
+      {
+        type: "paragraph",
+        text: "AKCY olarak şirketlerin mevcut süreçlerini analiz ediyor, CRM, ERP ve diğer sistemlerle entegre çalışan otomasyonlar geliştiriyoruz. Hangi sürecinizle başlayabileceğinizi konuşmak için [bizimle iletişime geçin](/iletisim).",
+      },
+    ],
+    faq: [
+      {
+        question: "Şirket süreç otomasyonu nedir?",
+        answer:
+          "Şirketlerde tekrar eden ve kuralları belirli olan iş adımlarının (onaylar, veri aktarımı, raporlama, bildirimler gibi) yazılım tarafından otomatik olarak yürütülmesidir.",
+      },
+      {
+        question: "Otomasyona hangi süreçle başlamalıyım?",
+        answer:
+          "Sık tekrarlanan, kuralları net, çok fazla manuel veri girişi içeren ve hata maliyeti yüksek bir süreçle başlamak en hızlı ve görünür kazanımı sağlar. Onay akışları ve sistemler arası veri aktarımı genellikle iyi başlangıç noktalarıdır.",
+      },
+      {
+        question: "Otomasyon için mevcut yazılımlarımızı değiştirmemiz gerekir mi?",
+        answer:
+          "Genellikle hayır. Mevcut CRM, ERP ve diğer sistemler API veya entegrasyon araçlarıyla birbirine bağlanabilir. Otomasyon, mevcut sistemlerin üzerine bir katman olarak kurulabilir.",
+      },
+      {
+        question: "Zapier veya n8n gibi araçlar yeterli mi?",
+        answer:
+          "Basit ve orta karmaşıklıktaki akışlar için çoğu zaman yeterlidir. İşlem hacmi yüksek, iş kuralları karmaşık veya veri hassasiyeti yüksek süreçlerde ise özel geliştirme daha sürdürülebilir olabilir.",
+      },
+    ],
+  },
+  {
+    slug: "kobiler-icin-yapay-zeka-yol-haritasi",
+    title: "KOBİ’ler İçin Yapay Zekâ Yol Haritası: 90 Günde İlk Somut Sonuç",
+    seoTitle: "KOBİ’ler İçin Yapay Zekâ Yol Haritası: Nereden Başlamalı? | AKCY",
+    metaDescription:
+      "KOBİ’ler yapay zekâya nereden başlamalı? Kullanım senaryosu seçimi, veri hazırlığı, pilot proje, maliyet ve ölçüm adımlarıyla 90 günlük uygulanabilir yapay zekâ yol haritası.",
+    focusKeyword: "KOBİ yapay zekâ",
+    secondaryKeywords: [
+      "yapay zekâ yol haritası",
+      "işletmelerde yapay zekâ",
+      "yapay zekâ pilot proje",
+      "yapay zekâ maliyeti",
+    ],
+    category: "yapay-zeka",
+    date: "2026-10-31",
+    excerpt:
+      "Yapay zekâ artık yalnızca büyük şirketlerin gündeminde değil. Ancak “bir şeyler yapmalıyız” hissiyle başlayan projelerin çoğu demo aşamasında kalıyor. KOBİ’ler için 90 günde ölçülebilir sonuç veren, adım adım bir yol haritası hazırladık.",
+    coverImage: {
+      src: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1600&auto=format&fit=crop",
+      alt: "Bankta oturup tablet inceleyen insansı robot",
+    },
+    readingTime: 9,
+    featured: true,
+    author: { name: "AKCY", role: "Yapay Zekâ Ekibi" },
+    content: [
+      {
+        type: "paragraph",
+        text: "Son iki yılda neredeyse her işletme sahibi aynı soruyu sordu: *“Yapay zekâyı bizim şirkette nasıl kullanabiliriz?”* Soru doğru, ancak çoğu zaman cevap yanlış yerden aranıyor. Araç seçimiyle başlayan projeler, çözülecek problemi tam tanımlamadığı için birkaç hafta sonra rafa kalkıyor.",
+      },
+      {
+        type: "paragraph",
+        text: "Bu yazıda, sınırlı bütçe ve küçük ekiplerle çalışan **KOBİ’ler için yapay zekâ** yatırımını somut, ölçülebilir ve risksiz bir şekilde başlatmanın yolunu 90 günlük bir plan üzerinden anlatıyoruz.",
+      },
+      { type: "h2", text: "Önce problem, sonra teknoloji" },
+      {
+        type: "paragraph",
+        text: "Yapay zekâ bir strateji değil, bir araçtır. Başarılı projelerin ortak noktası, işletmede zaten var olan ve maliyeti hissedilen bir problemle başlamalarıdır. Bu yüzden ilk adım teknoloji araştırmak değil, ekiplerle oturup zaman kaybettiren işleri listelemektir.",
+      },
+      {
+        type: "list",
+        style: "unordered",
+        items: [
+          "Ekip en çok hangi işte **tekrar eden metin** yazıyor? (teklif, e-posta cevabı, ürün açıklaması)",
+          "Hangi soruları müşteriler **her gün aynı şekilde** soruyor?",
+          "Hangi belgeler **elle okunup** bir sisteme aktarılıyor? (fatura, sipariş formu, CV)",
+          "Hangi kararlar **dağınık verilerin** bir araya getirilmesini gerektiriyor?",
+        ],
+      },
+      {
+        type: "callout",
+        variant: "info",
+        text: "İyi bir ilk proje; sık tekrarlanan, sonucu kolay doğrulanabilen ve hata yaptığında büyük zarar doğurmayan bir iştir. Müşteriye doğrudan cevap veren sistemler yerine, önce çalışana yardımcı olan sistemlerle başlamak riski düşürür.",
+      },
+      { type: "h2", text: "KOBİ’ler için en çok değer üreten 6 kullanım senaryosu" },
+      {
+        type: "table",
+        headers: ["Senaryo", "Ne sağlar?", "Zorluk"],
+        rows: [
+          ["Müşteri sorularına taslak cevap", "Destek ekibinin yanıt süresini kısaltır", "Düşük"],
+          ["Belge ve faturadan veri çıkarma", "Manuel veri girişini azaltır", "Orta"],
+          ["Şirket içi bilgi asistanı", "Prosedür ve dokümanlara hızlı erişim", "Orta"],
+          ["Ürün ve içerik metni üretimi", "E-ticaret ve pazarlama hızını artırır", "Düşük"],
+          ["Toplantı ve görüşme özetleri", "Takip ve aksiyonları netleştirir", "Düşük"],
+          ["Satış ve talep tahmini", "Stok ve planlama kararlarını destekler", "Yüksek"],
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Tablodaki ilk beş senaryo, hazır dil modelleri ve doğru bir entegrasyonla birkaç hafta içinde devreye alınabilir. Tahminleme gibi projeler ise geçmiş verinin kalitesine bağlı olduğu için genellikle ikinci aşamaya bırakılmalıdır.",
+      },
+      { type: "h2", text: "90 günlük yol haritası" },
+      { type: "h3", text: "1–30. gün: Keşif ve seçim" },
+      {
+        type: "list",
+        style: "ordered",
+        items: [
+          "Departmanlarla kısa görüşmeler yapıp zaman kaybettiren işleri listeleyin",
+          "Her iş için haftalık harcanan süreyi ve hata oranını kabaca not edin",
+          "Değer ve uygulanabilirlik açısından puanlayıp **tek bir pilot** seçin",
+          "Pilotun başarı kriterini baştan yazın: “Teklif hazırlama süresi %40 kısalsın” gibi",
+        ],
+      },
+      { type: "h3", text: "31–60. gün: Pilot geliştirme" },
+      {
+        type: "paragraph",
+        text: "Bu aşamada amaç mükemmel bir ürün değil, gerçek kullanıcıların gerçek işte kullandığı çalışan bir prototiptir. Pilot; mevcut araçlarınızın içine (CRM, e-posta, WhatsApp, kurumsal panel) yerleşmelidir. Ekibin yeni bir ekran öğrenmesi gerekiyorsa kullanım oranı düşer.",
+      },
+      { type: "h3", text: "61–90. gün: Ölçüm ve yaygınlaştırma" },
+      {
+        type: "paragraph",
+        text: "Pilotun başında belirlediğiniz kriteri ölçün. Kullanıcı geri bildirimlerini toplayın, hatalı sonuçları sınıflandırın ve modele verilen talimatları, örnekleri veya bilgi kaynaklarını iyileştirin. Hedefe ulaşıldıysa aynı yapıyı ikinci bir sürece taşıyın.",
+      },
+      {
+        type: "quote",
+        text: "Yapay zekâ projelerinde en pahalı hata yanlış modeli seçmek değil, ölçülemeyen bir hedefle başlamaktır.",
+      },
+      { type: "h2", text: "Veri ve gizlilik: Baştan düşünülmesi gerekenler" },
+      {
+        type: "paragraph",
+        text: "Kişisel veri içeren süreçlerde **KVKK** uyumu, verinin hangi ülkede işlendiği, modele gönderilen bilgilerin eğitimde kullanılıp kullanılmadığı ve erişim yetkileri proje başında netleştirilmelidir. Kurumsal API’ler ve doğru yapılandırılmış altyapılar bu konularda gerekli güvenceleri sağlar; ancak çalışanların ücretsiz araçlara müşteri verisi yapıştırması ciddi bir risktir.",
+      },
+      {
+        type: "callout",
+        variant: "note",
+        text: "Pilot başlamadan önce kısa bir “yapay zekâ kullanım politikası” yazın: Hangi araçlar onaylı, hangi veriler paylaşılamaz, üretilen içerik kim tarafından kontrol edilir?",
+      },
+      { type: "h2", text: "Maliyet nasıl oluşur?" },
+      {
+        type: "paragraph",
+        text: "KOBİ ölçeğindeki projelerde maliyet üç kalemden oluşur: kurulum ve entegrasyon geliştirmesi, kullanım bazlı model ücretleri ve bakım. Model ücretleri çoğu senaryoda sanıldığından düşüktür; asıl yatırım, sistemin mevcut iş akışınıza düzgün entegre edilmesidir. Bu nedenle getiri hesabını “kazanılan çalışan saati × saatlik maliyet” üzerinden yapmak en sağlıklı yaklaşımdır.",
+      },
+      { type: "divider" },
+      {
+        type: "paragraph",
+        text: "AKCY olarak işletmelerin ilk yapay zekâ projesini keşif aşamasından canlıya kadar birlikte planlıyoruz. Konunun teknik tarafını merak ediyorsanız [kurumsal yapay zekâ asistanı](/blog/kurumsal-yapay-zeka-asistani-nasil-kurulur) yazımıza göz atabilir, kendi senaryonuzu konuşmak için [bizimle iletişime geçebilirsiniz](/iletisim).",
+      },
+    ],
+    faq: [
+      {
+        question: "Küçük bir işletme yapay zekâya nereden başlamalı?",
+        answer:
+          "Sık tekrarlanan, sonucu kolay kontrol edilebilen ve hata maliyeti düşük bir işle başlamak en doğrusudur. Müşteri sorularına taslak cevap hazırlama, belge okuma veya ürün metni üretme iyi başlangıç noktalarıdır.",
+      },
+      {
+        question: "Yapay zekâ projesi için büyük veri gerekir mi?",
+        answer:
+          "Hazır dil modelleriyle yapılan projelerde büyük veri setlerine ihtiyaç yoktur. Şirketinizin dokümanları, örnek cevaplar ve iyi yazılmış talimatlar çoğu senaryo için yeterlidir.",
+      },
+      {
+        question: "İlk sonuçları ne kadar sürede görebiliriz?",
+        answer:
+          "İyi seçilmiş bir pilot proje 4–8 hafta içinde kullanıma alınabilir. 90 günün sonunda ölçülebilir bir kazanım raporu çıkarmak gerçekçi bir hedeftir.",
+      },
+    ],
+  },
+  {
+    slug: "yapay-zeka-ile-belge-isleme",
+    title: "Yapay Zekâ ile Belge İşleme: Fatura, Sözleşme ve Formlardan Otomatik Veri Çıkarma",
+    seoTitle: "Yapay Zekâ ile Belge İşleme ve Otomatik Veri Çıkarma | AKCY",
+    metaDescription:
+      "Faturaları, sözleşmeleri ve formları yapay zekâ ile otomatik okuyun. OCR ile farkı, doğruluk kontrolü, insan onayı ve ERP entegrasyonu dahil belge işleme otomasyonu rehberi.",
+    focusKeyword: "yapay zekâ ile belge işleme",
+    secondaryKeywords: [
+      "fatura okuma otomasyonu",
+      "OCR",
+      "akıllı belge işleme",
+      "veri çıkarma",
+    ],
+    category: "yapay-zeka",
+    date: "2026-10-17",
+    excerpt:
+      "Her gün onlarca PDF faturayı, sipariş formunu veya sözleşmeyi açıp içindeki bilgileri bir sisteme elle yazıyorsanız, bu iş artık yapay zekâya devredilebilir. Klasik OCR’dan farkını, doğruluğu nasıl güvenceye alacağınızı ve gerçek bir akışın nasıl kurulduğunu anlatıyoruz.",
+    coverImage: {
+      src: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1600&auto=format&fit=crop",
+      alt: "Masa üzerinde faturalar, belgeler ve hesap makinesi",
+    },
+    readingTime: 8,
+    author: { name: "AKCY", role: "Yapay Zekâ Ekibi" },
+    content: [
+      {
+        type: "paragraph",
+        text: "Muhasebe, satın alma, insan kaynakları ve operasyon ekiplerinin günlerinin önemli bir kısmı aynı işle geçer: Bir belgeyi açmak, içindeki bilgileri bulmak ve başka bir sisteme yazmak. Bu iş hem yorucu hem de hataya açıktır; tek bir hanenin yanlış girilmesi, ay sonunda saatler süren mutabakat çalışmalarına yol açabilir.",
+      },
+      {
+        type: "paragraph",
+        text: "**Yapay zekâ ile belge işleme**, farklı formatlardaki belgeleri anlayıp içlerindeki bilgileri yapılandırılmış veriye dönüştürür ve bu veriyi doğrudan iş sistemlerinize aktarır.",
+      },
+      { type: "h2", text: "Klasik OCR ile yapay zekâ arasındaki fark" },
+      {
+        type: "paragraph",
+        text: "OCR (optik karakter tanıma) bir görüntüdeki yazıları metne çevirir; ancak hangi sayının fatura toplamı, hangisinin vergi numarası olduğunu bilmez. Bu yüzden klasik sistemler her tedarikçi için ayrı şablon tanımlamayı gerektirir ve belge düzeni değiştiğinde bozulur.",
+      },
+      {
+        type: "table",
+        headers: ["", "Şablon tabanlı OCR", "Yapay zekâ ile belge işleme"],
+        rows: [
+          ["Yeni belge formatı", "Yeni şablon gerekir", "Genellikle ek ayar gerekmez"],
+          ["Serbest metin (sözleşme, e-posta)", "Desteklemez", "Anlam üzerinden çıkarım yapar"],
+          ["Tablo ve kalem satırları", "Kırılgan", "Satır bazında çıkarım"],
+          ["Bakım yükü", "Yüksek", "Düşük"],
+        ],
+      },
+      { type: "h2", text: "Hangi belgeler işlenebilir?" },
+      {
+        type: "list",
+        style: "unordered",
+        items: [
+          "**Faturalar ve irsaliyeler:** tedarikçi, tarih, kalemler, KDV ve toplam tutar",
+          "**Sipariş formları:** müşteri bilgisi, ürün kodları, adet ve teslim tarihi",
+          "**Sözleşmeler:** taraflar, süre, yenileme ve fesih maddeleri, ödeme koşulları",
+          "**Başvuru formları ve CV’ler:** iletişim bilgileri, deneyim, yetkinlikler",
+          "**Banka dekontları ve masraf fişleri:** tutar, açıklama, masraf kategorisi",
+        ],
+      },
+      { type: "h2", text: "Uçtan uca bir fatura işleme akışı" },
+      {
+        type: "list",
+        style: "ordered",
+        items: [
+          "Fatura e-posta, paylaşımlı klasör veya portal üzerinden sisteme düşer",
+          "Yapay zekâ belgeyi okur ve alanları tanımlı bir şemaya göre çıkarır",
+          "Kurallar devreye girer: vergi numarası tedarikçi kaydıyla eşleşiyor mu, toplamlar tutarlı mı?",
+          "Güven skoru yüksek belgeler otomatik olarak ERP veya muhasebe sistemine aktarılır",
+          "Şüpheli belgeler bir onay ekranında ilgili kişiye gösterilir",
+          "Onaylanan veriler sisteme işlenir, düzeltmeler sonraki belgeler için örnek olarak saklanır",
+        ],
+      },
+      {
+        type: "code",
+        language: "json",
+        filename: "fatura-cikti.json",
+        code: `{\n  "tedarikci": "Örnek Lojistik A.Ş.",\n  "vergiNo": "1234567890",\n  "faturaNo": "ABC2026000412",\n  "tarih": "2026-10-03",\n  "kalemler": [\n    { "aciklama": "Nakliye hizmeti", "adet": 1, "tutar": 12500 }\n  ],\n  "kdv": 2500,\n  "toplam": 15000,\n  "guvenSkoru": 0.97\n}`,
+      },
+      {
+        type: "callout",
+        variant: "info",
+        text: "Yapay zekânın çıktısını her zaman sabit bir şemaya bağlayın. Serbest metin yerine yapılandırılmış JSON üretmek, sonucu doğrulamayı ve diğer sistemlere aktarmayı çok kolaylaştırır.",
+      },
+      { type: "h2", text: "Doğruluğu nasıl güvenceye alırsınız?" },
+      {
+        type: "paragraph",
+        text: "Hiçbir sistem %100 doğru değildir; önemli olan hatanın sessizce sisteme girmesini engellemektir. Bunun için yapay zekâ tek başına bırakılmaz, kural kontrolleri ve insan onayıyla birlikte çalışır.",
+      },
+      {
+        type: "list",
+        style: "unordered",
+        items: [
+          "**Matematiksel kontroller:** kalem toplamı + KDV = genel toplam mı?",
+          "**Ana veri eşleştirme:** tedarikçi, ürün ve müşteri kayıtlarıyla karşılaştırma",
+          "**Mükerrer kontrolü:** aynı fatura numarası daha önce işlendi mi?",
+          "**Eşik bazlı onay:** belirli tutarın üzerindeki belgeler her zaman insan onayından geçer",
+        ],
+      },
+      {
+        type: "quote",
+        text: "Amaç insanı süreçten çıkarmak değil; insanın yalnızca gerçekten karar gerektiren belgelere bakmasını sağlamaktır.",
+      },
+      { type: "h2", text: "Kazanımı ölçmek" },
+      {
+        type: "paragraph",
+        text: "Ayda 1.500 fatura işleyen ve her fatura için ortalama 4 dakika harcayan bir ekip, ayda 100 saati yalnızca veri girişine ayırır. Belgelerin büyük kısmının otomatik işlendiği bir akışta bu süre, kontrol ve onay işlerine indirgenir. Ayrıca kapanış süreleri kısalır ve hata kaynaklı düzeltme maliyetleri azalır.",
+      },
+      { type: "divider" },
+      {
+        type: "paragraph",
+        text: "Belge işleme, [şirket süreç otomasyonu](/blog/sirket-surec-otomasyonu-rehberi) projelerinin en hızlı geri dönüş sağlayan adımlarından biridir. AKCY olarak belge akışlarınızı analiz edip mevcut ERP ve muhasebe sistemlerinize entegre çözümler geliştiriyoruz; [detayları konuşalım](/iletisim).",
+      },
+    ],
+    faq: [
+      {
+        question: "Yapay zekâ ile belge işleme OCR’dan farklı mı?",
+        answer:
+          "Evet. OCR yalnızca görüntüdeki yazıyı metne çevirir. Yapay zekâ ise metnin anlamını yorumlayarak hangi bilginin fatura tutarı, tarih veya taraf olduğunu anlar ve şablon gerektirmeden yapılandırılmış veri üretir.",
+      },
+      {
+        question: "Taranmış veya el yazılı belgeler de işlenebilir mi?",
+        answer:
+          "Kaliteli taranmış belgeler genellikle sorunsuz işlenir. El yazısı ve düşük çözünürlüklü belgelerde doğruluk düşebileceği için bu tür belgelerin insan onayına yönlendirilmesi önerilir.",
+      },
+      {
+        question: "Çıkarılan veriler muhasebe programına aktarılabilir mi?",
+        answer:
+          "Evet. API veya entegrasyon katmanı üzerinden ERP, muhasebe yazılımı veya CRM sistemlerine otomatik aktarım yapılabilir.",
+      },
+    ],
+  },
+  {
+    slug: "wordpress-site-bakimi-kontrol-listesi",
+    title: "WordPress Site Bakımı: Güncelleme, Yedekleme ve Güvenlik İçin Aylık Kontrol Listesi",
+    seoTitle: "WordPress Bakımı: Aylık Kontrol Listesi ve Rehber | AKCY",
+    metaDescription:
+      "WordPress sitenizi güvenli, hızlı ve sorunsuz tutmak için haftalık ve aylık bakım kontrol listesi: güncellemeler, yedekleme, güvenlik taraması, performans ve veritabanı temizliği.",
+    focusKeyword: "WordPress bakımı",
+    secondaryKeywords: [
+      "WordPress güncelleme",
+      "WordPress yedekleme",
+      "WordPress güvenliği",
+      "site bakım hizmeti",
+    ],
+    category: "wordpress",
+    date: "2026-10-09",
+    excerpt:
+      "WordPress sitesi yayına alındığında iş bitmez, yeni başlar. Güncellenmeyen eklentiler, alınmayan yedekler ve fark edilmeyen güvenlik açıkları en sık karşılaştığımız sorunlar. Sitenizi sağlıklı tutmak için uygulanabilir bir bakım listesi hazırladık.",
+    coverImage: {
+      src: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1600&auto=format&fit=crop",
+      alt: "Karanlık bir ortamda ekranı aydınlık yarı açık dizüstü bilgisayar",
+    },
+    readingTime: 7,
+    author: { name: "AKCY", role: "Web Ekibi" },
+    content: [
+      {
+        type: "paragraph",
+        text: "WordPress, internetteki web sitelerinin büyük bir bölümüne güç veriyor. Bu popülerlik, onu aynı zamanda saldırganların en çok hedeflediği platformlardan biri yapıyor. Saldırıların büyük kısmı WordPress çekirdeğinden değil, **güncellenmemiş eklenti ve temalardan** kaynaklanıyor.",
+      },
+      {
+        type: "paragraph",
+        text: "Düzenli **WordPress bakımı**, bir sitenin güvenli, hızlı ve çalışır durumda kalmasının en ucuz yoludur. Sorun çıktıktan sonra yapılan müdahale, hem maliyet hem de itibar açısından her zaman daha pahalıdır.",
+      },
+      { type: "h2", text: "Haftalık kontroller" },
+      {
+        type: "list",
+        style: "unordered",
+        items: [
+          "Sitenin ana sayfası, iletişim formu ve varsa ödeme adımı çalışıyor mu?",
+          "Otomatik yedekler başarıyla alınıyor mu? Son yedeğin tarihi ne?",
+          "Güvenlik eklentisi veya sunucu tarafında yeni bir uyarı var mı?",
+          "Çalışma süresi (uptime) izleme aracında kesinti kaydı var mı?",
+        ],
+      },
+      { type: "h2", text: "Aylık bakım kontrol listesi" },
+      { type: "h3", text: "1. Güncellemeler" },
+      {
+        type: "paragraph",
+        text: "WordPress çekirdeği, tema ve eklentiler düzenli olarak güncellenmelidir. Ancak güncellemeleri doğrudan canlı sitede “tümünü güncelle” diyerek yapmak risklidir. Doğru yöntem, önce bir **test (staging) ortamında** güncelleyip kritik sayfaları kontrol etmek, ardından canlıya almaktır.",
+      },
+      {
+        type: "callout",
+        variant: "note",
+        text: "Güncellemeden önce mutlaka güncel bir yedek alın. Bir eklenti güncellemesi siteyi bozarsa birkaç dakika içinde geri dönebilmek, bakımın en önemli parçasıdır.",
+      },
+      { type: "h3", text: "2. Yedekleme ve geri yükleme testi" },
+      {
+        type: "paragraph",
+        text: "Yedek almak yeterli değildir; yedeğin gerçekten geri yüklenebildiğini test etmek gerekir. Yedekler sitenin bulunduğu sunucudan farklı bir yerde (bulut depolama gibi) saklanmalı ve hem dosyaları hem de veritabanını içermelidir.",
+      },
+      {
+        type: "table",
+        headers: ["Site türü", "Önerilen yedek sıklığı", "Saklama süresi"],
+        rows: [
+          ["Kurumsal tanıtım sitesi", "Haftalık", "En az 4 hafta"],
+          ["Blog / içerik sitesi", "Günlük", "En az 30 gün"],
+          ["E-ticaret (WooCommerce)", "Günlük + sipariş sonrası", "En az 30 gün"],
+        ],
+      },
+      { type: "h3", text: "3. Güvenlik" },
+      {
+        type: "list",
+        style: "unordered",
+        items: [
+          "Kullanılmayan eklenti ve temaları devre dışı bırakmak yerine **tamamen silin**",
+          "Yönetici hesaplarını gözden geçirin; ayrılan çalışanların erişimini kaldırın",
+          "Tüm yönetici hesaplarında **iki adımlı doğrulama** kullanın",
+          "Dosya bütünlüğü ve kötü amaçlı yazılım taraması yapın",
+          "SSL sertifikasının geçerlilik tarihini kontrol edin",
+        ],
+      },
+      { type: "h3", text: "4. Performans" },
+      {
+        type: "paragraph",
+        text: "Zamanla eklenen eklentiler, optimize edilmemiş görseller ve büyüyen veritabanı siteyi yavaşlatır. Ayda bir kez PageSpeed Insights ile ana sayfanın ve en çok ziyaret edilen sayfaların [Core Web Vitals](/blog/core-web-vitals-rehberi) değerlerini kontrol edin.",
+      },
+      {
+        type: "list",
+        style: "unordered",
+        items: [
+          "Önbellek (cache) eklentisinin doğru çalıştığını doğrulayın",
+          "Yeni yüklenen görsellerin WebP/AVIF formatında ve sıkıştırılmış olduğundan emin olun",
+          "Veritabanındaki revizyonları, spam yorumları ve geçici verileri temizleyin",
+          "PHP sürümünün güncel ve desteklenen bir sürüm olduğunu kontrol edin",
+        ],
+      },
+      { type: "h3", text: "5. İçerik ve SEO sağlığı" },
+      {
+        type: "paragraph",
+        text: "Kırık bağlantıları, 404 hatalarını ve Google Search Console’daki dizinleme uyarılarını gözden geçirin. Formların gerçekten e-posta gönderdiğini test edin; sessizce çalışmayı bırakan bir iletişim formu, fark edilmeden müşteri kaybettirir.",
+      },
+      {
+        type: "quote",
+        text: "Bakım görünmez bir iştir; değerini ancak yapılmadığında anlarsınız.",
+      },
+      { type: "h2", text: "Kendiniz mi yapmalı, hizmet mi almalı?" },
+      {
+        type: "paragraph",
+        text: "Az eklenti kullanan basit bir tanıtım sitesinin bakımı, bu listeyle şirket içinde yapılabilir. Ancak e-ticaret siteleri, çok sayıda özel eklenti veya entegrasyon içeren projeler ve ekipte teknik sorumlunun olmadığı durumlarda profesyonel bir bakım hizmeti hem riski hem de iş yükünü azaltır.",
+      },
+      { type: "divider" },
+      {
+        type: "paragraph",
+        text: "Sitenizin kurulum aşamasında nelere dikkat edilmesi gerektiğini [WordPress ile kurumsal web sitesi](/blog/wordpress-ile-kurumsal-web-sitesi) rehberimizde anlattık. AKCY olarak WordPress siteleri için düzenli bakım, güvenlik ve performans hizmeti sunuyoruz; [bize ulaşın](/iletisim).",
+      },
+    ],
+    faq: [
+      {
+        question: "WordPress sitesi ne sıklıkla güncellenmeli?",
+        answer:
+          "Güvenlik güncellemeleri yayımlandıkları anda, diğer güncellemeler ise en az ayda bir kez ve tercihen önce test ortamında denenerek yapılmalıdır.",
+      },
+      {
+        question: "WordPress yedeği nerede saklanmalı?",
+        answer:
+          "Yedekler sitenin barındığı sunucudan bağımsız bir konumda, örneğin bulut depolama hizmetinde saklanmalıdır. Sunucuda sorun olduğunda aynı yerdeki yedek de erişilemez hale gelebilir.",
+      },
+      {
+        question: "Kullanılmayan eklentileri devre dışı bırakmak yeterli mi?",
+        answer:
+          "Hayır. Devre dışı bırakılan eklentilerin dosyaları sunucuda kalır ve güvenlik açığı oluşturabilir. Kullanılmayan eklenti ve temalar tamamen silinmelidir.",
+      },
+    ],
+  },
+  {
+    slug: "n8n-ile-is-akisi-otomasyonu",
+    title: "n8n ile İş Akışı Otomasyonu: Sistemlerinizi Kod Yazmadan Birbirine Bağlayın",
+    seoTitle: "n8n Nedir? n8n ile İş Akışı Otomasyonu Rehberi | AKCY",
+    metaDescription:
+      "n8n nedir, Zapier ve Make’ten farkı ne? n8n ile form, CRM, e-posta ve yapay zekâ entegrasyonları kurmak, kendi sunucunuzda çalıştırmak ve örnek iş akışları için rehber.",
+    focusKeyword: "n8n otomasyon",
+    secondaryKeywords: [
+      "n8n nedir",
+      "iş akışı otomasyonu",
+      "Zapier alternatifi",
+      "webhook entegrasyonu",
+    ],
+    category: "otomasyon",
+    date: "2026-10-02",
+    excerpt:
+      "Web formundan gelen talebi CRM’e kaydetmek, ekibe bildirim göndermek, müşteriye otomatik cevap atmak… n8n ile bu akışları görsel bir editörde, kendi sunucunuzda ve işlem başına ücret ödemeden kurabilirsiniz.",
+    coverImage: {
+      src: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1600&auto=format&fit=crop",
+      alt: "Kablolarla birbirine bağlı sunucu dolapları",
+    },
+    readingTime: 8,
+    author: { name: "AKCY", role: "Otomasyon Ekibi" },
+    content: [
+      {
+        type: "paragraph",
+        text: "Bir şirkette kullanılan uygulama sayısı arttıkça, bu uygulamalar arasında veri taşıma işi de büyür. Çoğu zaman bu “köprü” görevini çalışanlar üstlenir. **n8n**, bu köprüleri görsel bir editörde kurup otomatik olarak çalıştırmanızı sağlayan açık kaynaklı bir iş akışı otomasyon aracıdır.",
+      },
+      { type: "h2", text: "n8n nedir ve neden öne çıkıyor?" },
+      {
+        type: "paragraph",
+        text: "n8n’de her adım bir “node” ile temsil edilir: bir tetikleyici (yeni form gönderimi, zamanlanmış görev, webhook), ardından gelen işlemler (veriyi dönüştürme, koşul kontrolü, API çağrısı) ve sonuç (CRM’e kayıt, e-posta, Slack mesajı). Bu node’ları birbirine bağlayarak karmaşık akışlar oluşturabilirsiniz.",
+      },
+      {
+        type: "list",
+        style: "unordered",
+        items: [
+          "**Kendi sunucunuzda çalışabilir:** veriler şirket dışına çıkmadan işlenir",
+          "**İşlem başına ücret yoktur:** kendi sunucunuzda yüksek hacimli akışlar ek maliyet doğurmaz",
+          "**Kod ile genişletilebilir:** gerektiğinde JavaScript veya Python ile özel adımlar yazılabilir",
+          "**Yüzlerce hazır entegrasyon:** Google Workspace, Microsoft 365, CRM’ler, veritabanları ve yapay zekâ servisleri",
+        ],
+      },
+      { type: "h2", text: "Zapier ve Make ile karşılaştırma" },
+      {
+        type: "table",
+        headers: ["Kriter", "Zapier", "Make", "n8n"],
+        rows: [
+          ["Kurulum", "Bulut", "Bulut", "Bulut veya kendi sunucunuz"],
+          ["Fiyatlandırma", "Görev başına", "İşlem başına", "Self-host’ta işlem sınırı yok"],
+          ["Öğrenme eğrisi", "Çok kolay", "Orta", "Orta"],
+          ["Özel kod", "Sınırlı", "Sınırlı", "Esnek"],
+          ["Veri kontrolü", "Sağlayıcıda", "Sağlayıcıda", "Tamamen sizde"],
+        ],
+      },
+      {
+        type: "callout",
+        variant: "info",
+        text: "Birkaç basit akış için Zapier hızlı bir başlangıç sağlar. Akış sayısı ve işlem hacmi arttıkça veya veri gizliliği önem kazandıkça n8n genellikle daha sürdürülebilir bir seçenek olur.",
+      },
+      { type: "h2", text: "Örnek akış: Web formundan satış ekibine" },
+      {
+        type: "paragraph",
+        text: "Web sitenizden gelen teklif taleplerinin otomatik olarak işlendiği bir akış düşünelim:",
+      },
+      {
+        type: "list",
+        style: "ordered",
+        items: [
+          "**Webhook:** Web sitesindeki form gönderildiğinde n8n’e veri gelir",
+          "**Doğrulama:** E-posta formatı ve zorunlu alanlar kontrol edilir, spam elenir",
+          "**Zenginleştirme:** Yapay zekâ talep metnini özetler ve ilgili hizmet kategorisini belirler",
+          "**CRM kaydı:** Müşteri adayı CRM’de oluşturulur veya mevcut kayıt güncellenir",
+          "**Yönlendirme:** Kategoriye göre doğru satış temsilcisine bildirim gider",
+          "**Otomatik cevap:** Müşteriye talebin alındığını bildiren kişiselleştirilmiş e-posta gönderilir",
+        ],
+      },
+      {
+        type: "code",
+        language: "javascript",
+        filename: "n8n-code-node.js",
+        code: `// Form verisini CRM'in beklediği formata dönüştürür\nreturn $input.all().map((item) => {\n  const form = item.json;\n\n  return {\n    json: {\n      fullName: form.name.trim(),\n      email: form.email.toLowerCase(),\n      source: "web-form",\n      budget: Number(form.budget) || null,\n      createdAt: new Date().toISOString(),\n    },\n  };\n});`,
+      },
+      { type: "h2", text: "Canlıya alırken dikkat edilmesi gerekenler" },
+      {
+        type: "list",
+        style: "unordered",
+        items: [
+          "**Hata yönetimi:** Her kritik akış için bir “error workflow” tanımlayın; başarısız çalışmalar sessizce kaybolmasın",
+          "**Kimlik bilgileri:** API anahtarlarını node’lara yazmak yerine n8n’in credential yönetimini kullanın",
+          "**Yedekleme ve versiyonlama:** Akışları düzenli olarak dışa aktarın ve sürüm kontrolünde saklayın",
+          "**İzleme:** Çalışma geçmişini ve süreleri takip edin, beklenmedik artışlarda uyarı alın",
+          "**Güvenlik:** Self-host kurulumda HTTPS, güçlü parola ve erişim kısıtlaması zorunludur",
+        ],
+      },
+      {
+        type: "quote",
+        text: "Otomasyon kurmak işin yarısıdır; diğer yarısı, bir şeyler ters gittiğinde bunu ilk sizin fark etmenizdir.",
+      },
+      { type: "h2", text: "n8n ve yapay zekâ" },
+      {
+        type: "paragraph",
+        text: "n8n’in yapay zekâ node’ları sayesinde dil modellerini akışların içine doğal bir adım olarak ekleyebilirsiniz. Gelen e-postaları sınıflandırmak, destek taleplerine taslak cevap üretmek veya belgelerden veri çıkarmak bu adımlara örnektir. Bu yaklaşımın detaylarını [yapay zekâ ile iş süreçleri otomasyonu](/blog/yapay-zeka-ile-is-surecleri-otomasyonu) yazımızda bulabilirsiniz.",
+      },
+      { type: "divider" },
+      {
+        type: "paragraph",
+        text: "AKCY olarak n8n kurulumu, iş akışı tasarımı ve mevcut sistemlerinizle entegrasyon konusunda destek veriyoruz. Hangi süreçlerinizin otomatikleştirilebileceğini birlikte değerlendirmek için [bizimle iletişime geçin](/iletisim).",
+      },
+    ],
+    faq: [
+      {
+        question: "n8n ücretsiz mi?",
+        answer:
+          "n8n’in kendi sunucunuzda çalıştırabileceğiniz sürümü ücretsiz olarak kullanılabilir; yalnızca sunucu maliyeti oluşur. Bulut sürümü ve kurumsal özellikler ise ücretlidir. Güncel lisans koşullarını kullanım senaryonuza göre kontrol etmeniz önerilir.",
+      },
+      {
+        question: "n8n kullanmak için yazılım bilgisi gerekir mi?",
+        answer:
+          "Basit akışlar görsel editörle kod yazmadan kurulabilir. Veri dönüştürme veya özel API entegrasyonları gerektiren akışlarda temel JavaScript bilgisi işi kolaylaştırır.",
+      },
+      {
+        question: "n8n hangi uygulamalarla entegre olabilir?",
+        answer:
+          "Google Workspace, Microsoft 365, Slack, popüler CRM’ler, veritabanları, e-ticaret platformları ve yapay zekâ servisleri dahil yüzlerce hazır entegrasyona sahiptir. Hazır entegrasyonu olmayan sistemlere HTTP isteği ile bağlanılabilir.",
+      },
+    ],
+  },
 ];
 
 // Taslaklar veride durur; yalnızca bu listedeki yazılar yayınlanır.
@@ -1564,6 +2614,13 @@ const PUBLISHED_SLUGS = [
   "kurumsal-web-sitesi-yaptirmadan-once",
   "mobil-oncelikli-tasarim-rehberi",
   "yapay-zeka-ile-is-surecleri-otomasyonu",
+  "wordpress-ile-kurumsal-web-sitesi",
+  "kurumsal-yapay-zeka-asistani-nasil-kurulur",
+  "sirket-surec-otomasyonu-rehberi",
+  "kobiler-icin-yapay-zeka-yol-haritasi",
+  "yapay-zeka-ile-belge-isleme",
+  "wordpress-site-bakimi-kontrol-listesi",
+  "n8n-ile-is-akisi-otomasyonu",
 ];
 
 export const blogPosts = editorialDrafts.filter((post) =>

@@ -1,55 +1,126 @@
 .share {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   flex-wrap: wrap;
 
-  gap: 24px;
+  gap: 20px 28px;
 
   max-width: 760px;
 
   margin: 64px auto 0;
-  padding-top: 32px;
+  padding: 24px 28px;
 
-  border-top: 1px solid rgba(6, 16, 31, 0.12);
+  border: 1px solid rgba(6, 16, 31, 0.07);
+  border-radius: 22px;
+
+  background: #fff;
+
+}
+
+.intro {
+  p {
+    margin: 4px 0 0;
+
+    color: rgba(6, 16, 31, 0.55);
+
+    font-size: 14px;
+  }
 }
 
 .label {
-  color: rgba(6, 16, 31, 0.5);
+  color: #06101f;
 
-  font-size: 13px;
-  font-weight: 550;
-
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-size: 15px;
+  font-weight: 600;
 }
 
 .actions {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 
-  gap: 22px;
+  gap: 8px;
 
   button {
-    border: 0;
-    background: transparent;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 10px 14px;
+
+    border: 1px solid rgba(6, 16, 31, 0.1);
+    border-radius: 999px;
+
+    background: #f7f9fb;
 
     color: #06101f;
 
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 550;
 
     cursor: pointer;
 
-    transition: color 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.22, 0.8, 0.25, 1),
+      background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+
+    svg {
+      color: #0d9aa3;
+
+      transition: color 0.3s ease;
+    }
 
     &:hover {
-      color: #0d9aa3;
+      transform: translateY(-2px);
+
+      border-color: #06101f;
+
+      background: #06101f;
+
+      color: #fff;
+
+      svg {
+        color: #72d7d8;
+      }
+    }
+  }
+
+  .copied,
+  .copied:hover {
+    border-color: #0d9aa3;
+
+    background: #0d9aa3;
+
+    color: #fff;
+
+    svg {
+      color: #fff;
     }
   }
 }
 
+@media (max-width: 700px) {
+  .share {
+    padding: 20px;
+  }
+
+  .actions button span {
+    display: none;
+  }
+
+  .actions .copied span,
+  .actions button:last-child span {
+    display: inline;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .actions button {
+  .actions button,
+  .actions button svg {
     transition: none;
+  }
+
+  .actions button:hover {
+    transform: none;
   }
 }

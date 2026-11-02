@@ -3,7 +3,12 @@
 
   width: 100%;
 
-  background: #f1f4f7;
+  background: radial-gradient(
+      800px 380px at 10% 0%,
+      rgba(22, 195, 206, 0.08),
+      transparent 70%
+    ),
+    #f1f4f7;
 
   color: #06101f;
 }
@@ -16,24 +21,99 @@
   padding: 100px 0 120px;
 }
 
+.head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 44px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-bottom: 14px;
+
+  color: #0b7f87;
+
+  font-size: 11.5px;
+  font-weight: 650;
+  letter-spacing: 0.16em;
+
+  i {
+    width: 22px;
+    height: 2px;
+
+    border-radius: 2px;
+
+    background: linear-gradient(90deg, #16c3ce, #8b7cf6);
+  }
+}
+
 .heading {
-  margin: 0 0 44px;
+  margin: 0;
 
   color: #06101f;
 
-  font-size: clamp(26px, 2.6vw, 36px);
-  line-height: 1.15;
+  font-size: clamp(28px, 2.8vw, 40px);
+  line-height: 1.12;
 
   font-weight: 500;
 
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+}
+
+.all {
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 11px 18px;
+
+  border: 1px solid rgba(6, 16, 31, 0.14);
+  border-radius: 999px;
+
+  color: #06101f;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+
+  b {
+    font-weight: 500;
+
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    border-color: #06101f;
+
+    background: #06101f;
+
+    color: #fff;
+
+    b {
+      transform: translateX(4px);
+    }
+  }
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 
-  gap: 48px 40px;
+  gap: 28px;
+
+  > * {
+    min-width: 0;
+  }
 }
 
 @media (max-width: 1050px) {
@@ -46,7 +126,7 @@
   .grid {
     grid-template-columns: repeat(2, 1fr);
 
-    gap: 40px 32px;
+    gap: 24px;
   }
 }
 
@@ -57,13 +137,23 @@
     padding: 64px 0 80px;
   }
 
-  .heading {
+  .head {
+    flex-direction: column;
+    align-items: flex-start;
+
     margin-bottom: 32px;
   }
 
   .grid {
     grid-template-columns: 1fr;
 
-    gap: 40px;
+    gap: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .all,
+  .all b {
+    transition: none;
   }
 }
