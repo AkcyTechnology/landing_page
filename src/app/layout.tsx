@@ -86,8 +86,7 @@ const organizationSchema = {
   description:
     "Yapay zekâ, otomasyon ve dijital ürünlerle işletmelerin daha akıllı çalışmasını sağlıyoruz.",
   sameAs: [
-    "https://linkedin.com/company/akcy-technologies",
-    "https://instagram.com/akcytech",
+    "https://www.instagram.com/akcytechnology/",
   ],
   contactPoint: {
     "@type": "ContactPoint",

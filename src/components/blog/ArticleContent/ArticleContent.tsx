@@ -56,6 +56,9 @@ function Block({ block }: { block: ContentBlock }) {
     case "quote":
       return (
         <blockquote className={styles.quote}>
+          <span className={styles.quoteMark} aria-hidden="true">
+            “
+          </span>
           <p>{parseInlineMarkdown(block.text)}</p>
           {block.cite && <cite>{block.cite}</cite>}
         </blockquote>
@@ -105,7 +108,14 @@ function Block({ block }: { block: ContentBlock }) {
       return (
         <div className={styles.codeBlock}>
           <div className={styles.codeHeader}>
-            <span>{block.filename ?? block.language}</span>
+            <span className={styles.codeTitle}>
+              <i className={styles.dots} aria-hidden="true">
+                <b />
+                <b />
+                <b />
+              </i>
+              {block.filename ?? block.language}
+            </span>
             <CopyCodeButton code={block.code} />
           </div>
           <pre>
@@ -116,11 +126,20 @@ function Block({ block }: { block: ContentBlock }) {
 
     case "callout":
       return (
-        <div className={styles.callout}>
-          <span className={styles.calloutLabel}>
-            {block.variant === "info" ? "Bilgi" : "Not"}
+        <div
+          className={`${styles.callout} ${
+            block.variant === "note" ? styles.calloutNote : ""
+          }`}
+        >
+          <span className={styles.calloutIcon} aria-hidden="true">
+            {block.variant === "info" ? "i" : "!"}
           </span>
-          <p>{parseInlineMarkdown(block.text)}</p>
+          <div>
+            <span className={styles.calloutLabel}>
+              {block.variant === "info" ? "İpucu" : "Dikkat"}
+            </span>
+            <p>{parseInlineMarkdown(block.text)}</p>
+          </div>
         </div>
       );
 

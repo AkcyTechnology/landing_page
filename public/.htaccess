@@ -1,0 +1,69 @@
+# ============================================================
+# AKCY — Turhost (cPanel / Apache) ayarları
+# "npm run build" ile out/ klasörüne kopyalanır; public_html'e yüklenir.
+# ============================================================
+
+Options -Indexes
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+# --- Gizli dosyalar: tarayıcıdan erişilemez --------------------------
+<FilesMatch "^(config\.php|config\.example\.php)$">
+  Require all denied
+</FilesMatch>
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # SSL sertifikasının otomatik yenilenmesi (cPanel AutoSSL) için
+  # .well-known klasörü yönlendirmelerin dışında tutulur.
+  RewriteRule ^\.well-known/ - [L]
+
+  # Tek adres: www'lu adresler www'suz adrese yönlenir (HTTPS ile birlikte,
+  # tek adımda): www.akcy.com.tr/blog/ → https://akcy.com.tr/blog/
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+  # Her zaman HTTPS
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Sayfalar klasör olarak üretilir; "/" olmadan gelen istekler kalıcı
+  # olarak "/" ile biten adrese yönlendirilir: /iletisim → /iletisim/
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteCond %{REQUEST_URI} !/$
+  RewriteRule ^(.*)$ /$1/ [L,R=301]
+</IfModule>
+
+# --- Güvenlik başlıkları ---------------------------------------------
+<IfModule mod_headers.c>
+  # Tarayıcının dosya türünü tahmin edip zararlı içerik çalıştırmasını engeller
+  Header always set X-Content-Type-Options "nosniff"
+  # Sitenin başka sitelerde iframe içine alınmasını (clickjacking) engeller
+  Header always set X-Frame-Options "SAMEORIGIN"
+  # Başka sitelere giderken tam adresin sızmasını önler
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  # Kullanılmayan kamera / mikrofon / konum izinlerini kapatır
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), browsing-topics=()"
+  # Tarayıcıyı siteye her zaman HTTPS ile bağlanmaya zorlar
+  Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains"
+  Header unset X-Powered-By
+</IfModule>
+
+# --- Önbellek: sürüm adlı dosyalar uzun süre, sayfalar her seferinde ---
+<IfModule mod_headers.c>
+  <FilesMatch "\.(js|css|woff2?|svg|png|jpe?g|webp|avif|ico)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml text/xml
+</IfModule>

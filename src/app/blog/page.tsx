@@ -1,38 +1,42 @@
 import { pageMetadata } from "@/lib/metadata";
 
-import { getAllPosts, getFeaturedPost } from "@/data/blog";
+import { categories, getAllPosts, getFeaturedPost } from "@/data/blog";
 import BlogHero from "@/components/blog/BlogHero/BlogHero";
 import BlogListingClient from "@/components/blog/BlogListingClient/BlogListingClient";
+import BlogCTA from "@/components/blog/BlogCTA/BlogCTA";
 
-export const metadata = pageMetadata("Blog", "Teknoloji, tasarım, yazılım ve üzerinde çalıştığımız projeler hakkında notlar, deneyimler ve öğrendiklerimiz.", "/blog");
+export const metadata = pageMetadata("Blog", "Web, WordPress, şirket süreç otomasyonu ve yapay zekâ üzerine uygulanabilir rehberler, deneyimler ve öğrendiklerimiz.", "/blog");
 
-interface BlogPageProps {
-  searchParams: Promise<{
-    category?: string;
-    q?: string;
-    page?: string;
-  }>;
-}
-
-export default async function BlogPage({ searchParams }: BlogPageProps) {
-  const params = await searchParams;
-
+export default function BlogPage() {
   const allPosts = getAllPosts();
   const featuredPost = getFeaturedPost();
 
+  // Yalnızca yazısı olan kategoriler hero'da ve filtrelerde listelenir.
+  const topics = categories
+    .map((category) => ({
+      ...category,
+      count: allPosts.filter((post) => post.category === category.slug).length,
+    }))
+    .filter((topic) => topic.count > 0);
+
   return (
     <>
-      <BlogHero />
+      <BlogHero
+        postCount={allPosts.length}
+        totalMinutes={allPosts.reduce((sum, post) => sum + post.readingTime, 0)}
+        topics={topics}
+      />
 
       <BlogListingClient
         allPosts={allPosts}
-        initialCategory={params.category ?? "tumu"}
-        initialQuery={params.q ?? ""}
-        initialPage={Number(params.page) || 1}
+        availableCategories={topics.map((topic) => topic.slug)}
+        categoryCounts={Object.fromEntries(
+          topics.map((topic) => [topic.slug, topic.count])
+        )}
         featuredPost={featuredPost}
       />
 
-
+      <BlogCTA />
     </>
   );
 }

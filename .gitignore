@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+!.env.example
+
+# PHP form ayarları (gizli anahtar içerir)
+public/api/config.php

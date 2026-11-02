@@ -2,11 +2,13 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 
-  gap: 48px 40px;
+  gap: 28px;
 }
 
-.twoColumns {
-  grid-template-columns: repeat(2, 1fr);
+.single {
+  grid-template-columns: minmax(0, 1fr);
+
+  max-width: 440px;
 }
 
 .spanLarge {
@@ -17,11 +19,11 @@
   .grid {
     grid-template-columns: repeat(2, 1fr);
 
-    gap: 40px 32px;
+    gap: 24px;
   }
 
-  .spanLarge {
-    grid-column: span 2;
+  .single {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -29,10 +31,14 @@
   .grid {
     grid-template-columns: 1fr;
 
-    gap: 40px;
+    gap: 20px;
   }
 
   .spanLarge {
     grid-column: span 1;
+  }
+
+  .single {
+    max-width: none;
   }
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useMemo } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 
@@ -15,22 +15,43 @@ import styles from "./ProjectsListingClient.module.scss";
 
 interface ProjectsListingClientProps {
   allProjects: ProjectDef[];
-  initialCategory: string;
 }
 
-export default function ProjectsListingClient({
+const NO_PARAMS = new URLSearchParams();
+
+/*
+  Site statik HTML olarak yayınlandığı için kategori parametresi tarayıcıda
+  okunur; statik HTML'e tüm projeler basılır.
+*/
+export default function ProjectsListingClient(
+  props: ProjectsListingClientProps
+) {
+  return (
+    <Suspense
+      fallback={<ProjectsListing {...props} searchParams={NO_PARAMS} />}
+    >
+      <ProjectsListingWithParams {...props} />
+    </Suspense>
+  );
+}
+
+function ProjectsListingWithParams(props: ProjectsListingClientProps) {
+  const searchParams = useSearchParams();
+  return <ProjectsListing {...props} searchParams={searchParams} />;
+}
+
+function ProjectsListing({
   allProjects,
-  initialCategory,
-}: ProjectsListingClientProps) {
+  searchParams,
+}: ProjectsListingClientProps & {
+  searchParams: Pick<URLSearchParams, "get" | "toString">;
+}) {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
-  const [category, setCategory] = useState(initialCategory);
+  const category = searchParams.get("category") ?? ALL_PROJECTS_SLUG;
 
   const handleChange = (slug: string) => {
-    setCategory(slug);
-
     const params = new URLSearchParams(searchParams.toString());
 
     if (slug !== ALL_PROJECTS_SLUG) {

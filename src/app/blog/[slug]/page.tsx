@@ -15,6 +15,8 @@ import ShareBlock from "@/components/blog/ShareBlock/ShareBlock";
 import FaqSection from "@/components/blog/FaqSection/FaqSection";
 import NextArticle from "@/components/blog/NextArticle/NextArticle";
 import RelatedArticles from "@/components/blog/RelatedArticles/RelatedArticles";
+import ReadingProgress from "@/components/blog/ReadingProgress/ReadingProgress";
+import AuthorCard from "@/components/blog/AuthorCard/AuthorCard";
 import { StructuredData } from "@/lib/StructuredData";
 
 import styles from "./page.module.scss";
@@ -161,10 +163,16 @@ export default async function BlogDetailPage({
         <StructuredData key={index} data={schema} />
       ))}
 
+      <ReadingProgress />
+
       <DetailHero post={post} />
 
       <section className={styles.body}>
-        <div className={styles.container}>
+        <div
+          className={`${styles.container} ${
+            headings.length >= 3 ? "" : styles.noSidebar
+          }`}
+        >
           {headings.length >= 3 && (
             <TableOfContents headings={headings} />
           )}
@@ -175,6 +183,10 @@ export default async function BlogDetailPage({
             {post.faq?.length ? <FaqSection items={post.faq} /> : null}
 
             <ShareBlock title={post.title} slug={post.slug} />
+            <AuthorCard
+              name={post.author?.name ?? "AKCY"}
+              role={post.author?.role}
+            />
             <NextArticle post={nextPost} />
           </div>
         </div>

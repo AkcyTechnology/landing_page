@@ -10,14 +10,7 @@ import styles from "./page.module.scss";
 
 export const metadata = pageMetadata("Projelerimiz", "Web, mobil, tasarım ve dijital ürün alanlarında geliştirdiğimiz seçili çalışmalar.", "/projelerimiz");
 
-interface ProjectsPageProps {
-  searchParams: Promise<{ category?: string }>;
-}
-
-export default async function ProjectsPage({
-  searchParams,
-}: ProjectsPageProps) {
-  const params = await searchParams;
+export default function ProjectsPage() {
   const clientProjects = getClientProjects();
   const conceptProjects = getConceptProjects();
 
@@ -27,10 +20,7 @@ export default async function ProjectsPage({
 
       <section className={styles.listing}>
         <Container>
-          <ProjectsListingClient
-            allProjects={clientProjects}
-            initialCategory={params.category ?? "tumu"}
-          />
+          <ProjectsListingClient allProjects={clientProjects} />
         </Container>
       </section>
 

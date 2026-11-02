@@ -3,7 +3,7 @@
   flex-wrap: nowrap;
   align-items: center;
 
-  gap: 28px;
+  gap: 4px;
 
   overflow-x: auto;
 
@@ -19,65 +19,112 @@
 
   flex-shrink: 0;
 
-  padding: 6px 0 10px;
+  padding: 9px 16px;
 
   border: 0;
+  border-radius: 999px;
+
   background: transparent;
 
-  color: rgba(6, 16, 31, 0.55);
+  color: rgba(6, 16, 31, 0.62);
 
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 550;
+  font-family: inherit;
 
   white-space: nowrap;
 
   cursor: pointer;
 
-  transition: color 0.3s ease;
-
-  &::after {
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-    bottom: 0;
-
-    width: 100%;
-    height: 1px;
-
-    background: transparent;
-
-    transition: background 0.3s ease;
-  }
+  transition: color 0.25s ease, background 0.25s ease;
 
   &:hover {
+    background: rgba(6, 16, 31, 0.05);
+
     color: #06101f;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #16c3ce;
+    outline-offset: 2px;
   }
 }
 
-.itemActive {
-  color: #06101f;
+.itemActive,
+.itemActive:hover {
+  background: transparent;
 
-  font-weight: 650;
+  color: #fff;
 
-  &::after {
-    background: #16c3ce;
-  }
+  font-weight: 600;
+}
+
+.pill {
+  position: absolute;
+  inset: 0;
+
+  border-radius: inherit;
+
+  background: #06101f;
+
+}
+
+.label {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: var(--accent);
+}
+
+.count {
+  display: inline-grid;
+  place-items: center;
+
+  min-width: 20px;
+  height: 20px;
+
+  padding: 0 6px;
+
+  border-radius: 999px;
+
+  background: rgba(6, 16, 31, 0.06);
+
+  color: rgba(6, 16, 31, 0.55);
+
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.itemActive .count {
+  background: rgba(255, 255, 255, 0.14);
+
+  color: #fff;
 }
 
 @media (max-width: 700px) {
-  .filters {
-    gap: 22px;
-  }
-
   .item {
+    padding: 8px 14px;
+
     font-size: 13px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .item {
+  .item,
+  .count {
     transition: none;
   }
 }

@@ -8,10 +8,9 @@ import { footerNavigation, services as footerServices } from "@/data/navigation"
 import Container from "@/components/common/Container/Container";
 import styles from "./Footer.module.scss";
 
-function Icon({ name }: { name: "arrow" | "linkedin" | "instagram" | "youtube" | "mail" | "phone" | "location" }) {
+function Icon({ name }: { name: "arrow" | "instagram" | "youtube" | "mail" | "phone" | "location" }) {
   const paths: Record<typeof name, ReactNode> = {
     arrow: <><path d="M4 12h16M14 6l6 6-6 6" /></>,
-    linkedin: <><path d="M6 9v11M11 20V9h4v2c1-3 6-3 6 2v7M3 9h3M11 9v11" /><circle cx="4.5" cy="4.5" r="1.5" /></>,
     instagram: <><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r=".7" fill="currentColor" stroke="none" /></>,
     youtube: <><rect x="2" y="5" width="20" height="14" rx="4" /><path d="m10 9 5 3-5 3Z" /></>,
     mail: <><rect x="3" y="5" width="18" height="14" rx="3" /><path d="m4 7 8 6 8-6" /></>,
@@ -49,8 +48,7 @@ export default function Footer() {
             </Link>
             <p>Web, mobil, yapay zekâ ve otomasyon çözümleriyle dijital ürünler geliştiriyoruz.</p>
             <nav className={styles.social} aria-label="Sosyal medya">
-              <a href="https://linkedin.com/company/akcy-technologies" target="_blank" rel="noopener noreferrer" aria-label="AKCY LinkedIn"><Icon name="linkedin" /></a>
-              <a href="https://instagram.com/akcytech" target="_blank" rel="noopener noreferrer" aria-label="AKCY Instagram"><Icon name="instagram" /></a>
+              <a href="https://www.instagram.com/akcytechnology/" target="_blank" rel="noopener noreferrer" aria-label="AKCY Instagram"><Icon name="instagram" /></a>
               {youtubeUrl && <a href={youtubeUrl} target="_blank" rel="noopener noreferrer" aria-label="AKCY YouTube"><Icon name="youtube" /></a>}
             </nav>
           </motion.div>

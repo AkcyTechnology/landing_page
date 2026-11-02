@@ -1,0 +1,179 @@
+.section {
+  width: 100%;
+
+  background: #f1f4f7;
+}
+
+.container {
+  width: min(calc(100% - 48px), 1320px);
+
+  margin: 0 auto;
+
+  padding: 0 0 120px;
+}
+
+.card {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 48px;
+
+  overflow: hidden;
+
+  padding: 60px 64px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 26px;
+
+  background: #06101f;
+
+  color: #fff;
+}
+
+.text {
+  position: relative;
+
+  max-width: 640px;
+}
+
+.eyebrow {
+  display: block;
+
+  margin-bottom: 16px;
+
+  color: #72d7d8;
+
+  font-size: 11.5px;
+  font-weight: 650;
+  letter-spacing: 0.16em;
+}
+
+.heading {
+  margin: 0;
+
+  font-size: clamp(26px, 2.6vw, 36px);
+  line-height: 1.15;
+
+  font-weight: 500;
+
+  letter-spacing: -0.02em;
+}
+
+.description {
+  margin: 16px 0 0;
+
+  color: #c2cbd4;
+
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.actions {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+
+  gap: 22px;
+}
+
+.primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 14px 24px;
+
+  border-radius: 999px;
+
+  background: #16c3ce;
+
+  color: #06101f;
+
+  font-size: 14px;
+  font-weight: 650;
+
+  text-decoration: none;
+
+  transition: background 0.3s ease;
+
+  b {
+    font-weight: 500;
+
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    background: #72d7d8;
+
+    b {
+      transform: translateX(4px);
+    }
+  }
+}
+
+.secondary {
+  color: #fff;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  text-decoration: none;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+
+  padding-bottom: 4px;
+
+  transition: border-color 0.3s ease;
+
+  &:hover {
+    border-color: #72d7d8;
+  }
+}
+
+@media (max-width: 1050px) {
+  .container {
+    width: calc(100% - 40px);
+
+    padding-bottom: 100px;
+  }
+
+  .card {
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: 32px;
+
+    padding: 44px 40px;
+  }
+}
+
+@media (max-width: 700px) {
+  .container {
+    width: calc(100% - 32px);
+
+    padding-bottom: 80px;
+  }
+
+  .card {
+    padding: 34px 24px;
+
+    border-radius: 16px;
+  }
+
+  .actions {
+    flex-wrap: wrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .primary,
+  .primary b,
+  .secondary {
+    transition: none;
+  }
+}
