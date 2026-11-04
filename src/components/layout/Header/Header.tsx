@@ -18,6 +18,8 @@ export default function Header() {
   /* Etkin menü öğesi Türkçe (kanonik) adres üzerinden bulunur */
   const pathname = canonicalPath(usePathname() || "/").replace(/(.)\/$/, "$1");
   const isHome = pathname === "/";
+  /* Hakkımızda'da etiketler menünün içinden düşer: açık zeminli şeffaf menü */
+  const isAbout = pathname === "/hakkimizda";
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
@@ -26,10 +28,13 @@ export default function Header() {
   const mobileMenu = useRef<HTMLDivElement>(null);
 
   const transparent = isHome && !scrolled && !mobileOpen;
+  const transparentLight = isAbout && !scrolled && !mobileOpen;
+  /* Logoya tıklamak ana sayfaya gider; menüde ayrıca "Ana Sayfa" gösterilmez */
+  const menuItems = navigation.filter((item) => item.key !== "home");
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      setScrolled(window.scrollY > (isAbout ? 8 : 20));
     };
 
     handleScroll();
@@ -41,7 +46,7 @@ export default function Header() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [isAbout]);
 
   useEffect(() => {
     if (!mobileOpen) return;
@@ -89,7 +94,7 @@ export default function Header() {
         }}
         className={`${styles.header} ${
           scrolled ? styles.scrolled : ""
-        } ${transparent ? styles.transparent : ""}`}
+        } ${transparent ? styles.transparent : ""} ${transparentLight ? styles.transparentLight : ""}`}
       >
         <div className={styles.container}>
           {/* LOGO */}
@@ -112,7 +117,7 @@ export default function Header() {
             className={styles.desktopNav}
             aria-label={t.header.mainNav}
           >
-            {navigation.map((item) => {
+            {menuItems.map((item) => {
               const hasChildren = Boolean(item.hasChildren);
 
               if (hasChildren) {
@@ -232,7 +237,6 @@ export default function Header() {
 
           {/* DESKTOP CTA */}
           <div className={styles.headerActions}>
-            <LanguageSwitcher />
             <Link
               href="/iletisim"
               className={styles.cta}
@@ -241,6 +245,8 @@ export default function Header() {
 
               <span aria-hidden="true">↗</span>
             </Link>
+
+            <LanguageSwitcher />
           </div>
 
           {/* MOBILE BUTTON */}
@@ -285,7 +291,7 @@ export default function Header() {
       >
         <div className={styles.mobileMenuInner}>
           <nav className={styles.mobileNav} aria-label={t.header.mobileNav}>
-            {navigation.map((item, index) => (
+            {menuItems.map((item, index) => (
               <div key={item.href}>
                 <div className={styles.mobileServiceHeader}>
                   <Link href={item.href} className={styles.mobileLink} aria-current={pathname === item.href ? "page" : undefined}>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Plus_Jakarta_Sans } from "next/font/google";
+import Image from "next/image";
 
 import { StructuredData } from "@/lib/StructuredData";
 import { baseUrl, localeAlternates } from "@/lib/metadata";
@@ -11,7 +12,7 @@ import LocalePreference from "@/i18n/LocalePreference";
 import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/Footer/Footer";
 import CursorTrail from "@/components/common/CursorTrail/CursorTrail";
-import WhatsAppButton from "@/components/common/WhatsAppButton/WhatsAppButton";
+import QuoteButton from "@/components/common/QuoteButton/QuoteButton";
 import PointerEffects from "@/components/common/PointerEffects/PointerEffects";
 
 import "@/app/globals.css";
@@ -83,15 +84,31 @@ export default function SiteShell({ locale, children }: { locale: Locale; childr
   };
 
   return (
-    <html lang={htmlLang[locale]} className={sans.variable}>
+    <html lang={htmlLang[locale]} className={sans.variable} suppressHydrationWarning>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#06101f" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <StructuredData data={organizationSchema} />
+        {/* Yükleme ekranı oturum başına bir kez gösterilir */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(sessionStorage.getItem('akcy-loaded')){document.documentElement.setAttribute('data-loaded','')}else{sessionStorage.setItem('akcy-loaded','1')}}catch(e){}",
+          }}
+        />
       </head>
       <body>
+        {/* Açılış ekranı: CSS ile kendiliğinden kaybolur (JS gerekmez), tıklamayı engellemez */}
+        <div className="site-loader" aria-hidden="true">
+          <div className="site-loader__inner">
+            <Image src="/images/brand/logo.svg" alt="" width={132} height={75} className="site-loader__logo" priority />
+            <span className="site-loader__bar">
+              <i />
+            </span>
+          </div>
+        </div>
         <LocaleProvider locale={locale}>
           <LocalePreference />
           <CursorTrail />
@@ -103,7 +120,7 @@ export default function SiteShell({ locale, children }: { locale: Locale; childr
 
           <Footer />
 
-          <WhatsAppButton />
+          <QuoteButton />
         </LocaleProvider>
       </body>
     </html>

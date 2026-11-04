@@ -1,25 +1,64 @@
 @use "../tokens" as *;
 @use "../../../styles/buttons" as btn;
 
+/* ==========================
+   HERO: menünün altından başlar (menü sabit), etiketler tam genişlikte
+========================== */
+
 .hero {
   position: relative;
+  min-height: min(100svh, 880px);
+  /* Alttaki boş alan etiket yığınına ayrılır; yazıyla çakışmaz */
+  padding: 148px 0 240px;
+  overflow: hidden;
   background: $white;
   color: $ink;
-  padding: 140px 0 80px;
-  border-bottom: 1px solid $line;
+  box-sizing: border-box;
 }
 
-.layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: center;
-  gap: 64px;
+.container {
+  position: relative;
+  z-index: 2;
+}
+
+.content {
+  max-width: 680px;
+}
+
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 24px;
+  padding: 0;
+  list-style: none;
+  color: $ink-faint;
+  font-size: 13px;
+
+  li + li::before {
+    content: "/";
+    margin-right: 8px;
+    color: $ink-faint;
+  }
+
+  a {
+    color: $ink-soft;
+    text-decoration: none;
+
+    &:hover {
+      color: $blue;
+    }
+  }
+
+  [aria-current="page"] {
+    color: $ink;
+    font-weight: 600;
+  }
 }
 
 .eyebrow {
   @include eyebrow;
-  margin: 0 0 20px;
-  font-size: 13px;
+  margin: 0 0 18px;
 }
 
 .heading {
@@ -32,29 +71,16 @@
   overflow-wrap: break-word;
 }
 
-/* Başlık satır satır, kısa ve yumuşak bir geçişle görünür */
 .line {
   display: block;
-  animation: line-in 0.7s $ease both;
 
   &:last-child {
     color: $primary;
   }
 }
 
-@keyframes line-in {
-  from {
-    opacity: 0;
-    transform: translateY(0.35em);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
 .description {
-  max-width: 62ch;
+  max-width: 60ch;
   margin: 20px 0 0;
   color: $ink-soft;
   font-size: 17px;
@@ -65,155 +91,115 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 32px;
-}
-
-/* ==========================
-   GÖRSEL KOMPOZİSYON
-========================== */
-
-.visual {
-  margin: 0;
-}
-
-.screens {
-  position: relative;
-  padding: 0 32px 40px 0;
-}
-
-.browser {
-  overflow: hidden;
-  border: 1px solid $line;
-  border-radius: $radius;
-  background: $white;
-}
-
-.bar {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  height: 28px;
-  padding: 0 12px;
-  border-bottom: 1px solid rgba(29, 34, 38, 0.1);
-  background: $off-white;
-
-  i {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #d6d4cd;
-  }
-}
-
-.desktopShot {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 1440 / 1000;
-  object-fit: cover;
-  object-position: top;
-}
-
-.phone {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 28%;
-  max-width: 150px;
-  overflow: hidden;
-  border: 5px solid $ink;
-  border-radius: 20px;
-  background: $white;
-}
-
-.mobileShot {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-/* Fikir → çözüm → kullanım şeridi */
-.flow {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin-top: 20px;
-  border-top: 1px solid $line;
-}
-
-.flowStep {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 14px 12px 0 0;
-  color: $ink;
-  font-size: 15px;
-  font-weight: 600;
-
-  small {
-    color: $ink-faint;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-  }
-
-  /* Adımları bağlayan düğüm */
-  &::before {
-    content: "";
-    position: absolute;
-    top: -5px;
-    left: 0;
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background: $primary;
-  }
-
-  &:last-child {
-    color: $primary;
-  }
+  margin-top: 30px;
 }
 
 .primary {
   @include btn.primary;
 }
 
-.secondary {
-  @include btn.secondary;
+/* ==========================
+   ETİKETLER
+   Varsayılan (sunucu, JS yok, hareket azaltma): zeminde sabit yığın, en fazla 3 satır
+========================== */
+
+.tags {
+  --tag-h: 45px;
+  --tag-gap: 8px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content: center;
+  align-content: flex-start;
+  gap: var(--tag-gap);
+  max-height: calc(var(--tag-h) * 3 + var(--tag-gap) * 2);
+  padding: 0 16px;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .line {
-    animation: none;
+.floor {
+  position: absolute;
+  bottom: 0;
+  width: 50%;
+  height: 1px;
+  background: $line;
+}
+
+.floorLeft {
+  left: 0;
+  transform-origin: left center;
+}
+
+.floorRight {
+  right: 0;
+  transform-origin: right center;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 12px 22px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.tag_dark {
+  background: $ink;
+  color: $white;
+}
+
+.tag_brand {
+  background: $primary;
+  color: $white;
+}
+
+.tag_light {
+  background: $white;
+  border-color: rgba(29, 34, 38, 0.2);
+  color: $ink;
+}
+
+/* Canlı mod: konumları animasyon belirler */
+.tags[data-live] {
+  top: 0;
+  display: block;
+  max-height: none;
+  padding: 0;
+
+  .tag {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    will-change: transform;
   }
 }
 
 /* ==========================
-   TABLET
+   TABLET + MOBİL
 ========================== */
 
 @media (max-width: 1050px) {
   .hero {
-    padding: 124px 0 64px;
-  }
-
-  .layout {
-    grid-template-columns: 1fr;
-    gap: 48px;
-  }
-
-  .visual {
-    max-width: 640px;
+    min-height: 0;
+    padding: 128px 0 240px;
   }
 }
 
-/* ==========================
-   MOBİL
-========================== */
-
 @media (max-width: 700px) {
   .hero {
-    padding: 104px 0 48px;
+    padding: 104px 0 200px;
   }
 
   .heading {
@@ -224,21 +210,17 @@
     font-size: 16px;
   }
 
-  .actions {
-    flex-direction: column;
-    align-items: stretch;
+  .actions a {
+    flex: 1 1 100%;
   }
 
-  .screens {
-    padding: 0 20px 28px 0;
+  .tags {
+    --tag-h: 36px;
+    --tag-gap: 6px;
   }
 
-  .phone {
-    border-width: 4px;
-    border-radius: 14px;
-  }
-
-  .flowStep {
+  .tag {
+    padding: 9px 15px;
     font-size: 14px;
   }
 }

@@ -7,8 +7,6 @@ import AboutHero from "@/components/about/AboutHero/AboutHero";
 import AboutIntro from "@/components/about/AboutIntro/AboutIntro";
 import AboutValue from "@/components/about/AboutValue/AboutValue";
 import AboutProcess from "@/components/about/AboutProcess/AboutProcess";
-import AboutPrinciples from "@/components/about/AboutPrinciples/AboutPrinciples";
-import AboutClosing from "@/components/about/AboutClosing/AboutClosing";
 
 export function aboutMetadata(locale: Locale) {
   const meta = aboutContent[locale].meta;
@@ -22,12 +20,10 @@ export default function AboutView({ locale }: { locale: Locale }) {
 
   return (
     <>
-      <AboutHero content={content.hero} nextSectionId={introId} />
+      <AboutHero content={content.hero} pageName={content.meta.title} />
       <AboutIntro id={introId} content={content.intro} />
       <AboutValue content={content.value} />
       <AboutProcess content={content.process} />
-      <AboutPrinciples content={content.principles} />
-      <AboutClosing content={content.closing} />
     </>
   );
 }

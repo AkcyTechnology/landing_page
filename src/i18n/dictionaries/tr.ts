@@ -498,9 +498,9 @@ export const tr = {
     contents: "İçindekiler",
     contentsLabel: "İÇİNDEKİLER",
   },
-  whatsapp: {
-    message: "Merhaba, projem hakkında bilgi almak istiyorum.",
-    label: "WhatsApp üzerinden yazın",
+  quote: {
+    label: "Teklif alın: projenizi konuşalım",
+    ring: "TEKLİF AL",
   },
   //@@SECTIONS_TR
 };

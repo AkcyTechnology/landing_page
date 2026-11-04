@@ -715,3 +715,9 @@
   @include btn.text;
   font-size: 17px;
 }
+
+/* Hakkımızda: sayfa en üstteyken açık zeminli şeffaf menü (yazılar koyu kalır) */
+.transparentLight {
+  background: transparent;
+  border-bottom-color: transparent;
+}

@@ -495,9 +495,9 @@ export const en: Dictionary = {
     contents: "Contents",
     contentsLabel: "CONTENTS",
   },
-  whatsapp: {
-    message: "Hello, I’d like to get information about my project.",
-    label: "Message us on WhatsApp",
+  quote: {
+    label: "Get a quote: let’s talk about your project",
+    ring: "GET A QUOTE",
   },
   //@@SECTIONS_EN
 };
