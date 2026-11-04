@@ -13,6 +13,7 @@ import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/Footer/Footer";
 import CursorTrail from "@/components/common/CursorTrail/CursorTrail";
 import QuoteButton from "@/components/common/QuoteButton/QuoteButton";
+import RevealObserver from "@/components/common/RevealObserver/RevealObserver";
 import PointerEffects from "@/components/common/PointerEffects/PointerEffects";
 
 import "@/app/globals.css";
@@ -143,6 +144,7 @@ export default function SiteShell({ locale, children }: { locale: Locale; childr
           <Footer />
 
           <QuoteButton />
+          <RevealObserver />
         </LocaleProvider>
       </body>
     </html>

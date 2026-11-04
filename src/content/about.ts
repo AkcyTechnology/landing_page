@@ -30,6 +30,7 @@ export interface AboutContent {
     eyebrow: string;
     title: string;
     rows: { title: string; description: string; visual: "merge" | "connect" | "interface" }[];
+    image: { src: string; alt: string };
   };
   process: {
     eyebrow: string;
@@ -77,6 +78,10 @@ export const aboutContent: Record<Locale, AboutContent> = {
     value: {
       eyebrow: "Neden önemli?",
       title: "Teknoloji, işinizde karşılık bulduğunda değerli.",
+      image: {
+        src: "/images/about/tasarim-sureci.webp",
+        alt: "Masada tablet üzerinde arayüz tasarımı, dizüstü bilgisayarda kod ve kâğıt üzerinde tel çerçeve çizimleri",
+      },
       rows: [
         {
           title: "Daha az tekrar.",
@@ -143,6 +148,10 @@ export const aboutContent: Record<Locale, AboutContent> = {
     value: {
       eyebrow: "Why it matters",
       title: "Technology is valuable when it pays off in your business.",
+      image: {
+        src: "/images/about/tasarim-sureci.webp",
+        alt: "Interface design on a tablet, code on a laptop and wireframe sketches on paper on a desk",
+      },
       rows: [
         { title: "Less repetition.", description: "Solutions that simplify repetitive work through automation.", visual: "merge" },
         { title: "More connected processes.", description: "Integrations that bring data and applications together.", visual: "connect" },

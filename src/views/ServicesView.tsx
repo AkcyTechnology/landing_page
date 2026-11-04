@@ -7,18 +7,16 @@ import { setRequestLocale } from "@/i18n/server";
 import { pageMetadata } from "@/lib/metadata";
 import { getAllServices, getServiceBySlug } from "@/data/services";
 import { getAllProjects } from "@/data/projects";
-import Container from "@/components/common/Container/Container";
-import ServicesHero from "@/components/services/ServicesHero/ServicesHero";
-import ServiceRow from "@/components/services/ServiceRow/ServiceRow";
-import ServiceDetailHero from "@/components/services/ServiceDetailHero/ServiceDetailHero";
-import ServiceOverview from "@/components/services/ServiceOverview/ServiceOverview";
-import ServiceScope from "@/components/services/ServiceScope/ServiceScope";
-import ServiceProcess from "@/components/services/ServiceProcess/ServiceProcess";
-import ServiceTechnologies from "@/components/services/ServiceTechnologies/ServiceTechnologies";
+import ServicesLanding from "@/components/services/ServicesLanding/ServicesLanding";
+import {
+  ServiceHero,
+  ServiceNext,
+  ServiceOffer,
+  ServiceProcessSection,
+  ServiceScopeSection,
+  ServiceTech,
+} from "@/components/services/ServiceDetail/ServiceDetail";
 import RelatedProjects from "@/components/services/RelatedProjects/RelatedProjects";
-import SectionCTA from "@/components/common/SectionCTA/SectionCTA";
-
-import styles from "./ServicesView.module.scss";
 
 export function servicesMetadata(locale: Locale) {
   const t = getDictionary(locale).pages.services;
@@ -27,21 +25,7 @@ export function servicesMetadata(locale: Locale) {
 
 export default function ServicesView({ locale }: { locale: Locale }) {
   setRequestLocale(locale);
-  const services = getAllServices(locale);
-
-  return (
-    <>
-      <ServicesHero />
-
-      <section className={styles.list}>
-        <Container>
-          {services.map((service) => (
-            <ServiceRow key={service.slug} service={service} />
-          ))}
-        </Container>
-      </section>
-    </>
-  );
+  return <ServicesLanding services={getAllServices(locale)} />;
 }
 
 /* ---------- Hizmet detayı ---------- */
@@ -63,9 +47,11 @@ export function serviceDetailMetadata(slug: string, locale: Locale): Metadata {
 
 export function ServiceDetailView({ slug, locale }: { slug: string; locale: Locale }) {
   setRequestLocale(locale);
-  const t = getDictionary(locale);
   const service = resolveService(slug, locale);
   if (!service) notFound();
+
+  const all = getAllServices(locale);
+  const next = all[(all.findIndex((item) => item.slug === service.slug) + 1) % all.length];
 
   const relatedProjects = getAllProjects(locale)
     .filter(
@@ -77,14 +63,13 @@ export function ServiceDetailView({ slug, locale }: { slug: string; locale: Loca
 
   return (
     <>
-      <ServiceDetailHero service={service} />
-      <ServiceOverview service={service} />
-      <ServiceScope service={service} />
-      <ServiceProcess steps={service.process} />
-      <ServiceTechnologies technologies={service.technologies} />
+      <ServiceHero service={service} total={all.length} />
+      <ServiceOffer service={service} />
+      <ServiceScopeSection service={service} />
+      <ServiceProcessSection service={service} />
+      <ServiceTech technologies={service.technologies} />
       <RelatedProjects projects={relatedProjects} />
-
-      <SectionCTA eyebrow={t.services.ctaEyebrow} title={t.services.ctaTitle} />
+      <ServiceNext service={next} />
     </>
   );
 }

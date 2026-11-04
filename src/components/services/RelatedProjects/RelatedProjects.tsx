@@ -17,7 +17,7 @@ export default function RelatedProjects({ projects }: RelatedProjectsProps) {
   return (
     <section className={styles.related}>
       <Container>
-        <SectionLabel>{t.relatedLabel}</SectionLabel>
+        <SectionLabel>{`06 / ${t.labels.related}`}</SectionLabel>
 
         <h2 className={styles.heading}>{t.relatedHeading}</h2>
 

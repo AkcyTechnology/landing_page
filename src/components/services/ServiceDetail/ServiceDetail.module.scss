@@ -1,0 +1,820 @@
+@use "../../about/tokens" as *;
+@use "../../../styles/buttons" as btn;
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.label {
+  @include eyebrow;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 18px;
+
+  span {
+    color: $ink-faint;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &::after {
+    content: "";
+    width: 32px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.4;
+  }
+}
+
+.sectionTitle {
+  @include section-title;
+}
+
+/* ==========================
+   AÇILIŞ
+========================== */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 132px 0 88px;
+  background: $off-white;
+  color: $ink;
+  border-bottom: 1px solid $line;
+}
+
+/* Arka planda büyük, yalnızca dış çizgili sıra numarası */
+.bigNumber {
+  position: absolute;
+  right: -2vw;
+  bottom: -6vw;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(0, 89, 93, 0.16);
+  font-size: clamp(220px, 30vw, 460px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  pointer-events: none;
+  user-select: none;
+  animation: number-in 1.4s $ease both;
+}
+
+.breadcrumb ol {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 36px;
+  padding: 0;
+  list-style: none;
+  color: $ink-faint;
+  font-size: 13px;
+
+  li + li::before {
+    content: "/";
+    margin-right: 8px;
+  }
+
+  a {
+    color: $ink-soft;
+    text-decoration: none;
+
+    &:hover {
+      color: $blue;
+    }
+  }
+
+  [aria-current="page"] {
+    color: $ink;
+    font-weight: 600;
+  }
+}
+
+.heroGrid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 64px;
+  align-items: center;
+}
+
+.eyebrow {
+  @include eyebrow;
+  margin: 0 0 16px;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(36px, 4vw, 56px);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  animation: rise 0.8s $ease both;
+}
+
+.lead {
+  max-width: 34ch;
+  margin: 20px 0 0;
+  color: $primary;
+  font-size: clamp(20px, 1.8vw, 24px);
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  animation: rise 0.8s $ease 0.08s both;
+}
+
+.sub {
+  max-width: 56ch;
+  margin: 14px 0 0;
+  color: $ink-soft;
+  font-size: 17px;
+  line-height: 1.65;
+  animation: rise 0.8s $ease 0.14s both;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+  animation: rise 0.8s $ease 0.2s both;
+}
+
+.primary {
+  @include btn.primary;
+}
+
+.secondary {
+  @include btn.secondary;
+}
+
+.heroMedia {
+  position: relative;
+  margin: 0;
+  padding: 28px 28px 28px 0;
+  animation: media-in 1s $ease 0.15s both;
+}
+
+.frame {
+  overflow: hidden;
+  border: 1px solid $line;
+  border-radius: $radius;
+  background: $white;
+}
+
+.heroImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 6 / 5;
+  object-fit: cover;
+}
+
+/* Görselin çevresinde süzülen sunum etiketleri */
+.chip {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: 1px solid $line;
+  border-radius: 999px;
+  background: $white;
+  color: $ink;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  animation: float 6s ease-in-out infinite;
+
+  i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: $primary;
+  }
+}
+
+.chip0 {
+  top: 6%;
+  left: -24px;
+}
+
+.chip1 {
+  top: 44%;
+  right: 0;
+  animation-delay: -2s;
+
+  i {
+    background: $blue;
+  }
+}
+
+.chip2 {
+  bottom: 2%;
+  left: 12%;
+  animation-delay: -4s;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+@keyframes media-in {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes number-in {
+  from {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+}
+
+/* ==========================
+   GENEL BAKIŞ + SUNULANLAR
+========================== */
+
+.offer {
+  padding: 88px 0;
+  background: $white;
+}
+
+.offerGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 72px;
+}
+
+.overview {
+  max-width: 34em;
+  margin: 0;
+  color: $ink;
+  font-size: clamp(20px, 1.8vw, 24px);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+.offerings {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid $line;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid $line;
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
+
+.check {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0, 89, 93, 0.1);
+  color: $primary;
+}
+
+/* ==========================
+   KAPSAM
+========================== */
+
+.scope {
+  padding: 88px 0;
+  background: $off-white;
+}
+
+.scopeHead {
+  max-width: 720px;
+  margin-bottom: 40px;
+}
+
+.scopeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    min-height: 132px;
+    padding: 22px;
+    border: 1px solid $line;
+    border-radius: $radius;
+    background: $white;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.35;
+    transition: border-color 0.3s ease, color 0.3s ease;
+
+    span {
+      color: $ink-faint;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+    }
+
+    &:hover {
+      border-color: $primary;
+      color: $primary;
+    }
+  }
+}
+
+/* Akış: düğümler arasındaki çizgi soldan sağa çizilir */
+.flow {
+  position: relative;
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  gap: 12px;
+  margin: 0 0 12px;
+  padding: 0;
+  list-style: none;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 21px;
+    right: 6%;
+    left: 6%;
+    height: 2px;
+    background: $primary;
+    transform-origin: left;
+    transition: transform 1.4s cubic-bezier(0.65, 0, 0.35, 1) 0.2s;
+  }
+
+  li {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: 14px;
+    text-align: center;
+  }
+}
+
+:global(html[data-reveal-ready]) .flow:not([data-in])::before {
+  transform: scaleX(0);
+}
+
+.flowNode {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 2px solid $primary;
+  border-radius: 50%;
+  background: $white;
+  color: $primary;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.flow li:last-child .flowNode {
+  border-color: $blue;
+  background: $blue;
+  color: $white;
+}
+
+.flowText {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.scopeNote {
+  max-width: 70ch;
+  margin: 32px 0 0;
+  color: $ink-soft;
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+/* ==========================
+   SÜREÇ: zaman çizgisi
+========================== */
+
+.process {
+  padding: 88px 0;
+  background: $white;
+}
+
+.processHead {
+  margin-bottom: 48px;
+}
+
+.timelineWrap {
+  position: relative;
+}
+
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    position: relative;
+    padding-top: 36px;
+    color: $ink-faint;
+    transition: color 0.4s ease;
+  }
+}
+
+.timelineTrack {
+  position: absolute;
+  top: 7px;
+  right: 0;
+  left: 0;
+  height: 2px;
+  background: $line;
+
+  i {
+    position: absolute;
+    inset: 0;
+    background: $primary;
+    transform: scaleX(var(--progress, 1));
+    transform-origin: left;
+  }
+}
+
+.stepDot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border: 2px solid $line;
+  border-radius: 50%;
+  background: $white;
+  transition: border-color 0.4s ease, background-color 0.4s ease, transform 0.4s $ease;
+}
+
+.stepNumber {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.stepTitle {
+  margin: 0;
+  color: inherit;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.stepText {
+  margin: 10px 0 0;
+  color: $ink-soft;
+  font-size: 15px;
+  line-height: 1.55;
+  opacity: 0.55;
+  transition: opacity 0.4s ease;
+}
+
+.stepOn {
+  color: $ink !important;
+
+  .stepDot {
+    border-color: $primary;
+    background: $primary;
+    transform: scale(1.15);
+  }
+
+  .stepNumber {
+    color: $primary;
+  }
+
+  .stepText {
+    opacity: 1;
+  }
+}
+
+/* ==========================
+   TEKNOLOJİLER
+========================== */
+
+.tech {
+  padding: 72px 0;
+  overflow: hidden;
+  background: $off-white;
+  border-top: 1px solid $line;
+  border-bottom: 1px solid $line;
+}
+
+.marquee {
+  position: relative;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+.marqueeTrack {
+  display: flex;
+  gap: 14px;
+  width: max-content;
+  animation: marquee 32s linear infinite;
+
+  span {
+    padding: 16px 26px;
+    border: 1px solid $line;
+    border-radius: 999px;
+    background: $white;
+    color: $ink;
+    font-size: clamp(18px, 1.8vw, 24px);
+    font-weight: 600;
+    white-space: nowrap;
+
+    &:nth-child(4n + 2) {
+      border-color: $primary;
+      background: $primary;
+      color: $white;
+    }
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ==========================
+   SONRAKİ HİZMET
+========================== */
+
+.next {
+  padding: 72px 0;
+  background: $white;
+}
+
+.nextLink {
+  display: grid;
+  gap: 10px;
+  padding: 40px 0;
+  border-top: 1px solid $ink;
+  color: $ink;
+  text-decoration: none;
+
+  svg {
+    flex-shrink: 0;
+    transition: transform 0.45s $ease;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $blue;
+    outline-offset: 4px;
+  }
+}
+
+.nextLabel {
+  @include eyebrow;
+}
+
+.nextTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  font-size: clamp(28px, 3.4vw, 46px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  transition: color 0.3s ease;
+}
+
+.nextText {
+  max-width: 60ch;
+  color: $ink-soft;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nextLink:hover {
+    .nextTitle {
+      color: $blue;
+    }
+
+    svg {
+      transform: translateX(10px);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bigNumber,
+  .title,
+  .lead,
+  .sub,
+  .actions,
+  .heroMedia,
+  .chip,
+  .marqueeTrack {
+    animation: none;
+  }
+
+  .flow::before {
+    transition: none;
+  }
+}
+
+/* ==========================
+   TABLET
+========================== */
+
+@media (max-width: 1050px) {
+  .hero {
+    padding: 120px 0 64px;
+  }
+
+  .heroGrid,
+  .offerGrid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .heroMedia {
+    max-width: 620px;
+  }
+
+  .offer,
+  .scope,
+  .process {
+    padding: 64px 0;
+  }
+
+  .scopeGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .timeline {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: 36px;
+  }
+
+  .timelineTrack {
+    display: none;
+  }
+}
+
+/* ==========================
+   MOBİL
+========================== */
+
+@media (max-width: 700px) {
+  .hero {
+    padding: 100px 0 48px;
+  }
+
+  .title {
+    font-size: clamp(30px, 8.6vw, 36px);
+  }
+
+  .lead {
+    font-size: 19px;
+  }
+
+  .sub {
+    font-size: 16px;
+  }
+
+  .actions a {
+    flex: 1 1 100%;
+  }
+
+  .heroMedia {
+    padding: 20px 12px 24px 0;
+  }
+
+  .chip {
+    padding: 8px 11px;
+    font-size: 12px;
+  }
+
+  .chip0 {
+    left: -6px;
+  }
+
+  .offer,
+  .scope,
+  .process {
+    padding: 48px 0;
+  }
+
+  .overview {
+    font-size: 18px;
+  }
+
+  .scopeGrid {
+    grid-template-columns: 1fr;
+
+    li {
+      min-height: 0;
+      gap: 10px;
+    }
+  }
+
+  /* Akış ve süreç mobilde dikey */
+  .flow {
+    grid-auto-flow: row;
+    justify-items: start;
+
+    &::before {
+      top: 6%;
+      bottom: 6%;
+      left: 21px;
+      right: auto;
+      width: 2px;
+      height: auto;
+      transform-origin: top;
+    }
+
+    li {
+      grid-template-columns: 44px minmax(0, 1fr);
+      align-items: center;
+      justify-items: start;
+      text-align: left;
+    }
+  }
+
+  :global(html[data-reveal-ready]) .flow:not([data-in])::before {
+    transform: scaleY(0);
+  }
+
+  .timeline {
+    grid-template-columns: 1fr;
+    row-gap: 0;
+
+    li {
+      padding: 0 0 28px 36px;
+      border-left: 2px solid $line;
+      margin-left: 7px;
+    }
+
+    li.stepOn {
+      border-left-color: $primary;
+    }
+  }
+
+  .stepDot {
+    left: -9px;
+  }
+
+  .tech,
+  .next {
+    padding: 48px 0;
+  }
+
+  .marqueeTrack span {
+    padding: 12px 18px;
+  }
+
+  .nextLink {
+    padding: 28px 0;
+  }
+}

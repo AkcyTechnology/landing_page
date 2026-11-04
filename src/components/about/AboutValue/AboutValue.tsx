@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 
 import Container from "@/components/common/Container/Container";
@@ -44,14 +45,24 @@ export default function AboutValue({ content }: { content: AboutContent["value"]
             ))}
           </ol>
 
-          {/* Masaüstünde üzerine gelinen satırın çizimi bu alanda değişir */}
-          <div className={styles.panel} aria-hidden="true">
-            {content.rows.map((row, index) => (
-              <div key={row.visual} className={`${styles.panelItem} ${active === index ? styles.panelItemActive : ""}`}>
-                <ValueVisual type={row.visual} active={active === index} />
-              </div>
-            ))}
-          </div>
+          {/* Görsel + üzerine gelinen satırın çizimi (masaüstü) */}
+          <figure className={styles.media}>
+            <Image
+              src={content.image.src}
+              alt={content.image.alt}
+              width={1200}
+              height={900}
+              sizes="(max-width: 1050px) 92vw, 520px"
+              className={styles.photo}
+            />
+            <div className={styles.panel} aria-hidden="true">
+              {content.rows.map((row, index) => (
+                <div key={row.visual} className={`${styles.panelItem} ${active === index ? styles.panelItemActive : ""}`}>
+                  <ValueVisual type={row.visual} active={active === index} />
+                </div>
+              ))}
+            </div>
+          </figure>
         </div>
       </Container>
     </section>

@@ -266,3 +266,18 @@ html[data-loaded] .site-loader {
     visibility: hidden;
   }
 }
+
+/* ==========================
+   KAYDIRINCA BELİRME (RevealObserver)
+   --reveal-delay ile sıralı gecikme verilebilir.
+========================== */
+html[data-reveal-ready] [data-reveal] {
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 0.8, 0.25, 1) var(--reveal-delay, 0s),
+    transform 0.8s cubic-bezier(0.22, 0.8, 0.25, 1) var(--reveal-delay, 0s);
+}
+
+html[data-reveal-ready] [data-reveal]:not([data-in]) {
+  opacity: 0;
+  transform: translateY(28px);
+}
