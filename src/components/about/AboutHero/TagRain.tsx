@@ -40,6 +40,8 @@ interface Placement {
 
 export default function TagRain({ tags }: { tags: string[] }) {
   const layerRef = useRef<HTMLDivElement>(null);
+  /* Daha dolu bir yığın için her kelime iki kez kullanılır; dizilim her döngüde karışır */
+  const pool = [...tags, ...tags];
 
   useEffect(() => {
     const layer = layerRef.current;
@@ -82,8 +84,8 @@ export default function TagRain({ tags }: { tags: string[] }) {
       const width = layer.clientWidth;
       const height = layer.clientHeight;
       const narrow = window.innerWidth < 640;
-      const rows = narrow ? 3 : 2;
-      const extrasMax = narrow ? 3 : 6;
+      const rows = 3;
+      const extrasMax = narrow ? 4 : 8;
       const side = narrow ? 8 : 16;
       const tagH = sizes[0]?.h ?? 40;
       const floorY = height - 1;
@@ -245,7 +247,7 @@ export default function TagRain({ tags }: { tags: string[] }) {
     <div ref={layerRef} className={styles.tags} aria-hidden="true">
       <span className={`${styles.floor} ${styles.floorLeft}`} data-floor />
       <span className={`${styles.floor} ${styles.floorRight}`} data-floor />
-      {tags.map((tag, index) => (
+      {pool.map((tag, index) => (
         <span key={`${tag}-${index}`} className={`${styles.tag} ${styles[`tag_${TONES[index % TONES.length]}`]}`} data-tag>
           {tag}
         </span>

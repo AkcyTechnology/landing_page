@@ -103,10 +103,32 @@ export default function SiteShell({ locale, children }: { locale: Locale; childr
         {/* Açılış ekranı: CSS ile kendiliğinden kaybolur (JS gerekmez), tıklamayı engellemez */}
         <div className="site-loader" aria-hidden="true">
           <div className="site-loader__inner">
+            <svg className="site-loader__net" viewBox="0 0 160 120" width="160" height="120">
+              <g className="site-loader__lines">
+                <line x1="80" y1="60" x2="36" y2="30" pathLength={1} style={{ animationDelay: "0.15s" }} />
+                <line x1="80" y1="60" x2="124" y2="26" pathLength={1} style={{ animationDelay: "0.20s" }} />
+                <line x1="80" y1="60" x2="30" y2="88" pathLength={1} style={{ animationDelay: "0.25s" }} />
+                <line x1="80" y1="60" x2="132" y2="92" pathLength={1} style={{ animationDelay: "0.30s" }} />
+                <line x1="80" y1="60" x2="80" y2="14" pathLength={1} style={{ animationDelay: "0.35s" }} />
+                <line x1="80" y1="60" x2="80" y2="106" pathLength={1} style={{ animationDelay: "0.40s" }} />
+                <line x1="36" y1="30" x2="80" y2="14" pathLength={1} style={{ animationDelay: "0.45s" }} />
+                <line x1="124" y1="26" x2="80" y2="14" pathLength={1} style={{ animationDelay: "0.50s" }} />
+                <line x1="30" y1="88" x2="80" y2="106" pathLength={1} style={{ animationDelay: "0.55s" }} />
+                <line x1="132" y1="92" x2="80" y2="106" pathLength={1} style={{ animationDelay: "0.60s" }} />
+                <line x1="36" y1="30" x2="30" y2="88" pathLength={1} style={{ animationDelay: "0.65s" }} />
+                <line x1="124" y1="26" x2="132" y2="92" pathLength={1} style={{ animationDelay: "0.70s" }} />
+              </g>
+              <g className="site-loader__nodes">
+                <circle cx="80" cy="60" r="7" style={{ animationDelay: "0.05s" }} />
+                <circle cx="36" cy="30" r="4.5" style={{ animationDelay: "0.37s" }} />
+                <circle cx="124" cy="26" r="5" style={{ animationDelay: "0.44s" }} />
+                <circle cx="30" cy="88" r="5" style={{ animationDelay: "0.51s" }} />
+                <circle cx="132" cy="92" r="4.5" style={{ animationDelay: "0.58s" }} />
+                <circle cx="80" cy="14" r="4" style={{ animationDelay: "0.65s" }} />
+                <circle cx="80" cy="106" r="4" style={{ animationDelay: "0.72s" }} />
+              </g>
+            </svg>
             <Image src="/images/brand/logo.svg" alt="" width={132} height={75} className="site-loader__logo" priority />
-            <span className="site-loader__bar">
-              <i />
-            </span>
           </div>
         </div>
         <LocaleProvider locale={locale}>

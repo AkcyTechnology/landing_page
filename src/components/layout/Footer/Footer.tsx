@@ -49,6 +49,7 @@ export default function Footer() {
           <motion.div className={styles.brand} {...reveal()}>
             <Link href="/" aria-label={f.homeLabel} className={styles.logo}>
               <Image src="/images/brand/logo.svg" alt="AKCY Technologies" width={210} height={120} />
+              <Image className={styles.logoMark} src="/images/brand/logo.svg" alt="" aria-hidden="true" width={210} height={120} />
             </Link>
             <p>{f.brandText}</p>
             <nav className={styles.social} aria-label={f.social}>

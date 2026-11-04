@@ -15,6 +15,8 @@ export interface AboutContent {
     primaryCta: string;
     breadcrumb: string;
     tags: string[];
+    /** Sağdaki üst üste görseller. src boşsa sade bir çerçeve gösterilir (görseller sonra eklenecek). */
+    gallery: { src: string; alt: string }[];
   };
   intro: {
     eyebrow: string;
@@ -56,6 +58,12 @@ export const aboutContent: Record<Locale, AboutContent> = {
         "Dijital Deneyim", "API", "E-Ticaret", "Arayüz Tasarımı", "Kullanıcı Deneyimi", "Veri Analizi",
         "İş Süreçleri", "Bulut Çözümleri", "Dijital Dönüşüm", "Fikir", "Tasarım", "Teknoloji",
         "Geliştirme", "İnovasyon", "Ürün", "Strateji",
+      ],
+      // Görseller eklendiğinde src alanlarını doldurun (ör. "/images/about/ekip-1.jpg")
+      gallery: [
+        { src: "", alt: "" },
+        { src: "", alt: "" },
+        { src: "", alt: "" },
       ],
     },
     intro: {
@@ -117,6 +125,11 @@ export const aboutContent: Record<Locale, AboutContent> = {
         "Digital Experience", "API", "E-Commerce", "Interface Design", "User Experience", "Data Analysis",
         "Business Processes", "Cloud Solutions", "Digital Transformation", "Idea", "Design", "Technology",
         "Development", "Innovation", "Product", "Strategy",
+      ],
+      gallery: [
+        { src: "", alt: "" },
+        { src: "", alt: "" },
+        { src: "", alt: "" },
       ],
     },
     intro: {

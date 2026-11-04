@@ -159,7 +159,8 @@ button {
 
 /* ==========================
    AÇILIŞ EKRANI (src/views/SiteShell.tsx)
-   Oturumun ilk sayfasında ~1,5 sn görünür, sonra kendiliğinden kaybolur.
+   Oturumun ilk sayfasında görünür: ortadan dışa ağ düğümleri ve bağlantılar
+   çizilir, logo yükselir, ekran perde gibi yukarı açılır. JS gerekmez.
 ========================== */
 .site-loader {
   position: fixed;
@@ -167,9 +168,10 @@ button {
   z-index: 3000;
   display: grid;
   place-items: center;
-  background: #ffffff;
+  background: #06101f;
   pointer-events: none;
-  animation: site-loader-out 0.5s ease 1.35s forwards;
+  clip-path: inset(0 0 0 0);
+  animation: site-loader-out 0.7s cubic-bezier(0.76, 0, 0.24, 1) 1.75s forwards;
 }
 
 html[data-loaded] .site-loader {
@@ -179,58 +181,88 @@ html[data-loaded] .site-loader {
 .site-loader__inner {
   display: grid;
   justify-items: center;
-  gap: 22px;
-  animation: site-loader-rise 0.6s cubic-bezier(0.22, 0.8, 0.25, 1) both;
+  gap: 18px;
+}
+
+.site-loader__lines line {
+  stroke: rgba(22, 195, 206, 0.55);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: site-loader-draw 0.55s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+.site-loader__nodes circle {
+  fill: #16c3ce;
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0);
+  animation: site-loader-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.site-loader__nodes circle:first-child {
+  fill: #ffffff;
 }
 
 .site-loader__logo {
   display: block;
-  width: 132px;
+  width: 120px;
   height: auto;
+  filter: brightness(0) invert(1);
+  opacity: 0;
+  animation: site-loader-rise 0.6s cubic-bezier(0.22, 0.8, 0.25, 1) 0.95s forwards;
 }
 
-.site-loader__bar {
-  position: relative;
-  display: block;
-  width: 128px;
-  height: 2px;
-  overflow: hidden;
-  border-radius: 2px;
-  background: rgba(0, 89, 93, 0.14);
-}
-
-.site-loader__bar i {
-  position: absolute;
-  inset: 0;
-  background: #00595d;
-  transform: scaleX(0);
-  transform-origin: left;
-  animation: site-loader-fill 1.15s cubic-bezier(0.65, 0, 0.35, 1) 0.15s forwards;
-}
-
-@keyframes site-loader-out {
+@keyframes site-loader-draw {
   to {
-    opacity: 0;
-    visibility: hidden;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes site-loader-pop {
+  to {
+    transform: scale(1);
   }
 }
 
 @keyframes site-loader-rise {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
-@keyframes site-loader-fill {
+/* Perde yukarı çekilerek açılır */
+@keyframes site-loader-out {
   to {
-    transform: scaleX(1);
+    clip-path: inset(0 0 100% 0);
+    visibility: hidden;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .site-loader {
-    animation: site-loader-out 0.2s linear 0.3s forwards !important;
-    animation-duration: 0.2s !important;
+    animation: site-loader-fade 0.2s linear 0.3s forwards !important;
+  }
+
+  .site-loader__lines line,
+  .site-loader__nodes circle,
+  .site-loader__logo {
+    animation: none !important;
+    stroke-dashoffset: 0;
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes site-loader-fade {
+  to {
+    opacity: 0;
+    visibility: hidden;
   }
 }

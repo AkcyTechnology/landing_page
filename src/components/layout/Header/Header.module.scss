@@ -164,7 +164,9 @@
     }
   }
 
-  &:focus-within {
+  /* Yalnızca klavye odağında açık kalır; fareyle tıklandıktan sonra
+     odak bağlantıda kalsa bile menü fare çekilince kapanır */
+  &:has(:focus-visible) {
     .megaMenu {
       opacity: 1;
       visibility: visible;

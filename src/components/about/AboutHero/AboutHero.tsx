@@ -3,6 +3,7 @@ import { getT } from "@/i18n/server";
 import Container from "@/components/common/Container/Container";
 import type { AboutContent } from "@/content/about";
 
+import PhotoStack from "./PhotoStack";
 import TagRain from "./TagRain";
 import styles from "./AboutHero.module.scss";
 
@@ -21,6 +22,7 @@ export default function AboutHero({ content, pageName }: AboutHeroProps) {
       <TagRain tags={content.tags} />
 
       <Container className={styles.container}>
+        <div className={styles.layout}>
         <div className={styles.content}>
           <nav className={styles.breadcrumb} aria-label={getT().blog.detail.breadcrumb}>
             <ol>
@@ -49,6 +51,9 @@ export default function AboutHero({ content, pageName }: AboutHeroProps) {
               <span aria-hidden="true">→</span>
             </Link>
           </div>
+        </div>
+
+        <PhotoStack images={content.gallery} />
         </div>
       </Container>
     </section>
