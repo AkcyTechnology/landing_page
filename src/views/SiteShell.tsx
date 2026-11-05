@@ -5,10 +5,9 @@ import Image from "next/image";
 
 import { StructuredData } from "@/lib/StructuredData";
 import { baseUrl, localeAlternates } from "@/lib/metadata";
-import { htmlLang, ogLocale, type Locale } from "@/i18n/config";
+import { htmlLang, LOCALE_STORAGE_KEY, ogLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { LocaleProvider } from "@/i18n/LocaleProvider";
-import LocalePreference from "@/i18n/LocalePreference";
 import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/Footer/Footer";
 import CursorTrail from "@/components/common/CursorTrail/CursorTrail";
@@ -74,6 +73,15 @@ export function rootMetadata(locale: Locale): Metadata {
   };
 }
 
+const bootScript = `try{
+var d=document.documentElement,s=sessionStorage,p=location.pathname;
+if(p==="/"){try{var r=document.referrer,inside=r&&new URL(r).origin===location.origin;
+if(localStorage.getItem("${LOCALE_STORAGE_KEY}")==="en"&&!inside){d.setAttribute("data-redirect","");location.replace("/en/")}}catch(e){}}
+if(!d.hasAttribute("data-redirect")){
+if(/^\\/(en\\/?)?(index\\.html)?$/.test(p)&&!s.getItem("akcy-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches){d.setAttribute("data-intro","");d.setAttribute("data-loaded","");s.setItem("akcy-intro","1");s.setItem("akcy-loaded","1")}
+else if(s.getItem("akcy-loaded")){d.setAttribute("data-loaded","")}else{s.setItem("akcy-loaded","1")}}
+}catch(e){}`;
+
 export default function SiteShell({ locale, children }: { locale: Locale; children: ReactNode }) {
   const t = getDictionary(locale).meta;
   const intro = getDictionary(locale).intro;
@@ -103,17 +111,16 @@ export default function SiteShell({ locale, children }: { locale: Locale; childr
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <StructuredData data={organizationSchema} />
         {/*
-          Yükleme ekranı oturum başına bir kez gösterilir.
-          Ana sayfa ilk kez açılıyorsa (ve hareket azaltma kapalıysa) yükleme
-          ekranı yerine yazı introsu gösterilir. Betik çalışmazsa intro hiç
-          görünmez, içerik doğrudan açılır.
+          Sayfa çizilmeden önce çalışır:
+          1. Daha önce İngilizceyi seçmiş biri dışarıdan Türkçe ana sayfaya
+             gelirse hemen /en/ adresine alınır (intro Türkçe başlayıp yarıda
+             kesilmesin diye bu karar burada verilir).
+          2. Ana sayfa oturumda ilk kez açılıyorsa (ve hareket azaltma
+             kapalıysa) yükleme ekranı yerine yazı introsu gösterilir.
+          3. Diğer sayfalarda yükleme ekranı oturum başına bir kez görünür.
+          Betik çalışmazsa intro hiç görünmez, içerik doğrudan açılır.
         */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              "try{var d=document.documentElement,s=sessionStorage,p=location.pathname;if(/^\\/(en\\/?)?(index\\.html)?$/.test(p)&&!s.getItem('akcy-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.setAttribute('data-intro','');d.setAttribute('data-loaded','');s.setItem('akcy-intro','1');s.setItem('akcy-loaded','1')}else if(s.getItem('akcy-loaded')){d.setAttribute('data-loaded','')}else{s.setItem('akcy-loaded','1')}}catch(e){}",
-          }}
-        />
+        <script dangerouslySetInnerHTML={{ __html: bootScript }} />
       </head>
       <body>
         {/* Açılış ekranı: CSS ile kendiliğinden kaybolur (JS gerekmez), tıklamayı engellemez */}
@@ -149,7 +156,6 @@ export default function SiteShell({ locale, children }: { locale: Locale; childr
         </div>
         <SiteIntro words={intro.words} areas={intro.areas} />
         <LocaleProvider locale={locale}>
-          <LocalePreference />
           <CursorTrail />
           <PointerEffects />
 

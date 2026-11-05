@@ -191,6 +191,11 @@ html[data-loaded] .site-loader {
   display: none;
 }
 
+/* İngilizceye yönlendirilirken Türkçe sayfa bir an bile görünmesin */
+html[data-redirect] body {
+  visibility: hidden;
+}
+
 .site-loader__inner {
   display: grid;
   justify-items: center;
