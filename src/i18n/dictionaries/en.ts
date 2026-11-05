@@ -250,16 +250,6 @@ export const en: Dictionary = {
           tags: ["Admin Panel", "KPI Tracking", "Automated Reports", "Data Visualisation"],
         },
       ],
-      visuals: {
-        flow: ["Document", "AI analysis", "Human review", "Output"],
-        table: [
-          ["Quote #1042", "Approved"],
-          ["Order #2231", "Preparing"],
-          ["Service #0318", "Assigned"],
-          ["Quote #1043", "Pending"],
-        ],
-        hub: ["CRM", "ERP", "E-commerce", "Payments", "Accounting"],
-      },
     },
     process: {
       label: "04 / HOW WE WORK",

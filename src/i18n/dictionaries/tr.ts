@@ -253,16 +253,6 @@ export const tr = {
           tags: ["Yönetim Paneli", "KPI Takibi", "Otomatik Raporlar", "Veri Görselleştirme"],
         },
       ],
-      visuals: {
-        flow: ["Doküman", "AI analiz", "İnsan kontrolü", "Çıktı"],
-        table: [
-          ["Teklif #1042", "Onaylandı"],
-          ["Sipariş #2231", "Hazırlanıyor"],
-          ["Servis #0318", "Atandı"],
-          ["Teklif #1043", "Bekliyor"],
-        ],
-        hub: ["CRM", "ERP", "E-ticaret", "Ödeme", "Muhasebe"],
-      },
     },
     process: {
       label: "04 / NASIL ÇALIŞIYORUZ",

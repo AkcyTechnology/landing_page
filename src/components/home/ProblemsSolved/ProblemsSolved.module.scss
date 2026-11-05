@@ -1,202 +1,359 @@
 @use "../../../styles/buttons" as btn;
-﻿.section { padding: var(--space-section) 0; background: var(--color-surface); color: var(--color-text-primary); }
 
-/* ==========================
-   HEADER
-========================== */
-.header { display: grid; grid-template-columns: 1.1fr .9fr; align-items: end; gap: 60px; margin-bottom: 72px; }
-.label { display: inline-block; margin-bottom: 24px; color: var(--color-accent); font-size: 11px; font-weight: 600; letter-spacing: .13em; }
-.heading { font-size: clamp(36px, 4.6vw, 64px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.08; span { color: var(--color-accent); } }
-.intro { max-width: 460px; justify-self: end; padding-bottom: 8px; font-size: 15px; line-height: 1.8; color: var(--color-text-secondary); }
+$ease: cubic-bezier(0.22, 0.8, 0.25, 1);
+$night: #06101f;
+$turquoise: #16c3ce;
 
-.layout { display: grid; grid-template-columns: .85fr 1.15fr; gap: 56px; align-items: start; }
-
-/* ==========================
-   PROBLEM LIST
-========================== */
-.problems { list-style: none; border-top: 1px solid var(--color-border); }
-.problems > li { position: relative; border-bottom: 1px solid var(--color-border); }
-
-.problemButton {
-  width: 100%; display: grid; grid-template-columns: 44px 1fr 24px; align-items: start; gap: 12px;
-  padding: 24px 0; border: 0; background: none; color: var(--color-text-tertiary); text-align: left; cursor: pointer;
-  transition: color .35s ease;
-  &:hover { color: var(--color-text-primary); }
-}
-.problemNumber { padding-top: 5px; font-size: 12px; font-weight: 600; letter-spacing: .08em; font-variant-numeric: tabular-nums; }
-.problemText {
-  font-size: clamp(17px, 1.5vw, 21px); font-weight: 500; line-height: 1.35; letter-spacing: -0.01em;
-  small { display: block; max-height: 0; overflow: hidden; margin-top: 0; color: var(--color-accent); font-size: 13px; font-weight: 600; letter-spacing: 0; opacity: 0; transition: max-height .45s var(--ease-standard), opacity .35s ease, margin .45s var(--ease-standard); }
-}
-.problemArrow { padding-top: 3px; font-size: 18px; opacity: 0; transform: translateX(-8px); transition: opacity .35s ease, transform .35s var(--ease-standard); }
-
-.problemActive {
-  .problemButton { color: var(--color-text-primary); }
-  .problemNumber { color: var(--color-accent); }
-  .problemText small { max-height: 40px; margin-top: 8px; opacity: 1; }
-  .problemArrow { opacity: 1; transform: none; color: var(--color-accent); }
-}
-
-/* Aktif sorunun alt çizgisinde dolan süre göstergesi; bitince sonraki çözüme geçilir */
-.progress {
-  position: absolute; left: 0; bottom: -1px; z-index: 1; width: 100%; height: 2px;
-  background: var(--color-accent); transform-origin: left center; transform: scaleX(0);
-  animation: fill 7s linear forwards; animation-play-state: paused;
-}
-.playing .progress { animation-play-state: running; }
-/* Fare üzerindeyken veya klavyeyle gezinirken durur; fare tıklaması duraklatmaz */
-.layout:hover .progress, .layout:has(:focus-visible) .progress { animation-play-state: paused; }
-@keyframes fill { to { transform: scaleX(1); } }
-
-/* ==========================
-   PANEL
-========================== */
-.desktopPanel { position: sticky; top: 110px; }
-.mobilePanel { display: none; }
-
-.panel {
-  overflow: hidden; border-radius: 20px; background: #06101f; color: #fff;
-  box-shadow: 0 40px 80px -50px rgba(6, 16, 31, .55);
-}
-.visual {
-  position: relative; height: 290px; display: grid; place-items: center; overflow: hidden;
-  background:
-    radial-gradient(ellipse 60% 70% at 50% 100%, rgba(22, 195, 206, .18), transparent 70%),
-    linear-gradient(180deg, #0a1a2e 0%, #06101f 100%);
-  border-bottom: 1px solid rgba(255, 255, 255, .08);
-  &::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px); background-size: 28px 28px; mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%); }
-  > * { position: relative; animation: rise .6s var(--ease-standard) both; }
-}
-.panelBody {
-  padding: 36px 40px 40px;
-  > * { animation: rise .55s var(--ease-standard) both; }
-  > :nth-child(2) { animation-delay: .05s; }
-  > :nth-child(3) { animation-delay: .1s; }
-  > :nth-child(4) { animation-delay: .15s; }
-  > :nth-child(5) { animation-delay: .2s; }
-  h3 { margin-top: 14px; font-size: clamp(24px, 2.2vw, 32px); font-weight: 600; line-height: 1.15; letter-spacing: -0.02em; }
-  p { margin-top: 14px; max-width: 560px; color: rgba(255, 255, 255, .7); font-size: 15px; line-height: 1.7; }
-}
-.category { color: #16c3ce; font-size: 11px; font-weight: 600; letter-spacing: .14em; }
-.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; list-style: none;
-  li { padding: 7px 12px; border: 1px solid rgba(255, 255, 255, .14); border-radius: var(--radius-pill); color: rgba(255, 255, 255, .78); font-size: 12px; }
+.section {
+  padding: var(--space-section) 0;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
 }
 
 /* ==========================
-   MINI ARAYÜZLER
+   BAŞLIK
 ========================== */
-$line: rgba(255, 255, 255, .12);
-$soft: rgba(255, 255, 255, .07);
-$accent: #16c3ce;
-
-/* Web: tarayıcı penceresi */
-.vWeb { width: min(78%, 420px); border: 1px solid $line; border-radius: 12px; background: #0c1a2e; overflow: hidden; }
-.vBar { display: flex; align-items: center; gap: 6px; padding: 10px 12px; border-bottom: 1px solid $line;
-  i { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.2); }
-  span { flex: 0 0 40%; height: 8px; margin-left: auto; margin-right: auto; border-radius: 4px; background: $soft; }
-}
-.vWebBody { padding: 22px; }
-.vWebHero { b { display: block; height: 12px; border-radius: 4px; background: rgba(255,255,255,.75); &:first-child { width: 70%; } &:nth-child(2) { width: 50%; margin-top: 8px; } }
-  em { display: block; width: 84px; height: 22px; margin-top: 16px; border-radius: 11px; background: $accent; animation: pulse 2.4s ease-in-out infinite; }
-}
-.vWebCards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 22px;
-  span { height: 56px; border-radius: 8px; background: $soft; border: 1px solid $line; animation: rise .6s var(--ease-standard) both; &:nth-child(2) { animation-delay: .1s; } &:nth-child(3) { animation-delay: .2s; } }
+.header {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: end;
+  gap: 60px;
+  margin-bottom: 56px;
 }
 
-/* Mobil: telefon */
-.vMobile { display: flex; gap: 18px; }
-.vPhone { position: relative; width: 132px; height: 240px; padding: 26px 12px 12px; border: 1px solid $line; border-radius: 26px; background: #0c1a2e; display: flex; flex-direction: column; gap: 8px; transform: translateY(26px);
-  span { height: 26px; border-radius: 8px; background: $soft; }
-  em { height: 26px; margin-top: auto; border-radius: 13px; background: $accent; }
-}
-.vNotch { position: absolute; top: 9px; left: 50%; width: 40px; height: 8px; border-radius: 4px; background: #06101f; transform: translateX(-50%); }
-.vMobileHero { height: 64px; border-radius: 12px; background: linear-gradient(135deg, $accent, #0d6f8a); }
-
-/* Yapay zekâ: ilerleyen iş akışı */
-.vFlow { list-style: none; display: grid; gap: 10px; width: min(70%, 340px);
-  li { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border: 1px solid $line; border-radius: 10px; background: rgba(12, 26, 46, .9); color: rgba(255,255,255,.75); font-size: 14px; animation: step 2.4s ease-in-out infinite; }
-  span { color: $accent; font-size: 11px; font-weight: 600; letter-spacing: .08em; }
+.label {
+  display: inline-block;
+  margin-bottom: 24px;
+  color: var(--color-accent);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
 }
 
-/* Kurumsal yazılım: durum tablosu */
-.vTable { width: min(78%, 420px); border: 1px solid $line; border-radius: 12px; background: #0c1a2e; overflow: hidden;
-  div { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-top: 1px solid $line; color: rgba(255,255,255,.8); font-size: 13px; animation: rise .5s var(--ease-standard) both; &:first-child { border-top: 0; } }
-  b { padding: 4px 10px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 600; background: rgba(22,195,206,.15); color: $accent;
-    &[data-status="1"] { background: rgba(232,163,58,.15); color: #e8a33a; }
-    &[data-status="3"] { background: $soft; color: rgba(255,255,255,.6); }
+.heading {
+  font-size: clamp(36px, 4.6vw, 64px);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+
+  span {
+    color: var(--color-accent);
   }
 }
 
-/* Entegrasyon: merkez ve bağlı sistemler */
-.vHub { width: 400px; max-width: 90%; aspect-ratio: 400 / 260;
-  svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-  line { stroke: rgba(22, 195, 206, .5); stroke-width: 1.2; stroke-dasharray: 4 6; animation: dash 1.6s linear infinite; }
+.intro {
+  max-width: 460px;
+  justify-self: end;
+  padding-bottom: 8px;
+  color: var(--color-text-secondary);
+  font-size: 15px;
+  line-height: 1.8;
 }
-.vHubCenter, .vHubNode { position: absolute; transform: translate(-50%, -50%); white-space: nowrap; border-radius: var(--radius-pill); font-size: 12px; font-weight: 600; }
-.vHubCenter { left: 50%; top: 48%; padding: 12px 18px; background: $accent; color: #06101f; box-shadow: 0 0 0 8px rgba(22,195,206,.12); }
-.vHubNode { padding: 8px 14px; border: 1px solid $line; background: #0c1a2e; color: rgba(255,255,255,.8);
-  &[data-node="0"] { left: 17.5%; top: 19%; }
-  &[data-node="1"] { left: 82.5%; top: 19%; }
-  &[data-node="2"] { left: 12%; top: 62%; }
-  &[data-node="3"] { left: 88%; top: 62%; }
-  &[data-node="4"] { left: 50%; top: 90%; }
-}
-
-/* Analitik: büyüyen çubuklar ve trend çizgisi */
-.vChart { width: min(78%, 420px); height: 190px; padding: 18px; border: 1px solid $line; border-radius: 12px; background: #0c1a2e;
-  svg { position: absolute; inset: 18px; width: calc(100% - 36px); height: calc(100% - 36px); }
-  path { fill: none; stroke: #fff; stroke-width: 2; vector-effect: non-scaling-stroke; stroke-dasharray: 600; stroke-dashoffset: 600; animation: draw 1.4s .4s var(--ease-standard) forwards; }
-}
-.vBars { display: flex; align-items: flex-end; gap: 10px; height: 100%;
-  i { flex: 1; border-radius: 4px 4px 0 0; background: linear-gradient(180deg, $accent, rgba(22,195,206,.25)); transform-origin: bottom; animation: grow .8s var(--ease-standard) both; }
-}
-
-@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-@keyframes pulse { 50% { box-shadow: 0 0 0 6px rgba(22,195,206,.18); } }
-@keyframes step { 0%, 100% { border-color: $line; } 20% { border-color: rgba(22,195,206,.7); color: #fff; background: rgba(22,195,206,.1); } 40% { border-color: $line; } }
-@keyframes dash { to { stroke-dashoffset: -20; } }
-@keyframes draw { to { stroke-dashoffset: 0; } }
-@keyframes grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 
 /* ==========================
-   RESPONSIVE
+   PANELLER
+========================== */
+.panels {
+  display: flex;
+  gap: 10px;
+  height: clamp(520px, 44vw, 600px);
+}
+
+.panel {
+  position: relative;
+  isolation: isolate;
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 6px;
+  background: $night;
+  color: #ffffff;
+  transition: flex-grow 0.75s $ease;
+}
+
+.panelActive {
+  flex-grow: 5.2;
+}
+
+.photo {
+  z-index: -2;
+  object-fit: cover;
+  transform: scale(1.12);
+  filter: saturate(0.85);
+  transition:
+    transform 1.2s $ease,
+    filter 0.6s ease;
+}
+
+.panelActive .photo {
+  transform: scale(1);
+  filter: none;
+}
+
+.shade {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(6, 16, 31, 0.55) 0%, rgba(6, 16, 31, 0.78) 55%, rgba(6, 16, 31, 0.95) 100%);
+  transition: background 0.6s ease;
+}
+
+.panelActive .shade {
+  background:
+    linear-gradient(90deg, rgba(6, 16, 31, 0.94) 0%, rgba(6, 16, 31, 0.72) 48%, rgba(6, 16, 31, 0.2) 100%),
+    linear-gradient(0deg, rgba(6, 16, 31, 0.6) 0%, transparent 40%);
+}
+
+/* Dar paneldeki numara ve dikey soru: tıklanınca panel açılır */
+.toggle {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26px 0 30px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid $turquoise;
+    outline-offset: -4px;
+  }
+}
+
+.number {
+  color: $turquoise;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Dikey yazı; sığmazsa ikinci sütuna geçer */
+.question {
+  max-height: calc(100% - 64px);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+  text-align: start;
+  transition: opacity 0.35s ease;
+}
+
+/* Açık panel: numara solda kalır, soru başlığın üstünde yatay yazılır */
+.panelActive .toggle {
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: clamp(28px, 3vw, 44px);
+  pointer-events: none;
+  cursor: default;
+}
+
+.panelActive .question {
+  opacity: 0;
+}
+
+.body {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: min(100%, 620px);
+  padding: clamp(28px, 3vw, 44px);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(24px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    visibility 0s linear 0.3s;
+}
+
+.panelActive .body {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 0.6s ease 0.35s,
+    transform 0.8s $ease 0.35s,
+    visibility 0s;
+}
+
+.ask {
+  margin: 0 0 22px;
+  padding-left: 14px;
+  border-left: 2px solid $turquoise;
+  color: #ffffff;
+  font-size: clamp(17px, 1.5vw, 20px);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.category {
+  display: block;
+  margin-bottom: 14px;
+  color: $turquoise;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+}
+
+.title {
+  margin: 0 0 14px;
+  font-size: clamp(24px, 2.3vw, 34px);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+}
+
+.text {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    padding: 6px 11px;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 999px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 12px;
+    line-height: 1.2;
+    backdrop-filter: blur(4px);
+  }
+}
+
+.link {
+  @include btn.on-dark;
+  margin-top: 26px;
+}
+
+/* Açık panelin altında dolan süre çizgisi */
+.progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: $turquoise;
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: problem-progress 6.5s linear forwards paused;
+}
+
+.playing .progress {
+  animation-play-state: running;
+}
+
+@keyframes problem-progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .panel:not(.panelActive):hover .photo {
+    transform: scale(1.06);
+    filter: none;
+  }
+}
+
+/* ==========================
+   DUYARLI
 ========================== */
 @media (max-width: 1050px) {
-  .section { padding: var(--space-section-tablet) 0; }
-  .header { grid-template-columns: 1fr; gap: 20px; margin-bottom: 52px; }
-  .intro { justify-self: start; }
-  .layout { grid-template-columns: 1fr 1fr; gap: 36px; }
-  .panelBody { padding: 28px; }
-  .visual { height: 240px; }
+  .header {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .intro {
+    justify-self: start;
+  }
 }
-@media (max-width: 800px) {
-  .section { padding: var(--space-section-mobile) 0; }
-  .layout { grid-template-columns: 1fr; }
-  .desktopPanel { display: none; }
-  .mobilePanel { display: block; padding-bottom: 24px; }
-  .progress { bottom: auto; top: -1px; }
-  .problemButton { grid-template-columns: 36px 1fr 20px; padding: 20px 0; }
-  .visual { height: 260px; }
-  .panelBody { padding: 24px 22px 26px; }
-  .vHub { width: 340px; }
-  .vHubNode { font-size: 11px; padding: 6px 10px; }
+
+/* Tablet ve mobil: alt alta paneller, seçili olan açılır */
+@media (max-width: 900px) {
+  .panels {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .panel {
+    flex: none;
+    height: 76px;
+    transition: height 0.6s $ease;
+  }
+
+  .panelActive {
+    height: 520px;
+  }
+
+  .toggle {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 16px;
+    padding: 0 20px;
+    height: 76px;
+    bottom: auto;
+  }
+
+  .question {
+    min-width: 0;
+    max-height: none;
+    overflow: hidden;
+    writing-mode: horizontal-tb;
+    transform: none;
+    font-size: 15px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .panelActive .toggle {
+    height: auto;
+    padding: 24px 22px;
+  }
+
+  .body {
+    width: 100%;
+    padding: 24px 22px 28px;
+  }
+
+  .panelActive .shade {
+    background: linear-gradient(180deg, rgba(6, 16, 31, 0.35) 0%, rgba(6, 16, 31, 0.86) 45%, rgba(6, 16, 31, 0.97) 100%);
+  }
+}
+
+@media (max-width: 420px) {
+  .panelActive {
+    height: 580px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* Otomatik ilerleme ve süsleme animasyonları kapalı */
-  .progress { display: none; }
-  .visual > *, .panelBody > *, .vWebCards span, .vTable div, .vBars i { animation: none; }
-  .vWebHero em, .vFlow li, .vHub line { animation: none; }
-  .vChart path { animation: none; stroke-dashoffset: 0; }
-  .problemText small, .problemArrow, .problemButton { transition: none; }
-}
+  .panel,
+  .photo,
+  .body,
+  .panelActive .body {
+    transition: none;
+  }
 
-/* Ortak buton standardı (src/styles/_buttons.scss) */
-.link {
-  @include btn.secondary;
-}
-
-/* Yerleşim */
-.link {
-  margin-top: 28px;
+  .progress {
+    display: none;
+  }
 }
