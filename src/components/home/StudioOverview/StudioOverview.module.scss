@@ -85,3 +85,8 @@
   justify-self: start;
   white-space: nowrap;
 }
+
+/* Sora başlık fontu daha geniş: dar sütunlarda adım başlıkları sığsın */
+@media (max-width: 1100px) {
+  .step h3 { font-size: clamp(19px, 2.9vw, 23px); overflow-wrap: break-word; }
+}

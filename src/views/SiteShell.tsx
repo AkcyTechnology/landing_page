@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Plus_Jakarta_Sans, Sora } from "next/font/google";
 import Image from "next/image";
 
 import { StructuredData } from "@/lib/StructuredData";
@@ -22,6 +22,13 @@ import "@/app/globals.css";
 const sans = Plus_Jakarta_Sans({
   subsets: ["latin", "latin-ext"],
   variable: "--font-brand",
+  display: "swap",
+});
+
+/* Başlık fontu: geometrik yapısı logodaki keskin "A" ile uyumlu */
+const display = Sora({
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-heading",
   display: "swap",
 });
 
@@ -87,7 +94,7 @@ export default function SiteShell({ locale, children }: { locale: Locale; childr
   };
 
   return (
-    <html lang={htmlLang[locale]} className={sans.variable} suppressHydrationWarning>
+    <html lang={htmlLang[locale]} className={`${sans.variable} ${display.variable}`} suppressHydrationWarning>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#06101f" />
