@@ -215,11 +215,9 @@ $mint: #dff3f1;
   color: $ink;
 }
 
+/* Her grup: üstte başlık, altında alt alta hizmet satırları */
 .group {
-  display: grid;
-  grid-template-columns: minmax(220px, 0.34fr) 1fr;
-  gap: clamp(32px, 5vw, 80px);
-  width: min(100% - 64px, 1280px);
+  width: min(100% - 64px, 1200px);
   margin: 0 auto;
   padding: clamp(48px, 6vw, 72px) 0;
   border-top: 1px solid $line;
@@ -231,16 +229,16 @@ $mint: #dff3f1;
 }
 
 .groupHead {
-  align-self: start;
-  position: sticky;
-  top: 120px;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin-bottom: clamp(28px, 3.5vw, 44px);
 }
 
 .groupNumber {
-  display: block;
-  margin-bottom: 18px;
   color: transparent;
-  font-size: clamp(56px, 6vw, 88px);
+  font-size: clamp(48px, 5vw, 72px);
   font-weight: 600;
   line-height: 1;
   letter-spacing: -0.05em;
@@ -252,7 +250,7 @@ $mint: #dff3f1;
 }
 
 .groupCount {
-  margin: 14px 0 0;
+  margin: 0 0 0 auto;
   color: $ink-faint;
   font-size: 13px;
   font-weight: 600;
@@ -260,28 +258,29 @@ $mint: #dff3f1;
   text-transform: uppercase;
 }
 
-.grid {
+.rows {
   display: grid;
-  gap: 14px;
+  gap: 16px;
 }
 
-/* Üç kart: ilki iki satıra yayılan büyük görselli kart */
-.grid3 {
-  grid-template-columns: 1.1fr 1fr;
-  grid-auto-rows: minmax(260px, auto);
+/* Satır: bilgi kartı + dönen görsel kart; satırlar zikzak dizilir */
+.row {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 16px;
+  min-height: 380px;
+  scroll-margin-top: 110px;
+  outline: 2px solid transparent;
+  outline-offset: 6px;
+  border-radius: $radius;
 
-  > :first-child {
-    grid-row: span 2;
+  &:nth-child(even) .flip {
+    order: -1;
   }
-}
 
-.grid2 {
-  grid-template-columns: 1fr 1fr;
-  grid-auto-rows: minmax(330px, auto);
-}
-
-.group:nth-child(3) .grid2 {
-  grid-template-columns: 1.15fr 1fr;
+  &:target {
+    animation: card-target 1.6s ease 0.3s;
+  }
 }
 
 .card {
@@ -314,22 +313,6 @@ $mint: #dff3f1;
   transition:
     transform 0.5s $ease,
     border-color 0.3s ease;
-}
-
-.cardImage {
-  position: absolute;
-  inset: 0;
-  z-index: -2;
-  background-size: cover;
-  background-position: center;
-  transition: transform 0.9s $ease;
-
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(6, 16, 31, 0.62) 0%, rgba(7, 27, 70, 0.94) 70%);
-  }
 }
 
 /* Fareyi izleyen yumuşak ışık (--mx/--my: PointerEffects › data-tilt) */
@@ -424,9 +407,6 @@ $mint: #dff3f1;
       opacity: 1;
     }
 
-    .cardImage {
-      transform: scale(1.05);
-    }
   }
 }
 
@@ -441,8 +421,7 @@ $mint: #dff3f1;
 }
 
 .navy,
-.teal,
-.image {
+.teal {
   border-color: transparent;
   color: $white;
 
@@ -477,10 +456,6 @@ $mint: #dff3f1;
   .cardNumber {
     color: $mint;
   }
-}
-
-.image {
-  background: $night;
 }
 
 @keyframes card-target {
@@ -531,15 +506,6 @@ $mint: #dff3f1;
     display: none;
   }
 
-  .group {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-
-  .groupHead {
-    position: static;
-  }
-
   .groupNumber {
     font-size: 52px;
   }
@@ -585,23 +551,8 @@ $mint: #dff3f1;
     width: calc(100% - 32px);
   }
 
-  .grid2,
-  .grid3,
-  .group:nth-child(3) .grid2 {
-    grid-template-columns: 1fr;
-    grid-auto-rows: auto;
-
-    > :first-child {
-      grid-row: auto;
-    }
-  }
-
   .card {
     min-height: 300px;
-  }
-
-  .image {
-    min-height: 360px;
   }
 }
 
@@ -613,17 +564,220 @@ $mint: #dff3f1;
     animation: none;
   }
 
-  .card:target {
+  .row:target {
     animation: none;
   }
 }
 
-/* Görselli kartta metin alta yerleşir, görsel üstte nefes alır */
-.image .cardTop {
-  margin-bottom: auto;
-  padding-bottom: 48px;
+/* =========================
+   DÖNEN GÖRSEL KART
+========================= */
+
+.flip {
+  position: relative;
+  perspective: 1400px;
 }
 
-.image .cardLink {
-  margin-top: 0;
+.flipInner {
+  position: relative;
+  height: 100%;
+  min-height: 380px;
+  transform-style: preserve-3d;
+  transition: transform 0.85s cubic-bezier(0.65, 0, 0.25, 1);
+}
+
+.flipFront,
+.flipBack {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: $radius;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flipFront {
+  background: $night;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 45%, rgba(6, 16, 31, 0.82) 100%);
+  }
+}
+
+.flipPhoto {
+  object-fit: cover;
+  transition: transform 1s $ease;
+}
+
+.flipTitle {
+  position: absolute;
+  left: 28px;
+  bottom: 24px;
+  z-index: 1;
+  max-width: calc(100% - 200px);
+  color: $white;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.flipBack {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(26px, 3vw, 40px);
+  border: 1px solid $line;
+  background: $white;
+  color: $ink;
+  transform: rotateY(180deg);
+}
+
+.flipLabel {
+  margin: 0 0 10px;
+  color: $primary;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+
+  &:not(:first-child) {
+    margin-top: 22px;
+  }
+}
+
+.flipText {
+  margin: 0;
+  color: $ink-soft;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.flipList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    padding: 6px 11px;
+    border-radius: 999px;
+    background: rgba(0, 89, 93, 0.08);
+    color: $primary-dark;
+    font-size: 12px;
+    font-weight: 500;
+  }
+}
+
+/* Döndürme düğmesi: önde sağ altta, arkada sağ üstte */
+.flipButton {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: $radius;
+  background: rgba(6, 16, 31, 0.45);
+  color: $white;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease;
+
+  span:first-child {
+    font-size: 15px;
+    transition: transform 0.5s $ease;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $blue;
+    outline-offset: 3px;
+  }
+}
+
+.flipped .flipInner {
+  transform: rotateY(180deg);
+}
+
+.flipped .flipButton {
+  border-color: $line;
+  background: $white;
+  color: $primary;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .flip:hover .flipInner {
+    transform: rotateY(180deg);
+  }
+
+  .flip:hover .flipButton {
+    border-color: $line;
+    background: $white;
+    color: $primary;
+
+    span:first-child {
+      transform: rotate(180deg);
+    }
+  }
+
+  .flipButton:hover {
+    border-color: $blue;
+    color: $blue;
+  }
+}
+
+@media (max-width: 900px) {
+  .row {
+    grid-template-columns: 1fr;
+    min-height: 0;
+
+    &:nth-child(even) .flip {
+      order: 0;
+    }
+  }
+
+  .card {
+    min-height: 0;
+  }
+
+  .flipInner {
+    min-height: 420px;
+  }
+}
+
+@media (max-width: 760px) {
+  .group {
+    width: calc(100% - 32px);
+  }
+
+  .groupCount {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .flipTitle {
+    left: 20px;
+    max-width: calc(100% - 40px);
+    bottom: 76px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flipInner {
+    transition: none;
+  }
 }

@@ -4,6 +4,7 @@ import { getServiceBySlug } from "@/data/services";
 import { servicePhotos, servicesPageContent } from "@/content/services-page";
 
 import ServicesHero, { type ArcCard } from "./ServicesHero";
+import FlipCard from "./FlipCard";
 import styles from "./ServicesPage.module.scss";
 
 const pad = (value: number) => String(value).padStart(2, "0");
@@ -48,41 +49,41 @@ export default function ServicesPage({ locale }: { locale: Locale }) {
               </p>
             </header>
 
-            <div className={`${styles.grid} ${styles[`grid${group.items.length}`]}`}>
-              {group.items.map((item, index) => (
-                <article
-                  key={item.slug}
-                  id={item.id}
-                  className={`${styles.card} ${styles[item.tone]}`}
-                  data-tilt=""
-                  data-reveal=""
-                  style={{ "--reveal-delay": `${index * 0.1}s` } as React.CSSProperties}
-                >
-                  {item.tone === "image" && (
-                    <span className={styles.cardImage} style={{ backgroundImage: `url(${item.photo})` }} aria-hidden="true" />
-                  )}
-                  <span className={styles.cardGlow} aria-hidden="true" />
+            <div className={styles.rows}>
+              {group.items.map((item) => (
+                <div key={item.slug} id={item.id} className={styles.row}>
+                  <article className={`${styles.card} ${styles[item.tone]}`} data-tilt="" data-reveal="">
+                    <span className={styles.cardGlow} aria-hidden="true" />
 
-                  <div className={styles.cardTop}>
-                    <span className={styles.cardNumber}>{item.number}</span>
-                    <span className={styles.cardMark} aria-hidden="true">»</span>
-                  </div>
+                    <div className={styles.cardTop}>
+                      <span className={styles.cardNumber}>{item.number}</span>
+                      <span className={styles.cardMark} aria-hidden="true">»</span>
+                    </div>
 
-                  <h3 className={styles.cardTitle}>{item.title}</h3>
-                  <p className={styles.cardText}>{item.description}</p>
+                    <h3 className={styles.cardTitle}>{item.title}</h3>
+                    <p className={styles.cardText}>{item.description}</p>
 
-                  <ul className={styles.cardTags}>
-                    {item.service.offerings.slice(0, 3).map((offering) => (
-                      <li key={offering}>{offering}</li>
-                    ))}
-                  </ul>
+                    <ul className={styles.cardTags}>
+                      {item.service.offerings.slice(0, 3).map((offering) => (
+                        <li key={offering}>{offering}</li>
+                      ))}
+                    </ul>
 
-                  <Link href="/iletisim" className={styles.cardLink}>
-                    {content.quoteCta}
-                    <span className={styles.srOnly}> — {item.title}</span>
-                    <span aria-hidden="true">↗</span>
-                  </Link>
-                </article>
+                    <Link href="/iletisim" className={styles.cardLink}>
+                      {content.quoteCta}
+                      <span className={styles.srOnly}> — {item.title}</span>
+                      <span aria-hidden="true">↗</span>
+                    </Link>
+                  </article>
+
+                  <FlipCard
+                    title={item.title}
+                    photo={item.photo}
+                    overview={item.service.overview}
+                    more={item.service.offerings.slice(3)}
+                    labels={content.flip}
+                  />
+                </div>
               ))}
             </div>
           </section>
