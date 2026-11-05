@@ -15,7 +15,7 @@
   --color-accent-hover: #16c3ce;
 
   --font-sans: var(--font-brand), "Segoe UI", Arial, sans-serif;
-  /* Başlıklar Sora, gövde metinleri Plus Jakarta Sans */
+  /* Başlıklar Sora, gövde metinleri Geist */
   --font-display: var(--font-heading), var(--font-brand), "Segoe UI", Arial, sans-serif;
 
   --radius-small: 6px;

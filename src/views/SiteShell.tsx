@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Plus_Jakarta_Sans, Sora } from "next/font/google";
+import { Geist, Sora } from "next/font/google";
 import Image from "next/image";
 
 import { StructuredData } from "@/lib/StructuredData";
@@ -19,7 +19,8 @@ import PointerEffects from "@/components/common/PointerEffects/PointerEffects";
 
 import "@/app/globals.css";
 
-const sans = Plus_Jakarta_Sans({
+/* Gövde metinleri: Geist */
+const sans = Geist({
   subsets: ["latin", "latin-ext"],
   variable: "--font-brand",
   display: "swap",
