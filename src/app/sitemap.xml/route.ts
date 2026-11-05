@@ -1,4 +1,3 @@
-import { getAllServices } from "@/data/services";
 import { getAllProjects } from "@/data/projects";
 import { getAllPosts } from "@/data/blog";
 import { localizePath, locales } from "@/i18n/config";
@@ -31,12 +30,6 @@ function generateSiteMap() {
     { path: "/iletisim", changefreq: "monthly", priority: "0.7" },
   ];
 
-  const servicePages: Entry[] = getAllServices().map((service) => ({
-    path: `/hizmetler/${service.slug}`,
-    changefreq: "monthly",
-    priority: "0.85",
-  }));
-
   const projectPages: Entry[] = getAllProjects().map((project) => ({
     path: `/projelerimiz/${project.slug}`,
     changefreq: "monthly",
@@ -55,7 +48,7 @@ function generateSiteMap() {
     priority: "0.3",
   }));
 
-  const entries = [...staticPages, ...servicePages, ...projectPages, ...blogPages, ...legalPages];
+  const entries = [...staticPages, ...projectPages, ...blogPages, ...legalPages];
 
   /* Her sayfa iki dilde listelenir; hreflang bağlantıları karşılıklıdır */
   const urls = entries.flatMap(({ path, changefreq, priority }) => {

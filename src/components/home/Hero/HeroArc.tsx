@@ -5,6 +5,7 @@ import Link from "@/i18n/Link";
 import { useLocale, useT } from "@/i18n/LocaleProvider";
 import { motion } from "motion/react";
 import { getAllServices } from "@/data/services";
+import { serviceHref } from "@/data/navigation";
 
 import styles from "./HeroArc.module.scss";
 
@@ -175,7 +176,7 @@ export default function HeroArc() {
               </ul>
 
               <Link
-                href={`/hizmetler/${service.slug}`}
+                href={serviceHref(service.slug, locale)}
                 className={styles.cardLink}
                 tabIndex={isActive ? 0 : -1}
               >

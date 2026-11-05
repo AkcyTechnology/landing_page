@@ -6,28 +6,27 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 import styles from "./Header.module.scss";
-import { getServiceLinks, navigation } from "@/data/navigation";
+import { navigation } from "@/data/navigation";
 import { canonicalPath } from "@/i18n/config";
-import { useLocale, useT } from "@/i18n/LocaleProvider";
+import { useT } from "@/i18n/LocaleProvider";
 import LanguageSwitcher from "@/components/layout/LanguageSwitcher/LanguageSwitcher";
 
 export default function Header() {
-  const locale = useLocale();
   const t = useT();
-  const services = getServiceLinks(locale);
   /* Etkin menü öğesi Türkçe (kanonik) adres üzerinden bulunur */
   const pathname = canonicalPath(usePathname() || "/").replace(/(.)\/$/, "$1");
   const isHome = pathname === "/";
   /* Hakkımızda'da etiketler menünün içinden düşer: açık zeminli şeffaf menü */
   const isAbout = pathname === "/hakkimizda";
+  /* Hizmetler'in açılışı da koyu zeminli: ana sayfadaki gibi beyaz yazılı şeffaf menü */
+  const isServices = pathname === "/hizmetler";
 
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
   const mobileMenu = useRef<HTMLDivElement>(null);
 
-  const transparent = isHome && !scrolled && !mobileOpen;
+  const transparent = (isHome || isServices) && !scrolled && !mobileOpen;
   const transparentLight = isAbout && !scrolled && !mobileOpen;
   /* Logoya tıklamak ana sayfaya gider; menüde ayrıca "Ana Sayfa" gösterilmez */
   const menuItems = navigation.filter((item) => item.key !== "home");
@@ -52,7 +51,7 @@ export default function Header() {
     if (!mobileOpen) return;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = mobileOpen ? "hidden" : "";
-    const close = () => { setMobileOpen(false); setServicesOpen(false); };
+    const close = () => setMobileOpen(false);
     const handleKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") { close(); menuButton.current?.focus(); }
       if (event.key !== "Tab") return;
@@ -89,7 +88,6 @@ export default function Header() {
         onClick={(event) => {
           if ((event.target as HTMLElement).closest("a")) {
             setMobileOpen(false);
-            setServicesOpen(false);
           }
         }}
         className={`${styles.header} ${
@@ -117,122 +115,16 @@ export default function Header() {
             className={styles.desktopNav}
             aria-label={t.header.mainNav}
           >
-            {menuItems.map((item) => {
-              const hasChildren = Boolean(item.hasChildren);
-
-              if (hasChildren) {
-                return (
-                  <div
-                    key={item.key}
-                    className={styles.navDropdown}
-                  >
-                    <Link
-                      href={item.href}
-                      aria-current={pathname === item.href ? "page" : undefined}
-                      className={`${styles.navLink} ${
-                        isActive(item.href)
-                          ? styles.active
-                          : ""
-                      }`}
-                    >
-                      {t.nav[item.key]}
-
-                      <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 12 12"
-                        fill="none"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M2.5 4.5L6 8L9.5 4.5"
-                          stroke="currentColor"
-                          strokeWidth="1.4"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </Link>
-
-                    {/* MEGA MENU */}
-                    <div className={styles.megaMenu}>
-                      <div className={styles.megaInner}>
-                        <div className={styles.megaIntro}>
-                          <span className={styles.megaEyebrow}>
-                            {t.header.megaEyebrow}
-                          </span>
-
-                          <h3>
-                            {t.header.megaTitle}
-                            <span> {t.header.megaTitleAccent}</span>
-                          </h3>
-
-                          <p>
-                            {t.header.megaText}
-                          </p>
-
-                          <Link
-                            href="/hizmetler"
-                            className={styles.allServices}
-                          >
-                            {t.header.allServices}
-                            <span aria-hidden="true">↗</span>
-                          </Link>
-                        </div>
-
-                        <div className={styles.serviceGrid}>
-                          {services.map((service) => (
-                            <Link
-                              href={service.href}
-                              key={service.href}
-                              className={styles.serviceItem}
-                            >
-                              <span
-                                className={styles.serviceNumber}
-                              >
-                                {service.number}
-                              </span>
-
-                              <div
-                                className={styles.serviceContent}
-                              >
-                                <strong>
-                                  {service.title}
-                                </strong>
-
-                                <p>
-                                  {service.description}
-                                </p>
-                              </div>
-
-                              <span
-                                className={styles.serviceArrow}
-                              >
-                                ↗
-                              </span>
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              }
-
-              return (
-                <Link
-                  href={item.href}
-                  key={item.href}
-                  className={`${styles.navLink} ${
-                    isActive(item.href)
-                      ? styles.active
-                      : ""
-                  }`}
-                >
-                  {t.nav[item.key]}
-                </Link>
-              );
-            })}
+            {menuItems.map((item) => (
+              <Link
+                href={item.href}
+                key={item.href}
+                aria-current={pathname === item.href ? "page" : undefined}
+                className={`${styles.navLink} ${isActive(item.href) ? styles.active : ""}`}
+              >
+                {t.nav[item.key]}
+              </Link>
+            ))}
           </nav>
 
           {/* DESKTOP CTA */}
@@ -282,7 +174,6 @@ export default function Header() {
         onClick={(event) => {
           if ((event.target as HTMLElement).closest("a")) {
             setMobileOpen(false);
-            setServicesOpen(false);
           }
         }}
         className={`${styles.mobileMenu} ${
@@ -292,20 +183,9 @@ export default function Header() {
         <div className={styles.mobileMenuInner}>
           <nav className={styles.mobileNav} aria-label={t.header.mobileNav}>
             {menuItems.map((item, index) => (
-              <div key={item.href}>
-                <div className={styles.mobileServiceHeader}>
-                  <Link href={item.href} className={styles.mobileLink} aria-current={pathname === item.href ? "page" : undefined}>
-                    <span>{String(index + 1).padStart(2, "0")}</span>{t.nav[item.key]}
-                  </Link>
-                  {item.hasChildren && <button type="button" className={styles.serviceToggle} onClick={() => setServicesOpen(open => !open)} aria-expanded={servicesOpen} aria-controls="mobile-service-links" aria-label={servicesOpen ? t.header.closeServices : t.header.openServices}>
-                    <span className={servicesOpen ? styles.mobileArrowOpen : ""} aria-hidden="true">+</span>
-                  </button>}
-                </div>
-                {item.hasChildren && <div id="mobile-service-links" inert={!servicesOpen} aria-hidden={!servicesOpen} className={`${styles.mobileServiceList} ${servicesOpen ? styles.mobileServiceListOpen : ""}`}>
-                  {services.map(service => <Link href={service.href} key={service.href}><span>{service.number}</span>{service.title}</Link>)}
-                  <Link href={item.href} className={styles.mobileAllServices}>{t.common.allServices} <span aria-hidden="true">↗</span></Link>
-                </div>}
-              </div>
+              <Link key={item.href} href={item.href} className={styles.mobileLink} aria-current={pathname === item.href ? "page" : undefined}>
+                <span>{String(index + 1).padStart(2, "0")}</span>{t.nav[item.key]}
+              </Link>
             ))}
           </nav>
 

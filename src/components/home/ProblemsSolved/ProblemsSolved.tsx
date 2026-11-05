@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "@/i18n/Link";
-import { useT } from "@/i18n/LocaleProvider";
+import { useLocale, useT } from "@/i18n/LocaleProvider";
+import { serviceHref } from "@/data/navigation";
 import type { Dictionary } from "@/i18n/dictionaries";
 import Container from "@/components/common/Container/Container";
 import styles from "./ProblemsSolved.module.scss";
@@ -10,13 +11,13 @@ import styles from "./ProblemsSolved.module.scss";
 type VisualKind = "web" | "mobile" | "ai" | "software" | "integration" | "analytics";
 
 /* Metinler sözlükte (home.problems.solutions); görsel ve bağlantılar burada */
-const solutionMeta: { visual: VisualKind; href: string }[] = [
-  { visual: "web", href: "/hizmetler/web-gelistirme" },
-  { visual: "mobile", href: "/hizmetler/mobil-uygulamalar" },
-  { visual: "ai", href: "/hizmetler/yapay-zeka" },
-  { visual: "software", href: "/hizmetler/kurumsal-yazilim" },
-  { visual: "integration", href: "/hizmetler/dijital-otomasyon" },
-  { visual: "analytics", href: "/hizmetler/dijital-otomasyon" },
+const solutionMeta: { visual: VisualKind; slug: string }[] = [
+  { visual: "web", slug: "web-gelistirme" },
+  { visual: "mobile", slug: "mobil-uygulamalar" },
+  { visual: "ai", slug: "yapay-zeka" },
+  { visual: "software", slug: "kurumsal-yazilim" },
+  { visual: "integration", slug: "dijital-otomasyon" },
+  { visual: "analytics", slug: "dijital-otomasyon" },
 ];
 
 type ProblemsCopy = Dictionary["home"]["problems"];
@@ -102,6 +103,7 @@ function Visual({ kind, t }: { kind: VisualKind; t: ProblemsCopy["visuals"] }) {
 
 function Panel({ index }: { index: number }) {
   const t = useT().home.problems;
+  const locale = useLocale();
   const solution = useSolutions()[index];
   return (
     <div className={styles.panel}>
@@ -115,7 +117,7 @@ function Panel({ index }: { index: number }) {
         <ul className={styles.tags} aria-label={t.tagsLabel}>
           {solution.tags.map((tag) => <li key={tag}>{tag}</li>)}
         </ul>
-        <Link className={styles.link} href={solution.href}>
+        <Link className={styles.link} href={serviceHref(solution.slug, locale)}>
           {t.cta} <b aria-hidden="true">↗</b>
         </Link>
       </div>
