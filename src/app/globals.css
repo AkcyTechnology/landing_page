@@ -268,6 +268,202 @@ html[data-loaded] .site-loader {
 }
 
 /* ==========================
+   SİTE İNTROSU (src/components/common/SiteIntro)
+   Yalnızca html[data-intro] varken (ana sayfanın oturumdaki ilk açılışı)
+   görünür. Dört ifade sırayla, tek tek gelir: alttan kayarak belirir, kısa
+   süre kalır, yukarı kayarak solar; sonraki yine alttan gelir. Son aşamadan
+   sonra perde yukarı çekilir, altındaki hero hafifçe yükselerek görünür.
+   Toplam: masaüstünde ~3 sn, mobilde ~2,3 sn. Animasyon bitince katman
+   gizlenir; tıklamayı hiçbir zaman engellemez.
+========================== */
+.site-intro {
+  display: none;
+}
+
+html[data-intro] {
+  --intro-start: 0.15s;
+  --intro-step: 0.56s;
+  --intro-hold: 0.62s;
+  --intro-exit: 0.62s;
+  --intro-end: calc(var(--intro-start) + 3 * var(--intro-step) + var(--intro-hold));
+}
+
+html[data-intro] .site-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: grid;
+  place-items: center;
+  background: #071b46;
+  color: #ffffff;
+  pointer-events: none;
+  clip-path: inset(0 0 0 0);
+  animation: site-intro-out var(--intro-exit) cubic-bezier(0.76, 0, 0.24, 1) var(--intro-end) forwards;
+}
+
+/* Logo, menüdeki logonun konumunda durur; perde kalkınca kesintisiz devam eder */
+.site-intro__bar {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(100% - 64px, 1380px);
+  height: 88px;
+  display: flex;
+  align-items: center;
+  transform: translateX(-50%);
+}
+
+.site-intro__logo {
+  display: block;
+  width: auto;
+  height: 62px;
+  filter: brightness(0) invert(1);
+}
+
+.site-intro__stage {
+  position: relative;
+  display: grid;
+  width: calc(100% - 32px);
+  height: 1.2em;
+  overflow: hidden;
+  font-size: clamp(46px, 8.2vw, 120px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.045em;
+  text-align: center;
+}
+
+.site-intro__word {
+  grid-area: 1 / 1;
+  align-self: center;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(105%);
+  animation: site-intro-word var(--intro-step) linear calc(var(--intro-start) + var(--i) * var(--intro-step)) both;
+}
+
+/* Son aşama: kalır ve perdeyle birlikte yukarı süzülür */
+.site-intro__word--areas {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  font-size: clamp(17px, 3.3vw, 46px);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  animation:
+    site-intro-in calc(var(--intro-step) * 0.45) cubic-bezier(0.22, 0.8, 0.25, 1) calc(var(--intro-start) + 3 * var(--intro-step)) both,
+    site-intro-leave var(--intro-exit) cubic-bezier(0.76, 0, 0.24, 1) var(--intro-end) forwards;
+}
+
+.site-intro__word--areas > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+}
+
+.site-intro__dot {
+  display: block;
+  width: 0.24em;
+  height: 0.24em;
+  border-radius: 50%;
+  background: #16c3ce;
+}
+
+/* İçerik, perde kalkarken hafifçe yükselir */
+html[data-intro] main {
+  animation: site-intro-content 0.9s cubic-bezier(0.22, 0.8, 0.25, 1) calc(var(--intro-end) + 0.12s) backwards;
+}
+
+@keyframes site-intro-word {
+  0% {
+    opacity: 0;
+    transform: translateY(105%);
+    animation-timing-function: cubic-bezier(0.22, 0.8, 0.25, 1);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  72% {
+    opacity: 1;
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.4);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-105%);
+  }
+}
+
+@keyframes site-intro-in {
+  from {
+    opacity: 0;
+    transform: translateY(105%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes site-intro-leave {
+  to {
+    opacity: 0;
+    transform: translateY(-40%);
+  }
+}
+
+@keyframes site-intro-out {
+  to {
+    clip-path: inset(0 0 100% 0);
+    visibility: hidden;
+  }
+}
+
+@keyframes site-intro-content {
+  from {
+    opacity: 0.35;
+    transform: translateY(24px);
+  }
+}
+
+/* Mobil: daha kısa ve hafif */
+@media (max-width: 1100px) {
+  html[data-intro] {
+    --intro-start: 0.1s;
+    --intro-step: 0.44s;
+    --intro-hold: 0.5s;
+    --intro-exit: 0.5s;
+  }
+
+  .site-intro__bar {
+    width: calc(100% - 36px);
+    height: 64px;
+  }
+
+  .site-intro__logo {
+    height: 50px;
+  }
+}
+
+@media (max-width: 640px) {
+  html[data-intro] main {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-intro] .site-intro {
+    display: none;
+  }
+
+  html[data-intro] main {
+    animation: none;
+  }
+}
+
+/* ==========================
    KAYDIRINCA BELİRME (RevealObserver)
    --reveal-delay ile sıralı gecikme verilebilir.
 ========================== */

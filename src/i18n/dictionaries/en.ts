@@ -513,5 +513,9 @@ export const en: Dictionary = {
     label: "Get a quote: let’s talk about your project",
     ring: "GET A QUOTE",
   },
+  intro: {
+    words: ["From ideas", "to digital", "solutions"],
+    areas: ["Software", "AI", "Automation"],
+  },
   //@@SECTIONS_EN
 };

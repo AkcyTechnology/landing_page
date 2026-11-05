@@ -14,6 +14,7 @@ import Footer from "@/components/layout/Footer/Footer";
 import CursorTrail from "@/components/common/CursorTrail/CursorTrail";
 import QuoteButton from "@/components/common/QuoteButton/QuoteButton";
 import RevealObserver from "@/components/common/RevealObserver/RevealObserver";
+import SiteIntro from "@/components/common/SiteIntro/SiteIntro";
 import PointerEffects from "@/components/common/PointerEffects/PointerEffects";
 
 import "@/app/globals.css";
@@ -67,6 +68,7 @@ export function rootMetadata(locale: Locale): Metadata {
 
 export default function SiteShell({ locale, children }: { locale: Locale; children: ReactNode }) {
   const t = getDictionary(locale).meta;
+  const intro = getDictionary(locale).intro;
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -92,11 +94,16 @@ export default function SiteShell({ locale, children }: { locale: Locale; childr
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <StructuredData data={organizationSchema} />
-        {/* Yükleme ekranı oturum başına bir kez gösterilir */}
+        {/*
+          Yükleme ekranı oturum başına bir kez gösterilir.
+          Ana sayfa ilk kez açılıyorsa (ve hareket azaltma kapalıysa) yükleme
+          ekranı yerine yazı introsu gösterilir. Betik çalışmazsa intro hiç
+          görünmez, içerik doğrudan açılır.
+        */}
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "try{if(sessionStorage.getItem('akcy-loaded')){document.documentElement.setAttribute('data-loaded','')}else{sessionStorage.setItem('akcy-loaded','1')}}catch(e){}",
+              "try{var d=document.documentElement,s=sessionStorage,p=location.pathname;if(/^\\/(en\\/?)?(index\\.html)?$/.test(p)&&!s.getItem('akcy-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.setAttribute('data-intro','');d.setAttribute('data-loaded','');s.setItem('akcy-intro','1');s.setItem('akcy-loaded','1')}else if(s.getItem('akcy-loaded')){d.setAttribute('data-loaded','')}else{s.setItem('akcy-loaded','1')}}catch(e){}",
           }}
         />
       </head>
@@ -132,6 +139,7 @@ export default function SiteShell({ locale, children }: { locale: Locale; childr
             <Image src="/images/brand/logo.svg" alt="" width={132} height={75} className="site-loader__logo" priority />
           </div>
         </div>
+        <SiteIntro words={intro.words} areas={intro.areas} />
         <LocaleProvider locale={locale}>
           <LocalePreference />
           <CursorTrail />

@@ -516,6 +516,11 @@ export const tr = {
     label: "Teklif alın: projenizi konuşalım",
     ring: "TEKLİF AL",
   },
+  /* Ana sayfanın ilk açılışındaki intro; son öge marka alanlarıdır */
+  intro: {
+    words: ["Fikirlerden", "Dijital", "Çözümlere"],
+    areas: ["Yazılım", "Yapay Zekâ", "Otomasyon"],
+  },
   //@@SECTIONS_TR
 };
 
