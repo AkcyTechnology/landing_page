@@ -5,8 +5,8 @@ import type { Locale } from "@/i18n/config";
   Yalnızca doğrulanmış bilgi ve bağlantılar kullanılır: mağaza bağlantısı,
   canlı adres veya detay sayfası olmayan projelerde buton gösterilmez.
 
-  EKSİK GERÇEK GÖRSELLER: Calm Do, Guess Player ve BidFlow için gerçek
-  ekran görüntüsü yok (Connectly'nin ekranları eklendi). Bu projelerde uydurma ekran yerine yalnızca
+  EKSİK GERÇEK GÖRSELLER: Guess Player ve BidFlow için gerçek ekran
+  görüntüsü yok (Calm Do ve Connectly'nin ekranları eklendi). Bu projelerde uydurma ekran yerine yalnızca
   amblem ve boş cihaz çerçevesi gösterilir (visual.screens boş). Gerçek
   ekranlar geldiğinde visual.screens doldurulmalıdır.
 */
@@ -51,6 +51,12 @@ const CAKIROGLU_MOBILE = { src: "/images/projects/cakiroglu/mobil.jpg", width: 3
 const GOKCE_DESKTOP = { src: "/images/projects/gokce-kombi/cover.jpg", width: 1440, height: 1000 };
 /* Telefon çerçevesi: sitenin gerçek ürün listeleme ekranından, kombi modelleri görünecek şekilde dar ekrana dizildi */
 const GOKCE_MOBILE = { src: "/images/projects/gokce-kombi/mobil-urunler.jpg", width: 390, height: 844 };
+/* Calm Do uygulamasının gerçek ekranları (sırasıyla ortadaki, soldaki, sağdaki telefon) */
+const CALMDO_SCREENS = [
+  { src: "/images/projects/calm-do/bugun.webp", width: 480, height: 972 },
+  { src: "/images/projects/calm-do/gorev-ekle.webp", width: 480, height: 972 },
+  { src: "/images/projects/calm-do/ai-asistan.webp", width: 480, height: 972 },
+];
 /* Connectly uygulamasının gerçek ekranları (sırasıyla ortadaki, soldaki, sağdaki telefon) */
 const CONNECTLY_SCREENS = [
   { src: "/images/projects/connectly/ana-sayfa.webp", width: 480, height: 972 },
@@ -77,7 +83,15 @@ export const projectsPage: Record<Locale, ProjectsPageContent> = {
         description:
           "Calm Do, yapılacak işleri düzenlemeye ve günlük planlamayı kolaylaştırmaya odaklanan yapay zekâ destekli bir görev yönetimi uygulamasıdır.",
         emblem: "calm-do",
-        visual: { kind: "app", device: "phone", screens: [] },
+        visual: {
+          kind: "app",
+          device: "phone",
+          screens: [
+            { ...CALMDO_SCREENS[0], alt: "Calm Do bugün ekranı: tamamlanan ve bekleyen görevler, hızlı adımlar" },
+            { ...CALMDO_SCREENS[1], alt: "Yeni görev ekleme ekranı: tahmini süre, başlangıç ve bitiş" },
+            { ...CALMDO_SCREENS[2], alt: "AI asistan ekranı: premium özellik ve giriş seçenekleri" },
+          ],
+        },
       },
       {
         id: "guess-player",
@@ -171,7 +185,15 @@ export const projectsPage: Record<Locale, ProjectsPageContent> = {
         description:
           "Calm Do is an AI-assisted task management app focused on organising to-dos and making daily planning easier.",
         emblem: "calm-do",
-        visual: { kind: "app", device: "phone", screens: [] },
+        visual: {
+          kind: "app",
+          device: "phone",
+          screens: [
+            { ...CALMDO_SCREENS[0], alt: "Calm Do today screen: completed and pending tasks, quick steps" },
+            { ...CALMDO_SCREENS[1], alt: "Adding a new task: estimated duration, start and end" },
+            { ...CALMDO_SCREENS[2], alt: "AI assistant screen: premium feature and sign-in options" },
+          ],
+        },
       },
       {
         id: "guess-player",
