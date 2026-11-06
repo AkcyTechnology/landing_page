@@ -102,14 +102,6 @@ $ease: cubic-bezier(0.22, 0.8, 0.25, 1);
   font-weight: 500;
   line-height: 1.02;
   letter-spacing: -0.04em;
-
-  span {
-    animation: contact-rise 1s $ease 0.55s both;
-  }
-
-  span + span {
-    animation-delay: 0.68s;
-  }
 }
 
 .accent {
@@ -291,7 +283,6 @@ $ease: cubic-bezier(0.22, 0.8, 0.25, 1);
   .shade,
   .grid,
   .eyebrow,
-  .title span,
   .text,
   .cta {
     animation: none;

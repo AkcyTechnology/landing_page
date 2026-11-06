@@ -3,6 +3,7 @@ import Image from "next/image";
 import { getT } from "@/i18n/server";
 import Container from "@/components/common/Container/Container";
 import ScrollToForm from "./ScrollToForm";
+import DropWords, { dropWordCount } from "@/components/common/DropWords/DropWords";
 import styles from "./ContactHero.module.scss";
 
 /*
@@ -31,8 +32,12 @@ export default function ContactHero() {
           <div className={styles.content}>
             <span className={styles.eyebrow}>{t.eyebrow}</span>
             <h1 id="contact-hero-title" className={styles.title}>
-              <span>{t.titleLine1}</span>
-              <span className={styles.accent}>{t.titleLine2}</span>
+              <span>
+                <DropWords text={t.titleLine1} delay={0.45} />
+              </span>
+              <span className={styles.accent}>
+                <DropWords text={t.titleLine2} start={dropWordCount(t.titleLine1)} delay={0.45} />
+              </span>
             </h1>
             <p className={styles.text}>{t.description}</p>
             <ScrollToForm className={styles.cta} label={t.cta} />

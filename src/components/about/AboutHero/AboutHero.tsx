@@ -1,4 +1,5 @@
 import Link from "@/i18n/Link";
+import DropWords, { dropWordCount } from "@/components/common/DropWords/DropWords";
 import { getT } from "@/i18n/server";
 import Container from "@/components/common/Container/Container";
 import type { AboutContent } from "@/content/about";
@@ -36,9 +37,9 @@ export default function AboutHero({ content, pageName }: AboutHeroProps) {
           <p className={styles.eyebrow}>{content.eyebrow}</p>
 
           <h1 className={styles.heading}>
-            {content.titleLines.map((line) => (
+            {content.titleLines.map((line, index) => (
               <span key={line} className={styles.line}>
-                {line}{" "}
+                <DropWords text={line} start={content.titleLines.slice(0, index).reduce((sum, item) => sum + dropWordCount(item), 0)} />{" "}
               </span>
             ))}
           </h1>

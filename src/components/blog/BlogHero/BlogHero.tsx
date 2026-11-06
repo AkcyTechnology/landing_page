@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import { getT } from "@/i18n/server";
+import DropWords, { dropWordCount } from "@/components/common/DropWords/DropWords";
 import styles from "./BlogHero.module.scss";
 
 /*
@@ -17,8 +18,8 @@ export default function BlogHero() {
         <div className={styles.content}>
           <p className={styles.eyebrow}>{t.eyebrow}</p>
           <h1 id="blog-hero-title" className={styles.title}>
-            <span className={styles.lead}>{t.headingLead}</span>{" "}
-            <span className={styles.accent}>{t.headingAccent}</span>
+            <span className={styles.lead}><DropWords text={t.headingLead} /></span>{" "}
+            <span className={styles.accent}><DropWords text={t.headingAccent} start={dropWordCount(t.headingLead)} /></span>
           </h1>
           <p className={styles.text}>{t.description}</p>
         </div>

@@ -3,20 +3,22 @@ $ease: cubic-bezier(0.22, 0.8, 0.25, 1);
 /* Teklif Al (112 px, sağ 24 / alt 24) ile aynı dikey eksende, hemen üstünde */
 .button {
   position: fixed;
-  right: 36px;
-  bottom: 146px;
+  right: 44px;
+  bottom: 150px;
   z-index: 90;
 
   display: grid;
   place-items: center;
-  width: 88px;
-  height: 88px;
+  width: 72px;
+  height: 72px;
 
-  border: 1px solid rgba(29, 34, 38, 0.12);
+  /* İnce beyaz çerçeve */
+  border: 1.5px solid #ffffff;
   border-radius: 50%;
-  background: #ffffff;
-  color: var(--btn-primary);
+  background: var(--btn-primary);
+  color: #ffffff;
   text-decoration: none;
+  transition: background-color var(--btn-transition);
   animation: wa-in 0.6s 1.2s $ease both;
 
   &:focus-visible {
@@ -31,51 +33,28 @@ $ease: cubic-bezier(0.22, 0.8, 0.25, 1);
   bottom: 24px;
 }
 
-/* Teklif Al'ın tersine dönen yazı halkası */
-.ring {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  animation: wa-spin 20s linear infinite reverse;
-}
-
-.ringText {
-  fill: currentColor;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-}
-
+/* Çerçevenin hemen dışında dolanan uydu nokta */
 .orbit {
   position: absolute;
-  inset: 20px;
-  border: 1px dashed rgba(0, 89, 93, 0.25);
+  inset: -7px;
   border-radius: 50%;
   animation: wa-spin 7s linear infinite;
 
   i {
     position: absolute;
-    bottom: -3.5px;
+    top: -3px;
     left: 50%;
-    width: 6px;
-    height: 6px;
-    margin-left: -3px;
+    width: 7px;
+    height: 7px;
+    margin-left: -3.5px;
     border-radius: 50%;
     background: var(--btn-hover);
   }
 }
 
 .core {
-  position: relative;
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--btn-primary);
-  color: #ffffff;
-  transition: background-color var(--btn-transition);
 }
 
 /* İkon birkaç saniyede bir telefon gibi kısa süre titrer */
@@ -85,7 +64,7 @@ $ease: cubic-bezier(0.22, 0.8, 0.25, 1);
 
 .tooltip {
   position: absolute;
-  right: calc(100% + 12px);
+  right: calc(100% + 14px);
   top: 50%;
   padding: 8px 12px;
   border-radius: 4px;
@@ -104,12 +83,10 @@ $ease: cubic-bezier(0.22, 0.8, 0.25, 1);
 
 @media (hover: hover) and (pointer: fine) {
   .button:hover {
-    .ring {
-      animation-duration: 6s;
-    }
+    background: var(--btn-hover);
 
-    .core {
-      background: var(--btn-hover);
+    .orbit {
+      animation-duration: 2.5s;
     }
 
     .icon {
@@ -128,7 +105,7 @@ $ease: cubic-bezier(0.22, 0.8, 0.25, 1);
   transform: translate(0, -50%);
 }
 
-.button:active .core {
+.button:active {
   background: var(--btn-active);
 }
 
@@ -184,10 +161,10 @@ $ease: cubic-bezier(0.22, 0.8, 0.25, 1);
 /* Mobil: Teklif Al 88 px, sağ 14 / alt 14 */
 @media (max-width: 700px) {
   .button {
-    right: 22px;
-    bottom: 110px;
-    width: 72px;
-    height: 72px;
+    right: 28px;
+    bottom: 114px;
+    width: 60px;
+    height: 60px;
   }
 
   .alone {
@@ -195,18 +172,9 @@ $ease: cubic-bezier(0.22, 0.8, 0.25, 1);
     bottom: 14px;
   }
 
-  .orbit {
-    inset: 16px;
-  }
-
-  .core {
-    width: 34px;
-    height: 34px;
-  }
-
   .icon {
-    width: 17px;
-    height: 17px;
+    width: 24px;
+    height: 24px;
   }
 
   .tooltip {
@@ -216,7 +184,6 @@ $ease: cubic-bezier(0.22, 0.8, 0.25, 1);
 
 @media (prefers-reduced-motion: reduce) {
   .button,
-  .ring,
   .orbit,
   .icon {
     animation: none !important;

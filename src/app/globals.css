@@ -517,3 +517,40 @@ html[data-reveal-ready] [data-reveal]:not([data-in]) {
   opacity: 0;
   transform: translateY(28px);
 }
+
+/* ==========================
+   HERO BAŞLIKLARI: DÜŞEN KELİMELER (components/common/DropWords)
+========================== */
+.drop-word {
+  display: inline-block;
+  animation: drop-word 1.15s cubic-bezier(0.3, 0.7, 0.3, 1) var(--drop-delay, 0.2s) both;
+}
+
+@keyframes drop-word {
+  0% {
+    opacity: 0;
+    transform: translateY(-160px) rotate(var(--tilt, 0deg));
+  }
+  12% {
+    opacity: 1;
+  }
+  58% {
+    transform: translateY(10px) rotate(calc(var(--tilt, 0deg) * -0.25));
+  }
+  76% {
+    transform: translateY(-5px) rotate(calc(var(--tilt, 0deg) * 0.1));
+  }
+  90% {
+    transform: translateY(2px) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drop-word {
+    animation: none;
+  }
+}

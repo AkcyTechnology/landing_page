@@ -53,7 +53,6 @@ $listing-bg: #f1f4f7;
   line-height: 1.08;
   letter-spacing: -0.035em;
   text-wrap: balance;
-  animation: blog-rise 0.9s $ease 0.15s both;
 }
 
 .lead,
@@ -186,7 +185,6 @@ $listing-bg: #f1f4f7;
 
 @media (prefers-reduced-motion: reduce) {
   .eyebrow,
-  .title,
   .text,
   .frame,
   .photoWrap,

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, type CSSProperties, type MouseEvent } from "react";
 import Link from "@/i18n/Link";
+import DropWords from "@/components/common/DropWords/DropWords";
 
 import styles from "./ServicesPage.module.scss";
 
@@ -72,7 +73,9 @@ export default function ServicesHero({ eyebrow, title, description, primaryCta, 
     <section className={styles.hero} aria-labelledby="services-hero-title">
       <div className={styles.heroHead}>
         <p className={styles.heroEyebrow}>{eyebrow}</p>
-        <h1 id="services-hero-title" className={styles.heroTitle}>{title}</h1>
+        <h1 id="services-hero-title" className={styles.heroTitle}>
+          <DropWords text={title} />
+        </h1>
       </div>
 
       <nav className={styles.arc} aria-label={arcLabel}>

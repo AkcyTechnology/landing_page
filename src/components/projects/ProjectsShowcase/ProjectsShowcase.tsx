@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { Fragment, useEffect, useRef, type CSSProperties } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 
 import Link from "@/i18n/Link";
 import Container from "@/components/common/Container/Container";
+import DropWords, { dropWordCount } from "@/components/common/DropWords/DropWords";
 import ProjectEmblem from "@/components/projects/ProjectEmblem/ProjectEmblem";
 import type { ProjectsPageContent, ShowcaseProject } from "@/content/projects-page";
 
@@ -18,27 +19,6 @@ import styles from "./ProjectsShowcase.module.scss";
     amblem kendini çizer, metinler sırayla yükselir
   Kaydırma kilitlenmez, otomatik kayan galeri yoktur.
 */
-
-/* Başlık kelimeleri: her biri farklı açıyla düşer, hafif sekip yerine oturur */
-const DROP_TILT = [-7, 5, -4, 8, -6, 4];
-function DropWords({ text, start }: { text: string; start: number }) {
-  const words = text.split(" ");
-  return (
-    <>
-      {words.map((word, index) => (
-        <Fragment key={`${word}-${index}`}>
-          <span
-            className={styles.dropWord}
-            style={{ "--i": start + index, "--tilt": `${DROP_TILT[(start + index) % DROP_TILT.length]}deg` } as CSSProperties}
-          >
-            {word}
-          </span>
-          {index < words.length - 1 ? " " : null}
-        </Fragment>
-      ))}
-    </>
-  );
-}
 
 /* Arka plan: proje amblemlerinin düğüm-ağ dilinde, yavaşça süzülen bir ağ */
 const NET_NODES: [number, number, number][] = [
@@ -270,7 +250,7 @@ export default function ProjectsShowcase({ content }: { content: ProjectsPageCon
           <h1 className={styles.heading}>
             <DropWords text={content.title} start={0} />{" "}
             <span className={styles.headingAccent}>
-              <DropWords text={content.titleAccent} start={content.title.split(" ").length} />
+              <DropWords text={content.titleAccent} start={dropWordCount(content.title)} />
             </span>
           </h1>
           <p className={styles.lead}>{content.description}</p>
