@@ -496,6 +496,7 @@ export const en: Dictionary = {
   whatsapp: {
     label: "Message us on WhatsApp",
     tooltip: "Message us on WhatsApp",
+    ring: "WHATSAPP · MESSAGE US",
     message: "Hello AKCY, I'd like to get information about my project.",
   },
   quote: {

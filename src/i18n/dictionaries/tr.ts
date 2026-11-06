@@ -499,6 +499,7 @@ export const tr = {
   whatsapp: {
     label: "WhatsApp üzerinden yazın",
     tooltip: "WhatsApp'tan yazın",
+    ring: "WHATSAPP · BİZE YAZIN",
     message: "Merhaba AKCY, projem hakkında bilgi almak istiyorum.",
   },
   quote: {

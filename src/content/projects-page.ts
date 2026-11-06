@@ -28,6 +28,8 @@ export interface ShowcaseProject {
   description: string;
   scope?: string[];
   emblem?: EmblemId;
+  /** Uygulama ikonu (adın yanında gösterilir; yoksa amblem kullanılır) */
+  icon?: string;
   visual:
     | { kind: "app"; device: "phone" | "browser"; screens: ProjectImage[] }
     | { kind: "web"; host: string; desktop: ProjectImage; mobile: ProjectImage };
@@ -95,6 +97,7 @@ export const projectsPage: Record<Locale, ProjectsPageContent> = {
         description:
           "Calm Do, yapılacak işleri düzenlemeye ve günlük planlamayı kolaylaştırmaya odaklanan yapay zekâ destekli bir görev yönetimi uygulamasıdır.",
         emblem: "calm-do",
+        icon: "/images/projects/icons/calm-do.svg",
         visual: {
           kind: "app",
           device: "phone",
@@ -113,6 +116,7 @@ export const projectsPage: Record<Locale, ProjectsPageContent> = {
         description:
           "Guess Player, sporcuları tahmin etmeye dayanan bir oyundur. Spor bilgisini eğlenceli bir oyun deneyimiyle buluşturur.",
         emblem: "guess-player",
+        icon: "/images/projects/icons/guess-player.png",
         visual: {
           kind: "app",
           device: "phone",
@@ -131,6 +135,7 @@ export const projectsPage: Record<Locale, ProjectsPageContent> = {
         description:
           "Connectly, kişisel ilişkileri daha özenli takip etmeye odaklanan bir kişisel CRM uygulamasıdır. İnsanlara dair önemli detayları hatırlamayı ve iletişimi sürdürmeyi kolaylaştırmayı amaçlar.",
         emblem: "connectly",
+        icon: "/images/projects/icons/connectly.webp",
         visual: {
           kind: "app",
           device: "phone",
@@ -149,6 +154,7 @@ export const projectsPage: Record<Locale, ProjectsPageContent> = {
         description:
           "BidFlow, işletmelerin ihale, teklif ve satış süreçlerini tek bir çalışma alanında yönetmesine odaklanan bir platformdur. İş fırsatlarını ve teklif süreçlerini daha düzenli takip etmeyi amaçlar.",
         emblem: "bidflow",
+        icon: "/images/projects/icons/bidflow.svg",
         visual: {
           kind: "app",
           device: "browser",
@@ -213,6 +219,7 @@ export const projectsPage: Record<Locale, ProjectsPageContent> = {
         description:
           "Calm Do is an AI-assisted task management app focused on organising to-dos and making daily planning easier.",
         emblem: "calm-do",
+        icon: "/images/projects/icons/calm-do.svg",
         visual: {
           kind: "app",
           device: "phone",
@@ -231,6 +238,7 @@ export const projectsPage: Record<Locale, ProjectsPageContent> = {
         description:
           "Guess Player is a game built around guessing athletes. It brings sports knowledge together with a fun game experience.",
         emblem: "guess-player",
+        icon: "/images/projects/icons/guess-player.png",
         visual: {
           kind: "app",
           device: "phone",
@@ -249,6 +257,7 @@ export const projectsPage: Record<Locale, ProjectsPageContent> = {
         description:
           "Connectly is a personal CRM app focused on keeping track of personal relationships with more care. It aims to make it easier to remember important details about people and keep in touch.",
         emblem: "connectly",
+        icon: "/images/projects/icons/connectly.webp",
         visual: {
           kind: "app",
           device: "phone",
@@ -267,6 +276,7 @@ export const projectsPage: Record<Locale, ProjectsPageContent> = {
         description:
           "BidFlow is a platform focused on helping businesses manage their tender, quote and sales processes in a single workspace. It aims to make business opportunities and quote processes easier to track.",
         emblem: "bidflow",
+        icon: "/images/projects/icons/bidflow.svg",
         visual: {
           kind: "app",
           device: "browser",

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef, type CSSProperties } from "react";
 
 import Link from "@/i18n/Link";
 import Container from "@/components/common/Container/Container";
@@ -18,6 +18,62 @@ import styles from "./ProjectsShowcase.module.scss";
     amblem kendini çizer, metinler sırayla yükselir
   Kaydırma kilitlenmez, otomatik kayan galeri yoktur.
 */
+
+/* Başlık kelimeleri: her biri farklı açıyla düşer, hafif sekip yerine oturur */
+const DROP_TILT = [-7, 5, -4, 8, -6, 4];
+function DropWords({ text, start }: { text: string; start: number }) {
+  const words = text.split(" ");
+  return (
+    <>
+      {words.map((word, index) => (
+        <Fragment key={`${word}-${index}`}>
+          <span
+            className={styles.dropWord}
+            style={{ "--i": start + index, "--tilt": `${DROP_TILT[(start + index) % DROP_TILT.length]}deg` } as CSSProperties}
+          >
+            {word}
+          </span>
+          {index < words.length - 1 ? " " : null}
+        </Fragment>
+      ))}
+    </>
+  );
+}
+
+/* Arka plan: proje amblemlerinin düğüm-ağ dilinde, yavaşça süzülen bir ağ */
+const NET_NODES: [number, number, number][] = [
+  [620, 70, 5], [720, 40, 3.5], [800, 110, 6], [900, 60, 4], [980, 150, 5.5], [1080, 90, 3.5],
+  [700, 190, 4], [860, 220, 7], [1000, 260, 4], [1120, 210, 5], [760, 300, 3.5], [940, 330, 5],
+  [1180, 320, 4], [1060, 360, 3],
+];
+const NET_LINKS: [number, number][] = [
+  [0, 1], [1, 2], [0, 2], [2, 3], [3, 4], [4, 5], [2, 6], [6, 7], [2, 7], [7, 4], [4, 8], [8, 9], [5, 9],
+  [7, 8], [6, 10], [10, 7], [10, 11], [11, 8], [8, 12], [9, 12], [11, 13], [12, 13],
+];
+function IntroNetwork() {
+  return (
+    <svg className={styles.introNet} viewBox="560 0 680 400" preserveAspectRatio="xMaxYMid slice" aria-hidden="true" focusable="false">
+      <g className={styles.netLines}>
+        {NET_LINKS.map(([a, b], index) => (
+          <line
+            key={`${a}-${b}`}
+            x1={NET_NODES[a][0]}
+            y1={NET_NODES[a][1]}
+            x2={NET_NODES[b][0]}
+            y2={NET_NODES[b][1]}
+            pathLength={1}
+            style={{ "--d": `${0.5 + index * 0.06}s` } as CSSProperties}
+          />
+        ))}
+      </g>
+      <g className={styles.netNodes}>
+        {NET_NODES.map(([x, y, r], index) => (
+          <circle key={`${x}-${y}`} cx={x} cy={y} r={r} style={{ "--d": `${0.35 + index * 0.07}s`, "--f": `${6 + (index % 4) * 1.5}s` } as CSSProperties} />
+        ))}
+      </g>
+    </svg>
+  );
+}
 
 function Visual({ project, priority }: { project: ShowcaseProject; priority: boolean }) {
   const { visual } = project;
@@ -207,10 +263,15 @@ export default function ProjectsShowcase({ content }: { content: ProjectsPageCon
   return (
     <>
       <section className={styles.intro}>
-        <Container>
+        <IntroNetwork />
+        <Container className={styles.introInner}>
           <p className={styles.eyebrow}>{content.eyebrow}</p>
+          {/* Kelimeler menünün altından düşüp başlıktaki yerlerine oturur */}
           <h1 className={styles.heading}>
-            {content.title} <span>{content.titleAccent}</span>
+            <DropWords text={content.title} start={0} />{" "}
+            <span className={styles.headingAccent}>
+              <DropWords text={content.titleAccent} start={content.title.split(" ").length} />
+            </span>
           </h1>
           <p className={styles.lead}>{content.description}</p>
         </Container>
@@ -243,10 +304,14 @@ export default function ProjectsShowcase({ content }: { content: ProjectsPageCon
                   </span>
 
                   <p className={styles.name}>
-                    {project.emblem && (
-                      <span className={styles.emblemBox}>
-                        <ProjectEmblem id={project.emblem} size={30} className={styles.drawn} />
-                      </span>
+                    {project.icon ? (
+                      <Image src={project.icon} alt="" width={48} height={48} className={styles.appIcon} />
+                    ) : (
+                      project.emblem && (
+                        <span className={styles.emblemBox}>
+                          <ProjectEmblem id={project.emblem} size={30} className={styles.drawn} />
+                        </span>
+                      )
                     )}
                     {project.name}
                   </p>
