@@ -5,8 +5,8 @@ import type { Locale } from "@/i18n/config";
   Yalnızca doğrulanmış bilgi ve bağlantılar kullanılır: mağaza bağlantısı,
   canlı adres veya detay sayfası olmayan projelerde buton gösterilmez.
 
-  EKSİK GERÇEK GÖRSELLER: Calm Do, Guess Player, Connectly ve BidFlow için
-  gerçek ekran görüntüsü yok. Bu projelerde uydurma ekran yerine yalnızca
+  EKSİK GERÇEK GÖRSELLER: Calm Do, Guess Player ve BidFlow için gerçek
+  ekran görüntüsü yok (Connectly'nin ekranları eklendi). Bu projelerde uydurma ekran yerine yalnızca
   amblem ve boş cihaz çerçevesi gösterilir (visual.screens boş). Gerçek
   ekranlar geldiğinde visual.screens doldurulmalıdır.
 */
@@ -49,7 +49,14 @@ export interface ProjectsPageContent {
 const CAKIROGLU_DESKTOP = { src: "/images/projects/cakiroglu/cover.jpg", width: 1892, height: 862 };
 const CAKIROGLU_MOBILE = { src: "/images/projects/cakiroglu/mobil.jpg", width: 390, height: 844 };
 const GOKCE_DESKTOP = { src: "/images/projects/gokce-kombi/cover.jpg", width: 1440, height: 1000 };
-const GOKCE_MOBILE = { src: "/images/projects/gokce-kombi/mobil-navigasyon.jpg", width: 390, height: 844 };
+/* Telefon çerçevesi: sitenin gerçek ürün listeleme ekranından, kombi modelleri görünecek şekilde dar ekrana dizildi */
+const GOKCE_MOBILE = { src: "/images/projects/gokce-kombi/mobil-urunler.jpg", width: 390, height: 844 };
+/* Connectly uygulamasının gerçek ekranları (sırasıyla ortadaki, soldaki, sağdaki telefon) */
+const CONNECTLY_SCREENS = [
+  { src: "/images/projects/connectly/ana-sayfa.webp", width: 480, height: 972 },
+  { src: "/images/projects/connectly/kisi-ekle.webp", width: 480, height: 972 },
+  { src: "/images/projects/connectly/profil.webp", width: 480, height: 972 },
+];
 
 export const projectsPage: Record<Locale, ProjectsPageContent> = {
   tr: {
@@ -90,7 +97,15 @@ export const projectsPage: Record<Locale, ProjectsPageContent> = {
         description:
           "Connectly, kişisel ilişkileri daha özenli takip etmeye odaklanan bir kişisel CRM uygulamasıdır. İnsanlara dair önemli detayları hatırlamayı ve iletişimi sürdürmeyi kolaylaştırmayı amaçlar.",
         emblem: "connectly",
-        visual: { kind: "app", device: "phone", screens: [] },
+        visual: {
+          kind: "app",
+          device: "phone",
+          screens: [
+            { ...CONNECTLY_SCREENS[0], alt: "Connectly ana sayfası: bağ ağacı, haftalık hedef ve günün kişisi" },
+            { ...CONNECTLY_SCREENS[1], alt: "Connectly'de kişi ekleme ekranı: ilişki türü ve hatırlatma sıklığı" },
+            { ...CONNECTLY_SCREENS[2], alt: "Connectly profil ekranı: bağlantı puanı ve hesap ayarları" },
+          ],
+        },
       },
       {
         id: "bidflow",
@@ -131,7 +146,7 @@ export const projectsPage: Record<Locale, ProjectsPageContent> = {
           kind: "web",
           host: "gokcekombi.com",
           desktop: { ...GOKCE_DESKTOP, alt: "Gökçe Kombi web sitesi ana sayfa görünümü" },
-          mobile: { ...GOKCE_MOBILE, alt: "Gökçe Kombi web sitesinin mobil navigasyon görünümü" },
+          mobile: { ...GOKCE_MOBILE, alt: "Gökçe Kombi web sitesinde öne çıkan kombi modelleri" },
         },
         liveUrl: "https://gokcekombi.com/",
         detailHref: "/projelerimiz/gokce-kombi",
@@ -176,7 +191,15 @@ export const projectsPage: Record<Locale, ProjectsPageContent> = {
         description:
           "Connectly is a personal CRM app focused on keeping track of personal relationships with more care. It aims to make it easier to remember important details about people and keep in touch.",
         emblem: "connectly",
-        visual: { kind: "app", device: "phone", screens: [] },
+        visual: {
+          kind: "app",
+          device: "phone",
+          screens: [
+            { ...CONNECTLY_SCREENS[0], alt: "Connectly home screen: connection tree, weekly goal and person of the day" },
+            { ...CONNECTLY_SCREENS[1], alt: "Adding a contact in Connectly: relationship type and reminder frequency" },
+            { ...CONNECTLY_SCREENS[2], alt: "Connectly profile screen: connection score and account settings" },
+          ],
+        },
       },
       {
         id: "bidflow",
@@ -217,7 +240,7 @@ export const projectsPage: Record<Locale, ProjectsPageContent> = {
           kind: "web",
           host: "gokcekombi.com",
           desktop: { ...GOKCE_DESKTOP, alt: "Gökçe Kombi website homepage" },
-          mobile: { ...GOKCE_MOBILE, alt: "Mobile navigation of the Gökçe Kombi website" },
+          mobile: { ...GOKCE_MOBILE, alt: "Featured boiler models on the Gökçe Kombi website" },
         },
         liveUrl: "https://gokcekombi.com/",
         detailHref: "/projelerimiz/gokce-kombi",

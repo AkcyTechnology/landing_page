@@ -12,6 +12,7 @@ import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/Footer/Footer";
 import CursorTrail from "@/components/common/CursorTrail/CursorTrail";
 import QuoteButton from "@/components/common/QuoteButton/QuoteButton";
+import WhatsAppButton from "@/components/common/WhatsAppButton/WhatsAppButton";
 import RevealObserver from "@/components/common/RevealObserver/RevealObserver";
 import SiteIntro from "@/components/common/SiteIntro/SiteIntro";
 import PointerEffects from "@/components/common/PointerEffects/PointerEffects";
@@ -165,6 +166,7 @@ export default function SiteShell({ locale, children }: { locale: Locale; childr
 
           <Footer />
 
+          <WhatsAppButton />
           <QuoteButton />
           <RevealObserver />
         </LocaleProvider>

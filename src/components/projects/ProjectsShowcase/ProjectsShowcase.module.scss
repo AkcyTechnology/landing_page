@@ -252,6 +252,26 @@
   height: 82%;
 }
 
+/* Gerçek uygulama ekranları: koyu çerçeveli telefonlar */
+.appVisualScreens {
+  background: linear-gradient(180deg, #eef3f2 0%, $off-white 100%);
+}
+
+.deviceScreen {
+  display: block;
+  overflow: hidden;
+  border: 5px solid $ink;
+  background: #0f1419;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+}
+
 .browserEmpty {
   width: 86%;
 }

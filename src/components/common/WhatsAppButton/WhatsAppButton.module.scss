@@ -1,0 +1,140 @@
+$green: #25d366;
+$green-dark: #1da851;
+$ease: cubic-bezier(0.22, 0.8, 0.25, 1);
+
+/* Teklif Al (112 px, sağ 24 / alt 24) ile aynı dikey eksende, hemen üstünde */
+.button {
+  position: fixed;
+  right: 52px;
+  bottom: 150px;
+  z-index: 90;
+
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: $green;
+  color: #ffffff;
+  text-decoration: none;
+  transition:
+    background-color 0.25s ease,
+    transform 0.35s $ease;
+  animation: wa-in 0.6s $ease 1.2s both;
+
+  &:focus-visible {
+    outline: 2px solid var(--btn-focus);
+    outline-offset: 4px;
+  }
+}
+
+/* İletişim sayfasında Teklif Al yok: köşeye iner */
+.alone {
+  right: 24px;
+  bottom: 24px;
+}
+
+.icon {
+  position: relative;
+  z-index: 1;
+}
+
+/* Aralıklarla yayılan ince halka */
+.wave {
+  position: absolute;
+  inset: 0;
+  border: 2px solid $green;
+  border-radius: 50%;
+  opacity: 0;
+  animation: wa-wave 3.6s ease-out 2.2s infinite;
+}
+
+.tooltip {
+  position: absolute;
+  right: calc(100% + 12px);
+  top: 50%;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background: #06101f;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(8px, -50%);
+  transition:
+    opacity 0.25s ease,
+    transform 0.3s $ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .button:hover {
+    background: $green-dark;
+    transform: translateY(-2px);
+
+    .tooltip {
+      opacity: 1;
+      transform: translate(0, -50%);
+    }
+  }
+}
+
+.button:focus-visible .tooltip {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+@keyframes wa-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+@keyframes wa-wave {
+  0% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+/* Mobil: Teklif Al 88 px, sağ 14 / alt 14 */
+@media (max-width: 700px) {
+  .button {
+    right: 34px;
+    bottom: 114px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .icon {
+    width: 23px;
+    height: 23px;
+  }
+
+  .alone {
+    right: 14px;
+    bottom: 14px;
+  }
+
+  .tooltip {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .wave {
+    animation: none;
+  }
+
+  .wave {
+    display: none;
+  }
+}

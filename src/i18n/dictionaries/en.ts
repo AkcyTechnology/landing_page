@@ -493,6 +493,11 @@ export const en: Dictionary = {
     contents: "Contents",
     contentsLabel: "CONTENTS",
   },
+  whatsapp: {
+    label: "Message us on WhatsApp",
+    tooltip: "Message us on WhatsApp",
+    message: "Hello AKCY, I'd like to get information about my project.",
+  },
   quote: {
     label: "Get a quote: let’s talk about your project",
     ring: "GET A QUOTE",

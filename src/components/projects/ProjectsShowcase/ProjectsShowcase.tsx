@@ -71,6 +71,28 @@ function Visual({ project, priority }: { project: ShowcaseProject; priority: boo
     );
   }
 
+  /* Gerçek ekranlar varsa: ortada ilk ekran, yanlarda diğer ikisi */
+  if (visual.screens.length > 0) {
+    const [main, left, right] = visual.screens;
+    const screen = (image: typeof main | undefined, side: boolean) =>
+      image ? (
+        <span className={`${styles.device} ${styles.deviceScreen} ${side ? styles.deviceSide : ""}`}>
+          <Image src={image.src} alt={image.alt} width={image.width} height={image.height} sizes="(max-width: 700px) 30vw, 200px" loading="lazy" />
+        </span>
+      ) : (
+        <span className={`${styles.device} ${side ? styles.deviceSide : ""}`} />
+      );
+    return (
+      <div className={`${styles.appVisual} ${styles.appVisualScreens}`}>
+        <div className={styles.devices}>
+          {screen(left, true)}
+          {screen(main, false)}
+          {screen(right, true)}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.appVisual}>
       <div className={styles.devices}>
