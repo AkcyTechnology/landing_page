@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "@/i18n/Link";
+
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
@@ -357,7 +359,9 @@ export default function ContactForm() {
 
       <div className={styles.footer}>
         <p>
-          {t.consent}
+          {t.consent}{" "}
+          <Link href="/kvkk" className={styles.consentLink}>{t.consentLink}</Link>
+          {t.consentEnd}
         </p>
 
         <button

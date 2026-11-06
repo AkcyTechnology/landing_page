@@ -154,7 +154,7 @@ export const projectsPage: Record<Locale, ProjectsPageContent> = {
         description:
           "BidFlow, işletmelerin ihale, teklif ve satış süreçlerini tek bir çalışma alanında yönetmesine odaklanan bir platformdur. İş fırsatlarını ve teklif süreçlerini daha düzenli takip etmeyi amaçlar.",
         emblem: "bidflow",
-        icon: "/images/projects/icons/bidflow.svg",
+        icon: "/images/projects/icons/bidflow.webp",
         visual: {
           kind: "app",
           device: "browser",
@@ -276,7 +276,7 @@ export const projectsPage: Record<Locale, ProjectsPageContent> = {
         description:
           "BidFlow is a platform focused on helping businesses manage their tender, quote and sales processes in a single workspace. It aims to make business opportunities and quote processes easier to track.",
         emblem: "bidflow",
-        icon: "/images/projects/icons/bidflow.svg",
+        icon: "/images/projects/icons/bidflow.webp",
         visual: {
           kind: "app",
           device: "browser",

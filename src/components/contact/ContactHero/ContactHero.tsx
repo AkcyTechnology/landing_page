@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { getT } from "@/i18n/server";
 import Container from "@/components/common/Container/Container";
+import ScrollToForm from "./ScrollToForm";
 import styles from "./ContactHero.module.scss";
 
 /*
@@ -23,8 +24,8 @@ export default function ContactHero() {
           sizes="100vw"
           className={styles.photo}
         />
-        <span className={styles.glass} aria-hidden="true" />
-        <span className={styles.edge} aria-hidden="true" />
+        <span className={styles.shade} aria-hidden="true" />
+        <span className={styles.grid} aria-hidden="true" />
 
         <Container className={styles.inner}>
           <div className={styles.content}>
@@ -34,12 +35,8 @@ export default function ContactHero() {
               <span className={styles.accent}>{t.titleLine2}</span>
             </h1>
             <p className={styles.text}>{t.description}</p>
+            <ScrollToForm className={styles.cta} label={t.cta} />
           </div>
-
-          <a href="#proje-formu" className={styles.cta}>
-            {t.cta}
-            <span aria-hidden="true">↓</span>
-          </a>
         </Container>
       </section>
 

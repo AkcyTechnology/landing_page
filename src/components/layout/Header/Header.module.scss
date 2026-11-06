@@ -703,6 +703,7 @@
 /* Ortak buton standardı (src/styles/_buttons.scss) */
 .cta {
   @include btn.primary;
+  @include btn.small;
 }
 
 .allServices {

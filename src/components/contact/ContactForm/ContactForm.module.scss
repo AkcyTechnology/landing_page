@@ -242,3 +242,14 @@
 .labelHidden {
   visibility: hidden;
 }
+
+.consentLink {
+  color: var(--btn-primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+
+  &:hover {
+    color: var(--btn-hover);
+  }
+}

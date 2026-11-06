@@ -171,3 +171,6 @@
 .ctaButton {
   @include btn.on-dark;
 }
+
+/* İletişim sayfası: üstteki çağrı yok, footer yalnızca bilgi alanı kadar */
+.compact { min-height: 0; padding-top: 72px; }

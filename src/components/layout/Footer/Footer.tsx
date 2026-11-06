@@ -3,6 +3,8 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "@/i18n/Link";
+import { usePathname } from "next/navigation";
+import { canonicalPath } from "@/i18n/config";
 import { useLocale, useT } from "@/i18n/LocaleProvider";
 import { motion, useReducedMotion } from "motion/react";
 import { footerNavigation, getServiceLinks } from "@/data/navigation";
@@ -34,16 +36,18 @@ export default function Footer() {
     transition: { duration: reducedMotion ? 0 : 0.55, delay: reducedMotion ? 0 : delay, ease: [0.22, 0.8, 0.25, 1] as const },
   });
   const youtubeUrl = process.env.NEXT_PUBLIC_YOUTUBE_URL;
+  /* İletişim sayfasında form hemen yukarıda: tekrar eden çağrı gösterilmez */
+  const onContact = canonicalPath(usePathname() || "/").replace(/(.)\/$/, "$1") === "/iletisim";
 
   return (
-    <footer className={styles.footer}>
+    <footer className={`${styles.footer} ${onContact ? styles.compact : ""}`}>
       <Container>
-        <div className={styles.cta}>
+        {!onContact && <div className={styles.cta}>
           <motion.p className={styles.ctaEyebrow} {...reveal()}>{f.eyebrow}</motion.p>
           <motion.h2 className={styles.ctaHeading} {...reveal(0.08)}>{f.headingStart}<br /><span>{f.headingAccent}</span><br />{f.headingEnd}</motion.h2>
           <motion.p className={styles.ctaDescription} {...reveal(0.16)}>{f.description}</motion.p>
           <motion.div {...reveal(0.24)}><Link href="/iletisim" className={styles.ctaButton}>{f.cta} <Icon name="arrow" /></Link></motion.div>
-        </div>
+        </div>}
 
         <div className={styles.grid}>
           <motion.div className={styles.brand} {...reveal()}>

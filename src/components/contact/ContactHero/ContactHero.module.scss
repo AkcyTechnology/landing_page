@@ -27,41 +27,33 @@ $ease: cubic-bezier(0.22, 0.8, 0.25, 1);
   animation: contact-photo 2.2s $ease both;
 }
 
-/* Solda buzlu cam: koyu lacivert, ince kare doku */
-.glass {
+/* Soldan sağa yumuşak lacivert geçiş: metin okunur, fotoğraf sağda doğal kalır */
+.shade {
   position: absolute;
-  inset: 0 auto 0 0;
+  inset: 0;
   z-index: -2;
-  width: 43%;
-  background:
-    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px) 0 0 / 22px 22px,
-    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px) 0 0 / 22px 22px,
-    linear-gradient(180deg, rgba(7, 27, 70, 0.62) 0%, rgba(6, 16, 31, 0.78) 100%);
-  backdrop-filter: blur(14px) saturate(1.2);
-  -webkit-backdrop-filter: blur(14px) saturate(1.2);
-  animation: contact-glass 1.2s $ease 0.15s both;
+  background: linear-gradient(
+    90deg,
+    rgba(6, 16, 31, 0.92) 0%,
+    rgba(7, 27, 70, 0.82) 28%,
+    rgba(7, 27, 70, 0.5) 46%,
+    rgba(7, 27, 70, 0.14) 66%,
+    rgba(7, 27, 70, 0) 82%
+  );
+  animation: contact-fade 1.2s ease 0.1s both;
 }
 
-/* Camın kenarında aşağı doğru süzülen ince ışık */
-.edge {
+/* İnce kare doku: yalnızca solda, sağa doğru kaybolur */
+.grid {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 43%;
+  inset: 0;
   z-index: -1;
-  width: 1px;
-  background: rgba(255, 255, 255, 0.14);
-  animation: contact-glass 1.2s $ease 0.15s both;
-
-  &::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    width: 1px;
-    height: 28%;
-    background: linear-gradient(180deg, transparent, rgba(22, 195, 206, 0.9), transparent);
-    animation: contact-sheen 6s ease-in-out 1.4s infinite;
-  }
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px) 0 0 / 22px 22px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px) 0 0 / 22px 22px;
+  mask-image: linear-gradient(90deg, #000 0%, #000 30%, transparent 58%);
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 30%, transparent 58%);
+  animation: contact-fade 1.4s ease 0.3s both;
 }
 
 /* Alt kenarda hafif koyulaşma: metin ve buton her zaman okunur */
@@ -76,16 +68,12 @@ $ease: cubic-bezier(0.22, 0.8, 0.25, 1);
 }
 
 .inner {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 32px;
-  padding-top: 140px;
-  padding-bottom: clamp(48px, 6vw, 80px);
+  padding-top: 136px;
+  padding-bottom: clamp(56px, 6vw, 84px);
 }
 
 .content {
-  max-width: min(560px, 40vw);
+  max-width: 560px;
 }
 
 .eyebrow {
@@ -109,7 +97,8 @@ $ease: cubic-bezier(0.22, 0.8, 0.25, 1);
 .title {
   display: grid;
   margin: 20px 0 22px;
-  font-size: clamp(40px, 4.4vw, 68px);
+  font-size: clamp(36px, 3.95vw, 61px);
+  white-space: nowrap;
   font-weight: 500;
   line-height: 1.02;
   letter-spacing: -0.04em;
@@ -138,7 +127,7 @@ $ease: cubic-bezier(0.22, 0.8, 0.25, 1);
 
 .cta {
   @include btn.on-dark;
-  flex: none;
+  margin-top: 30px;
   animation: contact-rise 1s $ease 0.95s both;
 
   span {
@@ -220,26 +209,8 @@ $ease: cubic-bezier(0.22, 0.8, 0.25, 1);
   }
 }
 
-@keyframes contact-glass {
+@keyframes contact-fade {
   from {
-    clip-path: inset(0 100% 0 0);
-  }
-  to {
-    clip-path: inset(0 0 0 0);
-  }
-}
-
-@keyframes contact-sheen {
-  0% {
-    top: -30%;
-    opacity: 0;
-  }
-  15% {
-    opacity: 1;
-  }
-  60%,
-  100% {
-    top: 100%;
     opacity: 0;
   }
 }
@@ -255,16 +226,14 @@ $ease: cubic-bezier(0.22, 0.8, 0.25, 1);
    DUYARLI
 ========================= */
 @media (max-width: 1000px) {
-  .glass {
-    width: 56%;
-  }
-
-  .edge {
-    left: 56%;
-  }
-
-  .content {
-    max-width: 52vw;
+  .shade {
+    background: linear-gradient(
+      90deg,
+      rgba(6, 16, 31, 0.92) 0%,
+      rgba(7, 27, 70, 0.8) 40%,
+      rgba(7, 27, 70, 0.35) 70%,
+      rgba(7, 27, 70, 0.1) 100%
+    );
   }
 
   .stepsInner {
@@ -273,47 +242,38 @@ $ease: cubic-bezier(0.22, 0.8, 0.25, 1);
   }
 }
 
-/* Mobil: cam tüm genişliği alttan kaplar, fotoğraf üstte görünür kalır */
+/* Mobil: fotoğraf üstte (yüzler görünür), lacivert geçiş alttan yükselir */
 @media (max-width: 700px) {
   .hero {
-    min-height: 620px;
+    min-height: 640px;
   }
 
   .photo {
-    object-position: 68% 30%;
+    object-position: 64% 22%;
   }
 
-  .glass {
-    inset: auto 0 0 0;
-    width: auto;
-    height: 64%;
-    background:
-      linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px) 0 0 / 20px 20px,
-      linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px) 0 0 / 20px 20px,
-      linear-gradient(180deg, rgba(7, 27, 70, 0.55) 0%, rgba(6, 16, 31, 0.85) 100%);
-    animation-name: contact-glass-up;
-    /* Üst kenar fotoğrafa yumuşak geçsin */
-    mask-image: linear-gradient(180deg, transparent 0%, #000 22%);
-    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 22%);
+  .shade {
+    background: linear-gradient(
+      180deg,
+      rgba(7, 27, 70, 0) 0%,
+      rgba(7, 27, 70, 0.15) 26%,
+      rgba(7, 27, 70, 0.78) 48%,
+      rgba(6, 16, 31, 0.94) 72%
+    );
   }
 
-  .edge {
-    display: none;
+  .grid {
+    mask-image: linear-gradient(180deg, transparent 40%, #000 70%);
+    -webkit-mask-image: linear-gradient(180deg, transparent 40%, #000 70%);
   }
 
   .inner {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 26px;
+    padding-top: 260px;
     padding-bottom: 40px;
   }
 
-  .content {
-    max-width: 100%;
-  }
-
   .title {
-    font-size: clamp(38px, 11vw, 52px);
+    font-size: min(40px, 8.4vw);
   }
 
   .stepList {
@@ -326,27 +286,14 @@ $ease: cubic-bezier(0.22, 0.8, 0.25, 1);
   }
 }
 
-@keyframes contact-glass-up {
-  from {
-    clip-path: inset(100% 0 0 0);
-  }
-  to {
-    clip-path: inset(0 0 0 0);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .photo,
-  .glass,
-  .edge,
+  .shade,
+  .grid,
   .eyebrow,
   .title span,
   .text,
   .cta {
     animation: none;
-  }
-
-  .edge::after {
-    display: none;
   }
 }
