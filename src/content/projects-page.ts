@@ -5,8 +5,8 @@ import type { Locale } from "@/i18n/config";
   Yalnızca doğrulanmış bilgi ve bağlantılar kullanılır: mağaza bağlantısı,
   canlı adres veya detay sayfası olmayan projelerde buton gösterilmez.
 
-  EKSİK GERÇEK GÖRSELLER: Guess Player ve BidFlow için gerçek ekran
-  görüntüsü yok (Calm Do ve Connectly'nin ekranları eklendi). Bu projelerde uydurma ekran yerine yalnızca
+  EKSİK GERÇEK GÖRSELLER: BidFlow için gerçek ekran görüntüsü yok
+  (Calm Do, Guess Player ve Connectly'nin ekranları eklendi). Bu projelerde uydurma ekran yerine yalnızca
   amblem ve boş cihaz çerçevesi gösterilir (visual.screens boş). Gerçek
   ekranlar geldiğinde visual.screens doldurulmalıdır.
 */
@@ -57,6 +57,12 @@ const CALMDO_SCREENS = [
   { src: "/images/projects/calm-do/gorev-ekle.webp", width: 480, height: 972 },
   { src: "/images/projects/calm-do/ai-asistan.webp", width: 480, height: 972 },
 ];
+/* Guess Player oyununun gerçek ekranları (sırasıyla ortadaki, soldaki, sağdaki telefon) */
+const GUESSPLAYER_SCREENS = [
+  { src: "/images/projects/guess-player/ana-sayfa.webp", width: 480, height: 972 },
+  { src: "/images/projects/guess-player/kategori.webp", width: 480, height: 972 },
+  { src: "/images/projects/guess-player/oyun.webp", width: 480, height: 972 },
+];
 /* Connectly uygulamasının gerçek ekranları (sırasıyla ortadaki, soldaki, sağdaki telefon) */
 const CONNECTLY_SCREENS = [
   { src: "/images/projects/connectly/ana-sayfa.webp", width: 480, height: 972 },
@@ -101,7 +107,15 @@ export const projectsPage: Record<Locale, ProjectsPageContent> = {
         description:
           "Guess Player, sporcuları tahmin etmeye dayanan bir oyundur. Spor bilgisini eğlenceli bir oyun deneyimiyle buluşturur.",
         emblem: "guess-player",
-        visual: { kind: "app", device: "phone", screens: [] },
+        visual: {
+          kind: "app",
+          device: "phone",
+          screens: [
+            { ...GUESSPLAYER_SCREENS[0], alt: "Guess Player ana ekranı: oyun logosu, günlük çark ve Başla butonu" },
+            { ...GUESSPLAYER_SCREENS[1], alt: "Kategori seçimi: günlük görevler, zorluk seviyesi ve spor dalları" },
+            { ...GUESSPLAYER_SCREENS[2], alt: "Oyun ekranı: bulanık oyuncu fotoğrafı, ipuçları ve geri sayım" },
+          ],
+        },
       },
       {
         id: "connectly",
@@ -203,7 +217,15 @@ export const projectsPage: Record<Locale, ProjectsPageContent> = {
         description:
           "Guess Player is a game built around guessing athletes. It brings sports knowledge together with a fun game experience.",
         emblem: "guess-player",
-        visual: { kind: "app", device: "phone", screens: [] },
+        visual: {
+          kind: "app",
+          device: "phone",
+          screens: [
+            { ...GUESSPLAYER_SCREENS[0], alt: "Guess Player home screen: game logo, daily wheel and Start button" },
+            { ...GUESSPLAYER_SCREENS[1], alt: "Category selection: daily missions, difficulty and sports" },
+            { ...GUESSPLAYER_SCREENS[2], alt: "Game screen: blurred player photo, hints and countdown" },
+          ],
+        },
       },
       {
         id: "connectly",
