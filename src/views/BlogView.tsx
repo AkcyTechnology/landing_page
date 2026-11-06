@@ -33,7 +33,7 @@ export default function BlogView({ locale }: { locale: Locale }) {
   const allPosts = getAllPosts(locale);
   const featuredPost = getFeaturedPost(locale);
 
-  // Yalnızca yazısı olan kategoriler hero'da ve filtrelerde listelenir.
+  // Yalnızca yazısı olan kategoriler filtrelerde listelenir.
   const topics = getCategories(locale)
     .map((category) => ({
       ...category,
@@ -43,11 +43,7 @@ export default function BlogView({ locale }: { locale: Locale }) {
 
   return (
     <>
-      <BlogHero
-        postCount={allPosts.length}
-        totalMinutes={allPosts.reduce((sum, post) => sum + post.readingTime, 0)}
-        topics={topics}
-      />
+      <BlogHero />
 
       <BlogListingClient
         allPosts={allPosts}

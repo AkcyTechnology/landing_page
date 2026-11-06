@@ -341,17 +341,11 @@ export const tr = {
   },
   blog: {
     hero: {
-      eyebrow: "AKCY BLOG · BİLGİ MERKEZİ",
-      headingLead: "Dijital ürünler, otomasyon ve yapay zekâ üzerine",
-      headingAccent: "uygulanabilir rehberler.",
-      description:
-        "Web, WordPress, şirket süreç otomasyonu ve yapay zekâ projelerinde edindiğimiz deneyimleri; karar vermenizi kolaylaştıracak net ve pratik yazılara dönüştürüyoruz.",
-      statPosts: "Rehber yazı",
-      statTopics: "Konu başlığı",
-      statMinutes: "Dakika içerik",
-      topicsTitle: "KONULARA GÖZ ATIN",
-      postCount: "{count} yazı",
-      marquee: ["Yapay Zekâ", "Süreç Otomasyonu", "WordPress", "n8n & Entegrasyon", "Core Web Vitals", "UI / UX", "Belge İşleme", "Kurumsal Web"],
+      eyebrow: "AKCY BLOG",
+      headingLead: "Dijital dünyaya",
+      headingAccent: "bir de buradan bakın.",
+      description: "Yazılım, yapay zekâ ve tasarım üzerine deneyimler, fikirler ve uygulanabilir rehberler.",
+      imageAlt: "Gün ışığı alan bir masada dizüstü bilgisayar ve kahve fincanı",
     },
     listing: {
       allPosts: "TÜM YAZILAR",

@@ -338,17 +338,11 @@ export const en: Dictionary = {
   },
   blog: {
     hero: {
-      eyebrow: "AKCY BLOG · KNOWLEDGE HUB",
-      headingLead: "Practical guides on digital products,",
-      headingAccent: "automation and AI.",
-      description:
-        "We turn what we’ve learned on web, WordPress, business process automation and AI projects into clear, practical articles that make your decisions easier.",
-      statPosts: "Guides",
-      statTopics: "Topics",
-      statMinutes: "Minutes of reading",
-      topicsTitle: "BROWSE TOPICS",
-      postCount: "{count} articles",
-      marquee: ["AI", "Process Automation", "WordPress", "n8n & Integration", "Core Web Vitals", "UI / UX", "Document Processing", "Corporate Web"],
+      eyebrow: "AKCY BLOG",
+      headingLead: "Take another look at",
+      headingAccent: "the digital world from here.",
+      description: "Experiences, ideas and practical guides on software, AI and design.",
+      imageAlt: "A laptop and a cup of coffee on a desk in daylight",
     },
     listing: {
       allPosts: "ALL ARTICLES",
