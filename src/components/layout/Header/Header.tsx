@@ -20,13 +20,15 @@ export default function Header() {
   const isAbout = pathname === "/hakkimizda";
   /* Hizmetler'in açılışı da koyu zeminli: ana sayfadaki gibi beyaz yazılı şeffaf menü */
   const isServices = pathname === "/hizmetler";
+  /* İletişim açılışı da koyu fotoğraflı */
+  const isContact = pathname === "/iletisim";
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
   const mobileMenu = useRef<HTMLDivElement>(null);
 
-  const transparent = (isHome || isServices) && !scrolled && !mobileOpen;
+  const transparent = (isHome || isServices || isContact) && !scrolled && !mobileOpen;
   const transparentLight = isAbout && !scrolled && !mobileOpen;
   /* Logoya tıklamak ana sayfaya gider; menüde ayrıca "Ana Sayfa" gösterilmez */
   const menuItems = navigation.filter((item) => item.key !== "home");

@@ -1,17 +1,66 @@
+import Image from "next/image";
+
 import { getT } from "@/i18n/server";
 import Container from "@/components/common/Container/Container";
 import styles from "./ContactHero.module.scss";
 
+/*
+  İletişim açılışı: sitenin lacivert–mavi–turkuaz tonlarına göre yeniden
+  renklendirilmiş ekip fotoğrafı, solda buzlu cam panel ve başlık.
+  Altında sürecin üç adımı yer alır.
+*/
 export default function ContactHero() {
   const t = getT().contact.hero;
-  const steps = t.steps;
-  return <section className={styles.hero}><Container><div className={styles.layout}>
-    <div className={styles.content}><span>{t.eyebrow}</span><h1>{t.titleLine1}<br />{t.titleLine2}</h1>
-      <p>{t.description}</p>
-      <a href="#proje-formu" className={styles.cta}>{t.cta} <span aria-hidden="true">↓</span></a></div>
-    <div className={styles.visual}>
-      <span className={styles.visualLabel}>{t.processLabel}</span>
-      <ol>{steps.map((step, index) => <li key={step.title}><b>{String(index + 1).padStart(2, "0")}</b><div><strong>{step.title}</strong><p>{step.text}</p></div></li>)}</ol>
-    </div>
-  </div></Container></section>;
+
+  return (
+    <>
+      <section className={styles.hero} aria-labelledby="contact-hero-title">
+        <Image
+          src="/images/contact/hero-ekip.webp"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className={styles.photo}
+        />
+        <span className={styles.glass} aria-hidden="true" />
+        <span className={styles.edge} aria-hidden="true" />
+
+        <Container className={styles.inner}>
+          <div className={styles.content}>
+            <span className={styles.eyebrow}>{t.eyebrow}</span>
+            <h1 id="contact-hero-title" className={styles.title}>
+              <span>{t.titleLine1}</span>
+              <span className={styles.accent}>{t.titleLine2}</span>
+            </h1>
+            <p className={styles.text}>{t.description}</p>
+          </div>
+
+          <a href="#proje-formu" className={styles.cta}>
+            {t.cta}
+            <span aria-hidden="true">↓</span>
+          </a>
+        </Container>
+      </section>
+
+      <section className={styles.steps} aria-label={t.processLabel}>
+        <Container>
+          <div className={styles.stepsInner}>
+            <p className={styles.stepsLabel}>{t.processLabel}</p>
+            <ol className={styles.stepList}>
+              {t.steps.map((step, index) => (
+                <li key={step.title} data-reveal="" style={{ "--reveal-delay": `${index * 0.1}s` } as React.CSSProperties}>
+                  <b>{String(index + 1).padStart(2, "0")}</b>
+                  <div>
+                    <strong>{step.title}</strong>
+                    <p>{step.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </Container>
+      </section>
+    </>
+  );
 }
