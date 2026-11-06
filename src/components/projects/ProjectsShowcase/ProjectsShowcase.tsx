@@ -57,6 +57,37 @@ function Visual({ project, priority }: { project: ShowcaseProject; priority: boo
   /* Gerçek ekran görüntüsü yoksa uydurma ekran yerine amblem ve boş cihaz çerçevesi */
   const emblem = project.emblem ? <ProjectEmblem id={project.emblem} size={72} className={styles.drawn} /> : null;
 
+  /* Web platformu, gerçek ekranlarla: öndeki tarayıcıda ilk ekran, arkada diğerleri kademeli */
+  if (visual.device === "browser" && visual.screens.length > 0) {
+    const layers = visual.screens.slice(0, 3);
+    return (
+      <div className={`${styles.appVisual} ${styles.appVisualScreens}`}>
+        <div className={styles.browserStack}>
+          {layers
+            .map((image, index) => (
+              <div key={image.src} className={`${styles.browser} ${styles.stackLayer}`} data-layer={index}>
+                <div className={styles.bar} aria-hidden="true">
+                  <i /><i /><i />
+                  <span>{project.name}</span>
+                </div>
+                <Image
+                  src={image.src}
+                  alt={index === 0 ? image.alt : ""}
+                  aria-hidden={index === 0 ? undefined : true}
+                  width={image.width}
+                  height={image.height}
+                  sizes="(max-width: 1050px) 80vw, 520px"
+                  className={styles.desktopImage}
+                  loading="lazy"
+                />
+              </div>
+            ))
+            .reverse()}
+        </div>
+      </div>
+    );
+  }
+
   if (visual.device === "browser") {
     return (
       <div className={styles.appVisual}>

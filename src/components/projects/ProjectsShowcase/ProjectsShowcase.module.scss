@@ -276,6 +276,49 @@
   width: 86%;
 }
 
+/* Üç ekranlı tarayıcı yığını: öndeki sol altta, arkadakiler sağ üste kademeli */
+.browserStack {
+  position: relative;
+  width: 88%;
+  aspect-ratio: 16 / 10.4;
+}
+
+.stackLayer {
+  position: absolute;
+  width: 78%;
+  transition: transform 0.6s $ease;
+
+  &[data-layer="0"] {
+    left: 0;
+    bottom: 0;
+    z-index: 3;
+  }
+
+  &[data-layer="1"] {
+    left: 11%;
+    bottom: 13%;
+    z-index: 2;
+    opacity: 0.92;
+  }
+
+  &[data-layer="2"] {
+    right: 0;
+    top: 0;
+    z-index: 1;
+    opacity: 0.8;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .browserStack:hover .stackLayer[data-layer="0"] {
+    transform: translate(-6px, 6px);
+  }
+
+  .browserStack:hover .stackLayer[data-layer="2"] {
+    transform: translate(6px, -6px);
+  }
+}
+
 .emptyScreen {
   display: grid;
   place-items: center;

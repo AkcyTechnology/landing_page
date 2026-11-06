@@ -5,8 +5,8 @@ import type { Locale } from "@/i18n/config";
   Yalnızca doğrulanmış bilgi ve bağlantılar kullanılır: mağaza bağlantısı,
   canlı adres veya detay sayfası olmayan projelerde buton gösterilmez.
 
-  EKSİK GERÇEK GÖRSELLER: BidFlow için gerçek ekran görüntüsü yok
-  (Calm Do, Guess Player ve Connectly'nin ekranları eklendi). Bu projelerde uydurma ekran yerine yalnızca
+  GÖRSELLER: Calm Do, Guess Player, Connectly ve BidFlow'un gerçek
+  ekranları visual.screens içinde; ilk ekran öne/ortaya yerleşir. Bu projelerde uydurma ekran yerine yalnızca
   amblem ve boş cihaz çerçevesi gösterilir (visual.screens boş). Gerçek
   ekranlar geldiğinde visual.screens doldurulmalıdır.
 */
@@ -62,6 +62,12 @@ const GUESSPLAYER_SCREENS = [
   { src: "/images/projects/guess-player/ana-sayfa.webp", width: 480, height: 972 },
   { src: "/images/projects/guess-player/kategori.webp", width: 480, height: 972 },
   { src: "/images/projects/guess-player/oyun.webp", width: 480, height: 972 },
+];
+/* BidFlow platformunun gerçek ekranları (sırasıyla öndeki, ortadaki, arkadaki tarayıcı) */
+const BIDFLOW_SCREENS = [
+  { src: "/images/projects/bidflow/anasayfa.webp", width: 1400, height: 633 },
+  { src: "/images/projects/bidflow/gorevler.webp", width: 1400, height: 630 },
+  { src: "/images/projects/bidflow/teklif-mektubu.webp", width: 1400, height: 613 },
 ];
 /* Connectly uygulamasının gerçek ekranları (sırasıyla ortadaki, soldaki, sağdaki telefon) */
 const CONNECTLY_SCREENS = [
@@ -143,7 +149,15 @@ export const projectsPage: Record<Locale, ProjectsPageContent> = {
         description:
           "BidFlow, işletmelerin ihale, teklif ve satış süreçlerini tek bir çalışma alanında yönetmesine odaklanan bir platformdur. İş fırsatlarını ve teklif süreçlerini daha düzenli takip etmeyi amaçlar.",
         emblem: "bidflow",
-        visual: { kind: "app", device: "browser", screens: [] },
+        visual: {
+          kind: "app",
+          device: "browser",
+          screens: [
+            { ...BIDFLOW_SCREENS[0], alt: "BidFlow ana sayfası: proje, kazanma oranı ve teklif pipeline göstergeleri" },
+            { ...BIDFLOW_SCREENS[1], alt: "Görevler panosu" },
+            { ...BIDFLOW_SCREENS[2], alt: "Teklif mektubu oluşturma adımları" },
+          ],
+        },
       },
       {
         id: "cakiroglu",
@@ -253,7 +267,15 @@ export const projectsPage: Record<Locale, ProjectsPageContent> = {
         description:
           "BidFlow is a platform focused on helping businesses manage their tender, quote and sales processes in a single workspace. It aims to make business opportunities and quote processes easier to track.",
         emblem: "bidflow",
-        visual: { kind: "app", device: "browser", screens: [] },
+        visual: {
+          kind: "app",
+          device: "browser",
+          screens: [
+            { ...BIDFLOW_SCREENS[0], alt: "BidFlow dashboard: project, win rate and proposal pipeline metrics" },
+            { ...BIDFLOW_SCREENS[1], alt: "Tasks board" },
+            { ...BIDFLOW_SCREENS[2], alt: "Proposal letter creation steps" },
+          ],
+        },
       },
       {
         id: "cakiroglu",
