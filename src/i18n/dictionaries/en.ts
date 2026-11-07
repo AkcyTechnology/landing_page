@@ -342,7 +342,6 @@ export const en: Dictionary = {
       headingLead: "Take another look at",
       headingAccent: "the digital world from here.",
       description: "Experiences, ideas and practical guides on software, AI and design.",
-      imageAlt: "A laptop and a cup of coffee on a desk in daylight",
     },
     listing: {
       allPosts: "ALL ARTICLES",

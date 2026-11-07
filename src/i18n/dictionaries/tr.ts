@@ -345,7 +345,6 @@ export const tr = {
       headingLead: "Dijital dünyaya",
       headingAccent: "bir de buradan bakın.",
       description: "Yazılım, yapay zekâ ve tasarım üzerine deneyimler, fikirler ve uygulanabilir rehberler.",
-      imageAlt: "Gün ışığı alan bir masada dizüstü bilgisayar ve kahve fincanı",
     },
     listing: {
       allPosts: "TÜM YAZILAR",

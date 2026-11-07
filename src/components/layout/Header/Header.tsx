@@ -15,27 +15,23 @@ export default function Header() {
   const t = useT();
   /* Etkin menü öğesi Türkçe (kanonik) adres üzerinden bulunur */
   const pathname = canonicalPath(usePathname() || "/").replace(/(.)\/$/, "$1");
-  const isHome = pathname === "/";
-  /* Hakkımızda'da etiketler menünün içinden düşer: açık zeminli şeffaf menü */
-  const isAbout = pathname === "/hakkimizda";
-  /* Hizmetler'in açılışı da koyu zeminli: ana sayfadaki gibi beyaz yazılı şeffaf menü */
-  const isServices = pathname === "/hizmetler";
-  /* İletişim açılışı da koyu fotoğraflı */
-  const isContact = pathname === "/iletisim";
+  /* Menü sayfalarının hepsi koyu petrol zeminli ortak hero ile açılır:
+     sayfa en üstteyken menü bu zeminin üzerinde şeffaf ve beyaz yazılıdır,
+     kaydırınca bütün sayfalarda aynı beyaz menüye döner. */
+  const onHero = ["/", "/hizmetler", "/projelerimiz", "/hakkimizda", "/blog", "/iletisim"].includes(pathname);
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
   const mobileMenu = useRef<HTMLDivElement>(null);
 
-  const transparent = (isHome || isServices || isContact) && !scrolled && !mobileOpen;
-  const transparentLight = isAbout && !scrolled && !mobileOpen;
+  const transparent = onHero && !scrolled && !mobileOpen;
   /* Logoya tıklamak ana sayfaya gider; menüde ayrıca "Ana Sayfa" gösterilmez */
   const menuItems = navigation.filter((item) => item.key !== "home");
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > (isAbout ? 8 : 20));
+      setScrolled(window.scrollY > 20);
     };
 
     handleScroll();
@@ -47,7 +43,7 @@ export default function Header() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [isAbout]);
+  }, []);
 
   useEffect(() => {
     if (!mobileOpen) return;
@@ -94,7 +90,7 @@ export default function Header() {
         }}
         className={`${styles.header} ${
           scrolled ? styles.scrolled : ""
-        } ${transparent ? styles.transparent : ""} ${transparentLight ? styles.transparentLight : ""}`}
+        } ${transparent ? styles.transparent : ""}`}
       >
         <div className={styles.container}>
           {/* LOGO */}

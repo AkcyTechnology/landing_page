@@ -8,15 +8,16 @@ import type { Locale } from "@/i18n/config";
 
 export type ServiceTone = "light" | "navy" | "teal" | "mint";
 
-/* Kart görselleri (Unsplash; kaynaklar public/images/solutions/SOURCES.md) — iki dilde ortak */
+/* Kart görselleri: hizmete özel çizilmiş vektör kompozisyonlar (petrol yeşili,
+   koyu tonlar, kırık beyaz). Metin içermez; iki dilde ortaktır. */
 export const servicePhotos: Record<string, string> = {
-  "web-gelistirme": "/images/services/web.jpg",
-  "ui-ux-tasarim": "/images/services/uiux.jpg",
-  "mobil-uygulamalar": "/images/services/mobile.jpg",
-  "kurumsal-yazilim": "/images/solutions/business.jpg",
-  "dijital-otomasyon": "/images/services/automation.jpg",
-  "yapay-zeka": "/images/services/ai.jpg",
-  "ai-icerik-uretimi": "/images/services/ai-content.jpg",
+  "web-gelistirme": "/images/services/visuals/web-gelistirme.svg",
+  "ui-ux-tasarim": "/images/services/visuals/ui-ux-tasarim.svg",
+  "mobil-uygulamalar": "/images/services/visuals/mobil-uygulamalar.svg",
+  "kurumsal-yazilim": "/images/services/visuals/kurumsal-yazilim.svg",
+  "dijital-otomasyon": "/images/services/visuals/dijital-otomasyon.svg",
+  "yapay-zeka": "/images/services/visuals/yapay-zeka.svg",
+  "ai-icerik-uretimi": "/images/services/visuals/ai-icerik-uretimi.svg",
 };
 
 export interface ServicesPageContent {
@@ -29,14 +30,12 @@ export interface ServicesPageContent {
     secondaryCta: string;
     arcLabel: string;
   };
-  servicesLabel: string;
   quoteCta: string;
   flip: { show: string; hide: string; overview: string; more: string };
   groups: {
     title: string;
     items: { slug: string; title: string; description: string; tone: ServiceTone }[];
   }[];
-  cta: { title: string; description: string; button: string };
 }
 
 export const servicesPageContent: Record<Locale, ServicesPageContent> = {
@@ -55,7 +54,6 @@ export const servicesPageContent: Record<Locale, ServicesPageContent> = {
       secondaryCta: "Projenizi konuşalım",
       arcLabel: "Hizmetlerimiz",
     },
-    servicesLabel: "hizmet",
     quoteCta: "Teklif al",
     flip: { show: "Detayları gör", hide: "Görsele dön", overview: "Genel bakış", more: "Ayrıca" },
     groups: [
@@ -82,11 +80,6 @@ export const servicesPageContent: Record<Locale, ServicesPageContent> = {
         ],
       },
     ],
-    cta: {
-      title: "Fikrinizi birlikte hayata geçirelim",
-      description: "İhtiyacınızı konuşalım, size uygun dijital çözümün kapsamını birlikte belirleyelim.",
-      button: "Projenizi konuşalım",
-    },
   },
   en: {
     meta: {
@@ -103,7 +96,6 @@ export const servicesPageContent: Record<Locale, ServicesPageContent> = {
       secondaryCta: "Let’s talk about your project",
       arcLabel: "Our services",
     },
-    servicesLabel: "services",
     quoteCta: "Get a quote",
     flip: { show: "See details", hide: "Back to image", overview: "Overview", more: "Also" },
     groups: [
@@ -130,10 +122,5 @@ export const servicesPageContent: Record<Locale, ServicesPageContent> = {
         ],
       },
     ],
-    cta: {
-      title: "Let’s bring your idea to life together",
-      description: "Let’s talk about what you need and define the scope of the right digital solution together.",
-      button: "Let’s talk about your project",
-    },
   },
 };

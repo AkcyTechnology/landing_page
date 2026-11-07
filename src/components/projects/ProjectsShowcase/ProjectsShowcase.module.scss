@@ -8,10 +8,14 @@
 .intro {
   position: relative;
   overflow: hidden;
-  background: $off-white;
-  color: $ink;
-  padding: 148px 0 56px;
-  border-bottom: 1px solid $line;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: var(--page-hero-h);
+  padding: var(--page-hero-pt) 0 var(--page-hero-pb);
+  /* Ortak hero zemini: Teklif Al'ın koyu petrol yeşili */
+  background: var(--hero-bg);
+  color: $white;
 }
 
 .introInner {
@@ -24,7 +28,7 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: min(48%, 700px);
+  width: min(56%, 820px);
   height: 100%;
   pointer-events: none;
   /* Sol kenar başlığa doğru yumuşakça kaybolur */
@@ -33,7 +37,7 @@
 }
 
 .netLines line {
-  stroke: rgba(0, 89, 93, 0.22);
+  stroke: rgba(255, 255, 255, 0.2);
   stroke-width: 1.2;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
@@ -41,7 +45,7 @@
 }
 
 .netNodes circle {
-  fill: rgba(0, 89, 93, 0.5);
+  fill: rgba(255, 255, 255, 0.55);
   transform-box: fill-box;
   transform-origin: center;
   opacity: 0;
@@ -51,7 +55,7 @@
 }
 
 .netNodes circle:nth-child(3n) {
-  fill: rgba(0, 119, 182, 0.5);
+  fill: var(--hero-accent);
 }
 
 @keyframes net-draw {
@@ -100,7 +104,7 @@
 @media (max-width: 760px) {
   .introNet {
     width: 100%;
-    opacity: 0.3;
+    opacity: 0.35;
   }
 }
 
@@ -124,27 +128,32 @@
 .eyebrow {
   @include eyebrow;
   margin: 0 0 18px;
-  font-size: 11px;
+  font-size: 12px;
+}
+
+.intro .eyebrow {
+  color: var(--hero-accent);
 }
 
 .heading {
-  max-width: 760px;
+  max-width: var(--hero-title-max);
   margin: 0;
-  font-size: clamp(30px, 3.6vw, 48px);
-  font-weight: 600;
-  line-height: 1.1;
+  color: $white;
+  font-size: var(--hero-title-size);
+  font-weight: var(--hero-title-weight);
+  line-height: 1.08;
   letter-spacing: -0.035em;
 
   .headingAccent {
-    color: $primary;
+    color: var(--hero-accent);
   }
 }
 
 .lead {
-  max-width: 560px;
-  margin: 18px 0 0;
-  color: $ink-soft;
-  font-size: 16px;
+  max-width: var(--hero-text-max);
+  margin: 22px 0 0;
+  color: var(--hero-text);
+  font-size: var(--hero-text-size);
   line-height: 1.7;
 }
 

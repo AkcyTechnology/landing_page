@@ -44,9 +44,6 @@ export default function ServicesPage({ locale }: { locale: Locale }) {
             <header className={styles.groupHead} data-reveal="">
               <span className={styles.groupNumber} aria-hidden="true">{pad(groupIndex + 1)}</span>
               <h2 id={`grup-${groupIndex + 1}`} className={styles.groupTitle}>{group.title}</h2>
-              <p className={styles.groupCount}>
-                {group.items.length} {content.servicesLabel}
-              </p>
             </header>
 
             <div className={styles.rows}>
@@ -88,15 +85,6 @@ export default function ServicesPage({ locale }: { locale: Locale }) {
             </div>
           </section>
         ))}
-
-        <section className={styles.cta} aria-labelledby="services-cta-title" data-reveal="">
-          <h2 id="services-cta-title" className={styles.ctaTitle}>{content.cta.title}</h2>
-          <p className={styles.ctaText}>{content.cta.description}</p>
-          <Link href="/iletisim" className={styles.ctaButton}>
-            {content.cta.button}
-            <span aria-hidden="true">↗</span>
-          </Link>
-        </section>
       </div>
     </>
   );

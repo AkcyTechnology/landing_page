@@ -7,12 +7,15 @@
 
 .hero {
   position: relative;
-  min-height: min(100svh, 880px);
-  /* Alttaki boş alan etiket yığınına ayrılır; yazıyla çakışmaz */
-  padding: 148px 0 240px;
+  display: flex;
+  align-items: center;
+  /* Ortak hero ölçüsü; alttaki boşluk etiket yığınına ayrılır, yazıyla çakışmaz */
+  min-height: var(--page-hero-h);
+  padding: var(--page-hero-pt) 0 calc(var(--page-hero-pb) + 168px);
   overflow: hidden;
-  background: $white;
-  color: $ink;
+  /* Ortak hero zemini: Teklif Al'ın koyu petrol yeşili */
+  background: var(--hero-bg);
+  color: $white;
   box-sizing: border-box;
 }
 
@@ -39,7 +42,7 @@
 .stack {
   position: relative;
   width: 100%;
-  max-width: 390px;
+  max-width: 340px;
   aspect-ratio: 4 / 5;
   justify-self: end;
   margin-right: 24px;
@@ -50,7 +53,7 @@
   inset: 0;
   margin: 0;
   overflow: hidden;
-  border: 1px solid $line;
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: $radius;
   background: $off-white;
   animation: card-drop 0.9s cubic-bezier(0.22, 0.8, 0.25, 1) both;
@@ -117,26 +120,26 @@
   margin: 0 0 24px;
   padding: 0;
   list-style: none;
-  color: $ink-faint;
+  color: rgba(255, 255, 255, 0.6);
   font-size: 13px;
 
   li + li::before {
     content: "/";
     margin-right: 8px;
-    color: $ink-faint;
+    color: rgba(255, 255, 255, 0.45);
   }
 
   a {
-    color: $ink-soft;
+    color: rgba(255, 255, 255, 0.72);
     text-decoration: none;
 
     &:hover {
-      color: $blue;
+      color: $white;
     }
   }
 
   [aria-current="page"] {
-    color: $ink;
+    color: $white;
     font-weight: 600;
   }
 }
@@ -144,13 +147,16 @@
 .eyebrow {
   @include eyebrow;
   margin: 0 0 18px;
+  color: var(--hero-accent);
+  font-size: 12px;
 }
 
 .heading {
+  max-width: var(--hero-title-max);
   margin: 0;
-  color: $ink;
-  font-size: clamp(36px, 4vw, 56px);
-  font-weight: 600;
+  color: $white;
+  font-size: var(--hero-title-size);
+  font-weight: var(--hero-title-weight);
   line-height: 1.08;
   letter-spacing: -0.035em;
   overflow-wrap: break-word;
@@ -160,15 +166,15 @@
   display: block;
 
   &:last-child {
-    color: $primary;
+    color: var(--hero-accent);
   }
 }
 
 .description {
-  max-width: 60ch;
-  margin: 20px 0 0;
-  color: $ink-soft;
-  font-size: 17px;
+  max-width: var(--hero-text-max);
+  margin: 22px 0 0;
+  color: var(--hero-text);
+  font-size: var(--hero-text-size);
   line-height: 1.65;
 }
 
@@ -180,7 +186,7 @@
 }
 
 .primary {
-  @include btn.primary;
+  @include btn.on-dark;
 }
 
 /* ==========================
@@ -213,7 +219,7 @@
   bottom: 0;
   width: 50%;
   height: 1px;
-  background: $line;
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .floorLeft {
@@ -239,19 +245,20 @@
   white-space: nowrap;
 }
 
+/* Petrol zeminde üç ton: koyu, turkuaz ve kırık beyaz */
 .tag_dark {
-  background: $ink;
+  background: #06101f;
   color: $white;
 }
 
 .tag_brand {
-  background: $primary;
-  color: $white;
+  background: var(--hero-accent);
+  color: #06101f;
 }
 
 .tag_light {
-  background: $white;
-  border-color: rgba(29, 34, 38, 0.2);
+  background: $off-white;
+  border-color: transparent;
   color: $ink;
 }
 
@@ -277,40 +284,33 @@
 
 @media (max-width: 1050px) {
   .hero {
-    min-height: 0;
-    padding: 128px 0 240px;
+    padding-bottom: calc(var(--page-hero-pb) + 150px);
   }
 
   .layout {
-    grid-template-columns: 1fr;
-    gap: 48px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.7fr);
+    gap: 32px;
   }
 
   .stack {
-    width: 62%;
-    max-width: 300px;
-    aspect-ratio: 5 / 4;
-    justify-self: center;
+    max-width: 260px;
     margin-right: 0;
   }
 }
 
 @media (max-width: 700px) {
   .hero {
-    padding: 104px 0 200px;
+    align-items: flex-start;
+    padding-bottom: calc(var(--page-hero-pb) + 132px);
   }
 
-  .heading {
-    font-size: clamp(30px, 8.6vw, 36px);
+  .layout {
+    grid-template-columns: 1fr;
   }
 
-  .description {
-    font-size: 16px;
-  }
-
+  /* Mobilde kart yığını gizlenir: başlık, metin ve etiketler ortak ölçüye sığar */
   .stack {
-    width: 70%;
-    max-width: 240px;
+    display: none;
   }
 
   .actions a {
