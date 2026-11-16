@@ -89,6 +89,14 @@ export const en: Dictionary = {
     privacy: "Privacy Policy",
     kvkk: "KVKK Information Notice",
     cookies: "Cookie Policy",
+    cookieSettings: "Cookie Settings",
+  },
+  cookieConsent: {
+    label: "Cookie preference",
+    text: "With your consent, we use Google Analytics cookies to understand how the site is used.",
+    policy: "Cookie Policy",
+    accept: "Accept",
+    reject: "Decline",
   },
   notFound: {
     title: "This page isn’t here.",
@@ -122,6 +130,13 @@ export const en: Dictionary = {
     technologies: "04 / Technologies",
     relatedLabel: "05 / Related Projects",
     relatedHeading: "Built with this service",
+    audienceLabel: "Who It Is For",
+    problemsLabel: "Problems It Solves",
+    relatedServicesLabel: "Related Services",
+    faqLabel: "FREQUENTLY ASKED QUESTIONS",
+    faqHeadingStart: "Questions about",
+    faqHeadingAccent: "this service.",
+    faqIntro: "If you have a question specific to your project, write to us directly; we will clarify the details together in a discovery call.",
     scopes: {
       "web-gelistirme": { title: "Standard in every project", items: ["SEO foundations", "Core Web Vitals", "Responsive design", "Accessibility", "Security"], note: "We treat these as part of the development process, not as features added later." },
       "ui-ux-tasarim": { title: "Design deliverables", items: ["User flows", "Wireframes", "Prototype", "Interface design", "Design system", "Developer handover"], note: "From user flows to developer handover, we document decisions and component behaviour. You can see our real interfaces in the selected projects section." },
@@ -178,6 +193,7 @@ export const en: Dictionary = {
       scrollHint: "SCROLL TO EXPLORE",
     },
     heroArc: {
+      heading: "Our Services",
       cardLink: "View service",
       previous: "Previous service",
       next: "Next service",

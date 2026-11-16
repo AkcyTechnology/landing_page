@@ -16,13 +16,22 @@ const nextConfig: NextConfig = {
 
   // Türkçe ve İngilizce iki ayrı kök düzen kullandığı için eşleşmeyen
   // adreslerin 404 sayfası app/global-not-found.tsx dosyasından üretilir.
+  // CSS dosyaları ayrı istek yerine HTML'in <head> kısmına gömülür:
+  // ilk ziyarette render'ı engelleyen CSS istekleri kalkar (FCP/LCP).
   experimental: {
     globalNotFound: true,
+    inlineCss: true,
   },
 
   images: {
-    // Sunucu olmadığı için görseller olduğu gibi sunulur.
-    unoptimized: true,
+    // Sunucu olmadığı için Next.js görselleri anlık küçültemez. Bunun yerine
+    // build öncesi her görselin genişlik sürümleri üretilir
+    // (scripts/generate-responsive-images.mjs) ve loader srcset'i bunlara
+    // yönlendirir; telefonlar küçük, masaüstü büyük sürümü indirir.
+    loader: "custom",
+    loaderFile: "./src/lib/image-loader.ts",
+    // src/lib/image-variants.mjs → RESPONSIVE_WIDTHS ile aynı tutulmalı
+    deviceSizes: [640, 828, 1080, 1920],
     remotePatterns: [
       {
         protocol: "https",

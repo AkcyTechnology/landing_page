@@ -1,55 +1,26 @@
 "use client";
 
-import { useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import Link from "@/i18n/Link";
 import { useT } from "@/i18n/LocaleProvider";
 import Image from "next/image";
-import { motion } from "motion/react";
+import type { CSSProperties } from "react";
 
 import styles from "./Hero.module.scss";
 import HeroArc from "./HeroArc";
 
 const EASE_STANDARD: [number, number, number, number] = [0.22, 0.8, 0.25, 1];
 
-function buildIntroVariants(reduceMotion: boolean) {
-  return {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: reduceMotion ? 0 : 0.12,
-        delayChildren: reduceMotion ? 0 : 0.1,
-      },
-    },
-  };
-}
-
-function buildItemVariants(reduceMotion: boolean) {
-  return {
-    hidden: { opacity: 0, y: reduceMotion ? 0 : 28 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: reduceMotion ? 0 : 0.7, ease: EASE_STANDARD },
-    },
-  };
-}
-
 export default function Hero() {
   const t = useT().home.hero;
   const displayText = t.titleDynamic;
 
-  // framer-motion'ın useReducedMotion'ı SSR-safe değildir: ilk client
-  // render'ında bile senkron olarak gerçek işletim sistemi tercihini
-  // okur, bu da sunucunun (window erişimi olmadığı için) ürettiği
-  // "false" varsayımıyla çakışıp yalnızca bu inline animasyon
-  // stillerinde bir hydration uyarısına yol açar. İçerik/metin
-  // değişmediğinden, bu amaçla suppressHydrationWarning kullanmak
-  // React'ın önerdiği güvenli yoldur.
+  // useReducedMotion SSR-safe değildir (sunucu "false" varsayar); yalnızca
+  // dekoratif yay animasyonunun inline stilini etkilediği için
+  // suppressHydrationWarning ile kullanılır. Metin animasyonları CSS'tedir.
   const prefersReduced = useReducedMotion();
   const reduceMotion = Boolean(prefersReduced);
 
-  const introVariants = buildIntroVariants(reduceMotion);
-  const itemVariants = buildItemVariants(reduceMotion);
 
   return (
     <section className={styles.hero}>
@@ -74,33 +45,36 @@ export default function Hero() {
         className={styles.heroBackground}
       />
 
-      <motion.div
-        className={styles.heroIntro}
-        initial="hidden"
-        animate="visible"
-        variants={introVariants}
-        suppressHydrationWarning
-      >
-        <motion.div className={styles.eyebrow} variants={itemVariants} suppressHydrationWarning>
-          <span />
-          <b>{t.eyebrow}</b>
-        </motion.div>
-
+      {/*
+        Metinlerin giriş animasyonu (alttan kayarak, sırayla belirme) saf CSS
+        ile yapılır (Hero.module.scss → .rise). İlk boyamada başlar; JavaScript
+        yüklenmesini beklemez. Böylece LCP öğesi (açıklama metni) gecikmez.
+      */}
+      <div className={styles.heroIntro}>
+        {/*
+          Üst etiket (YAPAY ZEKÂ · OTOMASYON · DİJİTAL ÜRÜNLER) H1'in parçasıdır:
+          görünüm aynı kalır, arama motorları başlığı anahtar kelimeleriyle okur.
+        */}
         <h1 className={styles.heading}>
-          <motion.span className={styles.heroFixed} variants={itemVariants} suppressHydrationWarning>
-            {t.titleFixed}
-          </motion.span>
+          <span className={`${styles.eyebrow} ${styles.rise}`} style={{ "--rise-i": 0 } as CSSProperties}>
+            <span aria-hidden="true" />
+            <b>{t.eyebrow}</b>
+          </span>
 
-          <motion.span className={styles.heroDynamic} variants={itemVariants} suppressHydrationWarning>
+          <span className={`${styles.heroFixed} ${styles.rise}`} style={{ "--rise-i": 1 } as CSSProperties}>
+            {t.titleFixed}
+          </span>
+
+          <span className={`${styles.heroDynamic} ${styles.rise}`} style={{ "--rise-i": 2 } as CSSProperties}>
             {displayText}
-          </motion.span>
+          </span>
         </h1>
 
-        <motion.p className={styles.description} variants={itemVariants} suppressHydrationWarning>
+        <p className={`${styles.description} ${styles.rise}`} style={{ "--rise-i": 3 } as CSSProperties}>
           {t.description}
-        </motion.p>
+        </p>
 
-        <motion.div className={styles.actions} variants={itemVariants} suppressHydrationWarning>
+        <div className={`${styles.actions} ${styles.rise}`} style={{ "--rise-i": 4 } as CSSProperties}>
           <Link href="/iletisim" className={styles.primaryButton}>
             <span>{t.primaryCta}</span>
             <b aria-hidden="true">↗</b>
@@ -113,13 +87,13 @@ export default function Hero() {
             {t.secondaryCta}
             <span aria-hidden="true">→</span>
           </Link>
-        </motion.div>
+        </div>
 
-        <motion.div className={styles.scrollHint} variants={itemVariants} suppressHydrationWarning>
+        <div className={`${styles.scrollHint} ${styles.rise}`} style={{ "--rise-i": 5 } as CSSProperties}>
           <span>{t.scrollHint}</span>
           <span className={styles.scrollLine} />
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
 
       <motion.div
         className={styles.heroArcArea}

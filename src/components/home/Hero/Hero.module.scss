@@ -124,6 +124,8 @@
 
   color: #16c3ce;
 
+  /* H1'in içinde durduğu için başlık fontunu değil gövde fontunu kullanır */
+  font-family: var(--font-sans);
   font-size: 11px;
   line-height: 1;
   font-weight: 650;
@@ -475,4 +477,31 @@
 
 .secondaryButton {
   @include btn.ghost-dark;
+}
+
+/* ==========================
+   METİN GİRİŞ ANİMASYONU (CSS)
+   Eskiden framer-motion ile yapılıyordu ve JS yüklenene kadar metinler
+   opacity:0 kalıyordu (LCP gecikmesi). Aynı hareket: 28 px alttan, 0,7 sn,
+   0,1 sn başlangıç + öğe başına 0,12 sn aralık. İlk boyamada başlar.
+========================== */
+.rise {
+  animation: heroRise 0.7s cubic-bezier(0.22, 0.8, 0.25, 1) both;
+  animation-delay: calc(0.1s + var(--rise-i, 0) * 0.12s);
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes heroRise {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }

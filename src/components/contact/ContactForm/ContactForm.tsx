@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "motion/react";
 
 import { getAllServices } from "@/data/services";
 import { useLocale, useT } from "@/i18n/LocaleProvider";
+import { trackEvent } from "@/lib/analytics";
 import type { Dictionary } from "@/i18n/dictionaries";
 import FormField from "./FormField";
 import TurnstileWidget, {
@@ -161,6 +162,7 @@ export default function ContactForm() {
         turnstileToken,
       });
 
+      trackEvent("generate_lead", { form: "contact", project_type: values.projectType || undefined });
       setValues(initialValues);
       setStatus("success");
     } catch (error) {

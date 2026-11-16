@@ -1,0 +1,32 @@
+# AKCY Technologies
+
+> AKCY Technologies, Türkiye merkezli bir yazılım ve yapay zekâ stüdyosudur. Yapay zekâ, otomasyon ve dijital ürünlerle işletmelerin daha akıllı çalışmasını sağlar; küçük ekiplerden kurumsal yapılara kadar web sitesi, mobil uygulama, kuruma özel yazılım, AI çözümleri ve iş süreci otomasyonu geliştirir. Hizmetler Türkçe ve İngilizce verilir.
+
+AKCY Technologies is a Turkey-based software and AI studio. It builds websites, mobile apps, custom business software, AI solutions and business process automation for companies of all sizes. Services are offered in Turkish and English.
+
+- Web sitesi / Website: https://akcy.com.tr/ (English: https://akcy.com.tr/en/)
+- E-posta / Email: akcyglobal@gmail.com
+- Telefon / Phone: +90 552 629 04 20
+- Instagram: https://www.instagram.com/akcytechnology/
+
+## Hizmetler / Services
+
+- [Yapay Zekâ Çözümleri / AI Solutions](https://akcy.com.tr/hizmetler/#yapay-zeka): İş süreçlerine özel geliştirilen akıllı AI sistemleri; doküman analizi, kurumsal AI asistanları, veri sınıflandırma, CRM/ERP entegrasyonları.
+- [Dijital Otomasyon / Business Process Automation](https://akcy.com.tr/hizmetler/#dijital-otomasyon): Tekrarlayan operasyonları azaltan dijital iş akışları (form → CRM → teklif → e-posta → panel).
+- [AI İçerik Üretimi / AI Content Production](https://akcy.com.tr/hizmetler/#ai-icerik-uretimi): Markalar için yapay zekâ destekli görsel ve dijital içerik üretim sistemleri.
+- [Web Geliştirme / Web Development](https://akcy.com.tr/hizmetler/#web-gelistirme): Modern, hızlı, responsive ve ölçeklenebilir web siteleri ve web uygulamaları; SEO altyapısı ve Core Web Vitals standart.
+- [Mobil Uygulamalar / Mobile Apps](https://akcy.com.tr/hizmetler/#mobil-uygulamalar): iOS ve Android için kullanıcı odaklı mobil ürünler, mağaza yayını dahil.
+- [UI/UX Tasarım / UI/UX Design](https://akcy.com.tr/hizmetler/#ui-ux-tasarim): Kullanıcı akışı, prototip, arayüz tasarımı ve tasarım sistemi.
+- [Kuruma Özel Yazılım / Custom Software](https://akcy.com.tr/hizmetler/#kurumsal-yazilim): Hazır yazılımların karşılamadığı süreçler için işletmeye özel yönetim sistemleri (teklif, sipariş, stok, onay akışları, raporlama).
+
+## Sayfalar / Pages
+
+- [Hizmetler](https://akcy.com.tr/hizmetler/): Tüm hizmetler tek sayfada / All services ([English](https://akcy.com.tr/en/services/))
+- [Projelerimiz](https://akcy.com.tr/projelerimiz/): Müşteri projeleri ve vaka çalışmaları / Client projects and case studies ([English](https://akcy.com.tr/en/projects/))
+- [Hakkımızda](https://akcy.com.tr/hakkimizda/): Ekip, çalışma yaklaşımı ve süreç / About the studio
+- [Blog](https://akcy.com.tr/blog/): Yapay zekâ, otomasyon, web ve yazılım üzerine yazılar / Articles on AI, automation and software
+- [İletişim](https://akcy.com.tr/iletisim/): Teklif ve proje görüşmesi / Contact and project inquiries
+
+## Optional
+
+- [Site haritası / Sitemap](https://akcy.com.tr/sitemap.xml)

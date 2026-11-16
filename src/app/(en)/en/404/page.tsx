@@ -5,7 +5,7 @@ import { getDictionary } from "@/i18n/dictionaries";
 
 /* /en altındaki bulunamayan adresler için İngilizce 404 sayfası (public/.htaccess) */
 export const metadata: Metadata = {
-  title: getDictionary("en").pages.notFound.title,
+  title: { absolute: getDictionary("en").pages.notFound.title },
   robots: { index: false, follow: true },
 };
 

@@ -43,3 +43,9 @@ next-env.d.ts
 
 # PHP form ayarları (gizli anahtar içerir)
 public/api/config.php
+
+# build öncesi üretilen duyarlı görsel sürümleri (scripts/generate-responsive-images.mjs)
+/public/_img/
+
+# Hosting yükleme paketi (out/ klasöründen üretilir)
+/akcy-site.zip

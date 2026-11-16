@@ -4,9 +4,10 @@ import { localizePath, ogLocale, type Locale } from "@/i18n/config";
 
 export const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://akcy.com.tr";
 
-const DEFAULT_OG_IMAGE: Record<Locale, { url: string; alt: string }> = {
-  tr: { url: "/images/hero/hero-bg.jpg", alt: "AKCY — Yapay zekâ ve otomasyon çözümleri" },
-  en: { url: "/images/hero/hero-bg.jpg", alt: "AKCY — AI and automation solutions" },
+/* Varsayılan paylaşım görseli: hero-bg.jpg 1920×1152 */
+const DEFAULT_OG_IMAGE: Record<Locale, { url: string; alt: string; width: number; height: number }> = {
+  tr: { url: "/images/hero/hero-bg.jpg", alt: "AKCY — Yapay zekâ ve otomasyon çözümleri", width: 1920, height: 1152 },
+  en: { url: "/images/hero/hero-bg.jpg", alt: "AKCY — AI and automation solutions", width: 1920, height: 1152 },
 };
 
 /* Statik yayında sayfalar "/" ile biten klasör adresleriyle sunulur */
@@ -33,7 +34,7 @@ export function pageMetadata(
   description: string,
   path: string,
   image?: { src: string; alt: string },
-  options: { absoluteTitle?: string; type?: "website" | "article" } = {}
+  options: { absoluteTitle?: string; type?: "website" | "article"; noindex?: boolean } = {}
 ): Metadata {
   const fullTitle = options.absoluteTitle ?? `${title} | AKCY`;
   const ogImage = image ? { url: image.src, alt: image.alt } : DEFAULT_OG_IMAGE[locale];
@@ -42,6 +43,8 @@ export function pageMetadata(
     title: { absolute: fullTitle },
     description,
     alternates,
+    // Yalnızca arama sonuçlarında yer alması istenmeyen sayfalarda (ör. konsept çalışmalar)
+    ...(options.noindex ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       title: fullTitle,
       description,
@@ -49,7 +52,7 @@ export function pageMetadata(
       type: options.type ?? "website",
       locale: ogLocale[locale],
       alternateLocale: [ogLocale[locale === "tr" ? "en" : "tr"]],
-      siteName: "AKCY",
+      siteName: "AKCY Technologies",
       images: [ogImage],
     },
     twitter: { card: "summary_large_image", title: fullTitle, description, images: [ogImage.url] },

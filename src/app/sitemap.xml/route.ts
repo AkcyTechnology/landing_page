@@ -1,5 +1,5 @@
 import { getAllProjects } from "@/data/projects";
-import { getAllPosts } from "@/data/blog";
+import { getBlogPosts } from "@/data/blog";
 import { localizePath, locales } from "@/i18n/config";
 import { baseUrl } from "@/lib/metadata";
 
@@ -10,6 +10,7 @@ interface Entry {
   path: string; // Türkçe (kanonik) adres
   changefreq: string;
   priority: string;
+  lastmod?: string; // yalnızca gerçek içerik tarihi bilinen sayfalarda (blog)
 }
 
 function withSlash(path: string) {
@@ -30,14 +31,19 @@ function generateSiteMap() {
     { path: "/iletisim", changefreq: "monthly", priority: "0.7" },
   ];
 
-  const projectPages: Entry[] = getAllProjects().map((project) => ({
-    path: `/projelerimiz/${project.slug}`,
-    changefreq: "monthly",
-    priority: "0.75",
-  }));
+  // Hizmet detay adresleri artık Hizmetler sayfasına yönlendirir (noindex), haritaya alınmaz.
+  // Konsept çalışmalar noindex olduğu için site haritasına alınmaz
+  const projectPages: Entry[] = getAllProjects()
+    .filter((project) => project.kind === "client")
+    .map((project) => ({
+      path: `/projelerimiz/${project.slug}`,
+      changefreq: "monthly",
+      priority: "0.75",
+    }));
 
-  const blogPages: Entry[] = getAllPosts().map((post) => ({
+  const blogPages: Entry[] = getBlogPosts().map((post) => ({
     path: `/blog/${post.slug}`,
+    lastmod: post.updatedDate ?? post.date,
     changefreq: "monthly",
     priority: "0.7",
   }));
@@ -51,7 +57,7 @@ function generateSiteMap() {
   const entries = [...staticPages, ...projectPages, ...blogPages, ...legalPages];
 
   /* Her sayfa iki dilde listelenir; hreflang bağlantıları karşılıklıdır */
-  const urls = entries.flatMap(({ path, changefreq, priority }) => {
+  const urls = entries.flatMap(({ path, changefreq, priority, lastmod }) => {
     const alternates = locales
       .map((locale) => `<xhtml:link rel="alternate" hreflang="${locale}" href="${escapeXml(absolute(localizePath(path, locale)))}" />`)
       .concat(`<xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(absolute(path))}" />`)
@@ -60,10 +66,11 @@ function generateSiteMap() {
     return locales.map(
       (locale) => `
     <url>
-      <loc>${escapeXml(absolute(localizePath(path, locale)))}</loc>
-      ${alternates}
+      <loc>${escapeXml(absolute(localizePath(path, locale)))}</loc>${lastmod ? `
+      <lastmod>${lastmod}</lastmod>` : ""}
       <changefreq>${changefreq}</changefreq>
       <priority>${priority}</priority>
+      ${alternates}
     </url>`
     );
   });

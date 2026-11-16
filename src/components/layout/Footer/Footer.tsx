@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "@/i18n/Link";
+import { GA_ID, OPEN_EVENT } from "@/components/common/CookieConsent/CookieConsent";
 import { usePathname } from "next/navigation";
 import { canonicalPath } from "@/i18n/config";
 import { useLocale, useT } from "@/i18n/LocaleProvider";
@@ -52,8 +53,8 @@ export default function Footer() {
         <div className={styles.grid}>
           <motion.div className={styles.brand} {...reveal()}>
             <Link href="/" aria-label={f.homeLabel} className={styles.logo}>
-              <Image src="/images/brand/logo.svg" alt="AKCY Technologies" width={210} height={120} />
-              <Image className={styles.logoMark} src="/images/brand/logo.svg" alt="" aria-hidden="true" width={210} height={120} />
+              <Image src="/images/brand/logo.webp" alt="AKCY Technologies" width={210} height={120} />
+              <Image className={styles.logoMark} src="/images/brand/logo.webp" alt="" aria-hidden="true" width={210} height={120} />
             </Link>
             <p>{f.brandText}</p>
             <nav className={styles.social} aria-label={f.social}>
@@ -88,6 +89,15 @@ export default function Footer() {
             <Link href="/privacy">{f.privacy}</Link>
             <Link href="/kvkk">{f.kvkk}</Link>
             <Link href="/cookies">{f.cookies}</Link>
+            {GA_ID && (
+              <button
+                type="button"
+                className={styles.legalButton}
+                onClick={() => window.dispatchEvent(new Event(OPEN_EVENT))}
+              >
+                {f.cookieSettings}
+              </button>
+            )}
           </nav>
         </div>
       </Container>

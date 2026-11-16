@@ -1,3 +1,34 @@
+# AKCY Technologies — https://akcy.com.tr
+# Kamuya açık bütün sayfalar taranabilir. /api/ yalnızca iletişim formunun
+# sunucu uç noktasıdır; içerik barındırmaz ve taranmaz.
+# Not: Bir bot için ayrı grup tanımlandığında "*" grubu o bota uygulanmaz,
+# bu yüzden /api/ kuralı her grupta tekrarlanır.
+
+# Arama motorları
+User-agent: Googlebot
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+
+# Yapay zekâ destekli arama ve kullanıcı isteğiyle yapılan erişimler
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+Allow: /
+Disallow: /api/
+
+# Model eğitimi amaçlı tarayıcılar (mevcut politika: izinli)
+User-agent: GPTBot
+User-agent: Google-Extended
+User-agent: ClaudeBot
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /api/
+
+# Diğer tüm tarayıcılar
 User-agent: *
 Allow: /
 Disallow: /api/

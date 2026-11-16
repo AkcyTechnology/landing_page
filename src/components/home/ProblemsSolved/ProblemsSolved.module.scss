@@ -24,7 +24,7 @@ $turquoise: #16c3ce;
 .label {
   display: inline-block;
   margin-bottom: 24px;
-  color: var(--color-accent);
+  color: var(--color-accent-text);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.13em;
@@ -37,7 +37,7 @@ $turquoise: #16c3ce;
   line-height: 1.08;
 
   span {
-    color: var(--color-accent);
+    color: var(--color-accent-text);
   }
 }
 

@@ -3,8 +3,11 @@ import { notFound } from "next/navigation";
 
 import Link from "@/i18n/Link";
 import { canonicalSlug, localizePath, localizeSlug, type Locale } from "@/i18n/config";
+import { getDictionary } from "@/i18n/dictionaries";
 import { setRequestLocale } from "@/i18n/server";
 import { pageMetadata } from "@/lib/metadata";
+import { StructuredData } from "@/lib/StructuredData";
+import { absoluteUrl, breadcrumbSchema, graph, webPageSchema } from "@/lib/schema";
 import { getAllServices, getServiceBySlug } from "@/data/services";
 import { servicesPageContent } from "@/content/services-page";
 import ServicesPage from "@/components/services/ServicesPage/ServicesPage";
@@ -16,7 +19,43 @@ export function servicesMetadata(locale: Locale) {
 
 export default function ServicesView({ locale }: { locale: Locale }) {
   setRequestLocale(locale);
-  return <ServicesPage locale={locale} />;
+  const services = getAllServices(locale);
+  const t = getDictionary(locale);
+  const meta = servicesPageContent[locale].meta;
+
+  /* Hizmetler sayfası: sayfa + sunulan hizmetlerin listesi (sayfa içi kartlar) + breadcrumb */
+  const schema = graph(
+    webPageSchema({
+      path: "/hizmetler",
+      locale,
+      name: meta.title,
+      description: meta.description,
+      type: "CollectionPage",
+    }),
+    {
+      "@type": "ItemList",
+      itemListElement: services.map((service, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: service.title,
+        url: `${absoluteUrl("/hizmetler", locale)}#${localizeSlug("hizmetler", service.slug, locale)}`,
+      })),
+    },
+    breadcrumbSchema(
+      [
+        { name: t.nav.home, path: "/" },
+        { name: t.nav.services, path: "/hizmetler" },
+      ],
+      locale
+    )
+  );
+
+  return (
+    <>
+      <StructuredData data={schema} />
+      <ServicesPage locale={locale} />
+    </>
+  );
 }
 
 /* ---------- Eski hizmet detay adresleri ----------

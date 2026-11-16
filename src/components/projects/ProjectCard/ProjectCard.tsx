@@ -27,7 +27,7 @@ export default function ProjectCard({project, size = "standard"}: ProjectCardPro
       <p className={styles.meta}>{project.servicesUsed.join(" · ")}</p>
     </Link>
     <div className={styles.actions}>
-      <Link href={href} className={styles.link}>{t.cardCta} <b aria-hidden="true">↗</b></Link>
+      <Link href={href} className={styles.link} aria-label={`${t.cardCta}: ${project.title}`}>{t.cardCta} <b aria-hidden="true">↗</b></Link>
       {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className={styles.liveLink} aria-label={`${project.title} — ${t.liveSiteLabel}`}>{t.liveSite} <span aria-hidden="true">↗</span></a>}
     </div>
   </article>;

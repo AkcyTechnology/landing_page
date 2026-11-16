@@ -5,6 +5,8 @@ import Image from "next/image";
 
 import { StructuredData } from "@/lib/StructuredData";
 import { baseUrl, localeAlternates } from "@/lib/metadata";
+import { graph, organizationSchema, websiteSchema } from "@/lib/schema";
+import { getAllServices } from "@/data/services";
 import { htmlLang, LOCALE_STORAGE_KEY, ogLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { LocaleProvider } from "@/i18n/LocaleProvider";
@@ -13,6 +15,7 @@ import Footer from "@/components/layout/Footer/Footer";
 import CursorTrail from "@/components/common/CursorTrail/CursorTrail";
 import QuoteButton from "@/components/common/QuoteButton/QuoteButton";
 import WhatsAppButton from "@/components/common/WhatsAppButton/WhatsAppButton";
+import CookieConsent from "@/components/common/CookieConsent/CookieConsent";
 import RevealObserver from "@/components/common/RevealObserver/RevealObserver";
 import SiteIntro from "@/components/common/SiteIntro/SiteIntro";
 import PointerEffects from "@/components/common/PointerEffects/PointerEffects";
@@ -41,9 +44,17 @@ export function rootMetadata(locale: Locale): Metadata {
     title: { default: t.defaultTitle, template: "%s | AKCY" },
     description: t.defaultDescription,
     keywords: t.keywords,
-    authors: [{ name: "AKCY" }],
-    creator: "AKCY",
-    publisher: "AKCY",
+    applicationName: "AKCY Technologies",
+    authors: [{ name: "AKCY Technologies", url: `${baseUrl}/` }],
+    creator: "AKCY Technologies",
+    publisher: "AKCY Technologies",
+    // Search Console / Bing Webmaster doğrulaması: değerler .env'de tanımlıysa etiket üretilir
+    verification: {
+      google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
+      other: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
+        ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION }
+        : undefined,
+    },
     robots: {
       index: true,
       follow: true,
@@ -60,7 +71,7 @@ export function rootMetadata(locale: Locale): Metadata {
       type: "website",
       locale: ogLocale[locale],
       url: locale === "tr" ? `${baseUrl}/` : `${baseUrl}/en/`,
-      siteName: "AKCY",
+      siteName: "AKCY Technologies",
       title: t.defaultTitle,
       description: t.shortDescription,
       images: [{ url: `${baseUrl}/images/hero/hero-bg.jpg`, width: 2000, height: 1200, alt: "AKCY" }],
@@ -86,31 +97,23 @@ else if(s.getItem("akcy-loaded")){d.setAttribute("data-loaded","")}else{s.setIte
 export default function SiteShell({ locale, children }: { locale: Locale; children: ReactNode }) {
   const t = getDictionary(locale).meta;
   const intro = getDictionary(locale).intro;
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "AKCY",
-    url: baseUrl,
-    logo: `${baseUrl}/images/brand/logo.svg`,
-    description: t.shortDescription,
-    sameAs: ["https://www.instagram.com/akcytechnology/"],
-    contactPoint: {
-      "@type": "ContactPoint",
-      contactType: "Customer Support",
-      email: "akcyglobal@gmail.com",
-      telephone: "+905526290420",
-      availableLanguage: ["Turkish", "English"],
-    },
-  };
+  /* Kuruluş + web sitesi: diğer sayfa şemaları bu @id'lere bağlanır */
+  const siteSchema = graph(
+    organizationSchema(
+      locale,
+      t.shortDescription,
+      getAllServices(locale).map((service) => service.title)
+    ),
+    websiteSchema(locale, t.shortDescription)
+  );
 
   return (
     <html lang={htmlLang[locale]} className={`${sans.variable} ${display.variable}`} suppressHydrationWarning>
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#06101f" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <StructuredData data={organizationSchema} />
+        <StructuredData data={siteSchema} />
         {/*
           Sayfa çizilmeden önce çalışır:
           1. Daha önce İngilizceyi seçmiş biri dışarıdan Türkçe ana sayfaya
@@ -152,7 +155,7 @@ export default function SiteShell({ locale, children }: { locale: Locale; childr
                 <circle cx="80" cy="106" r="4" style={{ animationDelay: "0.72s" }} />
               </g>
             </svg>
-            <Image src="/images/brand/logo.svg" alt="" width={132} height={75} className="site-loader__logo" priority />
+            <Image src="/images/brand/logo-sm.webp" alt="" width={132} height={75} className="site-loader__logo" priority />
           </div>
         </div>
         <SiteIntro words={intro.words} areas={intro.areas} />
@@ -168,6 +171,7 @@ export default function SiteShell({ locale, children }: { locale: Locale; childr
 
           <WhatsAppButton />
           <QuoteButton />
+          <CookieConsent />
           <RevealObserver />
         </LocaleProvider>
       </body>

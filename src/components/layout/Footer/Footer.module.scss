@@ -128,6 +128,13 @@
   gap: 0;
   a { padding: 0 18px; transition: color .25s ease; & + a { border-left: 1px solid var(--footer-border); } &:first-child { padding-left: 0; } &:last-child { padding-right: 0; } &:hover { color: var(--footer-accent); } }
 }
+/* "Çerez Tercihleri": bağlantılarla aynı görünen buton */
+.legalButton {
+  padding: 0 0 0 18px; margin: 0; border: 0; border-left: 1px solid var(--footer-border);
+  background: none; color: inherit; font: inherit; cursor: pointer; transition: color .25s ease;
+  &:hover { color: var(--footer-accent); }
+}
+@media (max-width: 700px) { .legalButton { padding: 0; margin: 0; border: 0; text-align: left; } }
 .footer :focus-visible { outline: 2px solid var(--footer-accent); outline-offset: 5px; }
 
 @media (max-width: 1050px) {

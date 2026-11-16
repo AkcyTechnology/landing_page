@@ -92,6 +92,14 @@ export const tr = {
     privacy: "Gizlilik Politikası",
     kvkk: "KVKK Aydınlatma Metni",
     cookies: "Çerez Politikası",
+    cookieSettings: "Çerez Tercihleri",
+  },
+  cookieConsent: {
+    label: "Çerez tercihi",
+    text: "Siteyi nasıl kullandığınızı anlamak için, yalnızca onay verirseniz Google Analytics çerezlerini kullanıyoruz.",
+    policy: "Çerez Politikası",
+    accept: "Kabul et",
+    reject: "Reddet",
   },
   notFound: {
     title: "Bu sayfa burada değil.",
@@ -125,6 +133,13 @@ export const tr = {
     technologies: "04 / Teknolojiler",
     relatedLabel: "05 / İlgili Projeler",
     relatedHeading: "Bu hizmetle üretilenler",
+    audienceLabel: "Kimler İçin",
+    problemsLabel: "Çözdüğü Problemler",
+    relatedServicesLabel: "İlgili Hizmetler",
+    faqLabel: "SIK SORULAN SORULAR",
+    faqHeadingStart: "Bu hizmet hakkında",
+    faqHeadingAccent: "sorular.",
+    faqIntro: "Projenize özel bir sorunuz varsa bize doğrudan yazabilirsiniz; keşif görüşmesinde ayrıntıları birlikte netleştiririz.",
     scopes: {
       "web-gelistirme": { title: "Her projede standart", items: ["SEO altyapısı", "Core Web Vitals", "Responsive tasarım", "Erişilebilirlik", "Güvenlik"], note: "Bunları sonradan eklenen özellikler olarak değil, geliştirme sürecinin bir parçası olarak ele alıyoruz." },
       "ui-ux-tasarim": { title: "Tasarım teslimleri", items: ["Kullanıcı akışları", "Tel çerçeve (wireframe)", "Prototip", "Arayüz tasarımı", "Tasarım sistemi", "Geliştiriciye teslim"], note: "Kullanıcı akışından geliştirici teslimine kadar kararları ve bileşen davranışlarını belgeleriz. Seçilmiş projeler bölümünde gerçek arayüzlerimizi inceleyebilirsiniz." },
@@ -166,7 +181,7 @@ export const tr = {
     solution: "Solution",
     labLabel: "LAB / KONSEPTLER",
     labDescription: "Gerçek müşteri işleri değil; AKCY'nin kendi yaklaşımını sınadığı konsept çalışmalar.",
-    caseStudySuffix: "Case Study",
+    caseStudySuffix: "Proje İncelemesi",
   },
   about: aboutContent.tr,
   home: {
@@ -181,6 +196,7 @@ export const tr = {
       scrollHint: "KEŞFETMEK İÇİN KAYDIR",
     },
     heroArc: {
+      heading: "Hizmetlerimiz",
       cardLink: "Hizmeti incele",
       previous: "Önceki hizmet",
       next: "Sonraki hizmet",

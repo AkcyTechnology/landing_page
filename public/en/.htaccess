@@ -1,0 +1,4 @@
+# /en altında bulunamayan adresler için İngilizce 404 sayfası.
+# Kök .htaccess'teki <If> bloğu bazı sunucularda (LiteSpeed) ErrorDocument'i
+# uygulamadığı için kural bu klasörde ayrıca tanımlanır.
+ErrorDocument 404 /en/404/index.html

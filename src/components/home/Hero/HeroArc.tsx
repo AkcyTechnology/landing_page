@@ -91,6 +91,8 @@ export default function HeroArc() {
 
   return (
     <div className={styles.arc}>
+      {/* Kart başlıkları (h3) için ekranda görünmeyen bölüm başlığı: H1 → H2 → H3 sırası */}
+      <h2 className="sr-only">{t.heading}</h2>
       <motion.div
         className={styles.stage}
         drag="x"
@@ -179,6 +181,7 @@ export default function HeroArc() {
                 href={serviceHref(service.slug, locale)}
                 className={styles.cardLink}
                 tabIndex={isActive ? 0 : -1}
+                aria-label={`${t.cardLink}: ${service.title}`}
               >
                 {t.cardLink} <span aria-hidden="true">↗</span>
               </Link>

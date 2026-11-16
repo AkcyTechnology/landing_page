@@ -6,9 +6,7 @@ import LegalPageLayout from "@/components/legal/LegalPageLayout/LegalPageLayout"
 
 export function legalMetadata(page: LegalPageKey, locale: Locale) {
   const content = legalPages[page][locale];
-  return pageMetadata(locale, content.metaTitle, content.metaDescription, `/${page}`, undefined, {
-    absoluteTitle: `${content.metaTitle} | AKCY Technologies`,
-  });
+  return pageMetadata(locale, content.metaTitle, content.metaDescription, `/${page}`);
 }
 
 export default function LegalView({ page, locale }: { page: LegalPageKey; locale: Locale }) {

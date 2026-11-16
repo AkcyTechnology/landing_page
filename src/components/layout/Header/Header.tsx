@@ -100,7 +100,7 @@ export default function Header() {
             aria-label={t.header.homeLabel}
           >
             <Image
-              src="/images/brand/logo.svg"
+              src="/images/brand/logo-sm.webp"
               alt="AKCY"
               width={109}
               height={62}

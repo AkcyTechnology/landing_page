@@ -168,8 +168,7 @@ export default function ProjectShowcase() {
                     fill
                     sizes="100vw"
                     quality={78}
-                    priority={index === 0}
-                    loading={index === 0 ? undefined : "lazy"}
+                    loading="lazy"
                     className={styles.image}
                   />
                 </div>
@@ -210,6 +209,7 @@ export default function ProjectShowcase() {
                       href={`/projelerimiz/${project.slug}`}
                       className={styles.cta}
                       data-reveal="cta"
+                      aria-label={`${t.cta}: ${project.title}`}
                     >
                       {t.cta} <b aria-hidden="true">↗</b>
                     </Link>

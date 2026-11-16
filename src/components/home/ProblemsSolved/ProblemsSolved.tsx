@@ -101,7 +101,11 @@ export default function ProblemsSolved() {
                       <li key={tag}>{tag}</li>
                     ))}
                   </ul>
-                  <Link className={styles.link} href={serviceHref(solution.slug, locale)}>
+                  <Link
+                    className={styles.link}
+                    href={serviceHref(solution.slug, locale)}
+                    aria-label={`${t.cta}: ${solution.title}`}
+                  >
                     {t.cta} <b aria-hidden="true">↗</b>
                   </Link>
                 </div>

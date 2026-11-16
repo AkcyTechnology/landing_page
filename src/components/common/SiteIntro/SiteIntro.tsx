@@ -12,7 +12,7 @@ export default function SiteIntro({ words, areas }: { words: string[]; areas: st
   return (
     <div className="site-intro" aria-hidden="true">
       <div className="site-intro__bar">
-        <Image src="/images/brand/logo.svg" alt="" width={109} height={62} className="site-intro__logo" priority />
+        <Image src="/images/brand/logo-sm.webp" alt="" width={109} height={62} className="site-intro__logo" priority />
       </div>
       <div className="site-intro__stage">
         {words.map((word, i) => (

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { canonicalSlug, dateLocale, localizePath, localizeSlug, type Locale } from "@/i18n/config";
+import { canonicalSlug, localizeSlug, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { setRequestLocale } from "@/i18n/server";
 import { baseUrl, pageMetadata } from "@/lib/metadata";
@@ -20,6 +20,16 @@ import RelatedArticles from "@/components/blog/RelatedArticles/RelatedArticles";
 import ReadingProgress from "@/components/blog/ReadingProgress/ReadingProgress";
 import AuthorCard from "@/components/blog/AuthorCard/AuthorCard";
 import { StructuredData } from "@/lib/StructuredData";
+import {
+  absoluteUrl,
+  breadcrumbSchema,
+  faqSchema,
+  graph,
+  ORGANIZATION_ID,
+  schemaLanguage,
+  webPageSchema,
+  WEBSITE_ID,
+} from "@/lib/schema";
 
 import styles from "./BlogDetailView.module.scss";
 
@@ -41,8 +51,37 @@ export default function BlogView({ locale }: { locale: Locale }) {
     }))
     .filter((topic) => topic.count > 0);
 
+  /* Blog sayfası: koleksiyon sayfası + yazı listesi + breadcrumb */
+  const t = getDictionary(locale);
+  const schema = graph(
+    webPageSchema({
+      path: "/blog",
+      locale,
+      name: t.pages.blog.title,
+      description: t.pages.blog.description,
+      type: "CollectionPage",
+    }),
+    {
+      "@type": "ItemList",
+      itemListElement: allPosts.map((post, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: post.title,
+        url: absoluteUrl(`/blog/${post.slug}`, locale),
+      })),
+    },
+    breadcrumbSchema(
+      [
+        { name: t.nav.home, path: "/" },
+        { name: t.nav.blog, path: "/blog" },
+      ],
+      locale
+    )
+  );
+
   return (
     <>
+      <StructuredData data={schema} />
       <BlogHero />
 
       <BlogListingClient
@@ -104,58 +143,41 @@ export function BlogDetailView({ slug, locale }: { slug: string; locale: Locale 
   const nextPost = getAdjacentPost(post, locale);
   const relatedPosts = getRelatedPosts(post, locale);
 
-  const home = `${baseUrl}${localizePath("/", locale)}`;
-  const blogUrl = `${baseUrl}${localizePath("/blog/", locale)}`;
-  const url = `${baseUrl}${localizePath(`/blog/${post.slug}/`, locale)}`;
+  const postPath = `/blog/${post.slug}`;
+  const url = absoluteUrl(postPath, locale);
+  const image = post.coverImage.src.startsWith("http") ? post.coverImage.src : `${baseUrl}${post.coverImage.src}`;
 
-  /* Google'ın yazıyı doğru yorumlaması için Article + Breadcrumb şeması */
-  const schemas: Record<string, unknown>[] = [
+  /* Yazı + breadcrumb (+ SSS) tek grafikte; yazar ve yayıncı kuruluşun @id'sine bağlanır */
+  const schema = graph(
     {
-      "@context": "https://schema.org",
       "@type": "BlogPosting",
+      "@id": `${url}#article`,
       headline: post.title,
       description: post.metaDescription ?? post.excerpt,
-      image: post.coverImage.src,
+      image,
       datePublished: post.date,
       dateModified: post.updatedDate ?? post.date,
-      inLanguage: dateLocale[locale],
+      inLanguage: schemaLanguage[locale],
+      keywords: [post.focusKeyword, ...(post.secondaryKeywords ?? [])].filter(Boolean).join(", ") || undefined,
       mainEntityOfPage: { "@type": "WebPage", "@id": url },
-      author: { "@type": "Organization", name: post.author?.name ?? "AKCY", url: baseUrl },
-      publisher: {
-        "@type": "Organization",
-        name: "AKCY",
-        logo: { "@type": "ImageObject", url: `${baseUrl}/images/brand/logo.svg` },
-      },
+      isPartOf: { "@id": WEBSITE_ID },
+      author: { "@id": ORGANIZATION_ID },
+      publisher: { "@id": ORGANIZATION_ID },
     },
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: t.nav.home, item: home },
-        { "@type": "ListItem", position: 2, name: t.nav.blog, item: blogUrl },
-        { "@type": "ListItem", position: 3, name: post.title, item: url },
+    breadcrumbSchema(
+      [
+        { name: t.nav.home, path: "/" },
+        { name: t.nav.blog, path: "/blog" },
+        { name: post.title, path: postPath },
       ],
-    },
-  ];
-
-  // SSS bölümü varsa Google'da açılır soru-cevap olarak görünebilir
-  if (post.faq?.length) {
-    schemas.push({
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: post.faq.map((item) => ({
-        "@type": "Question",
-        name: item.question,
-        acceptedAnswer: { "@type": "Answer", text: item.answer },
-      })),
-    });
-  }
+      locale
+    ),
+    post.faq?.length ? faqSchema(post.faq) : null
+  );
 
   return (
     <>
-      {schemas.map((schema, index) => (
-        <StructuredData key={index} data={schema} />
-      ))}
+      <StructuredData data={schema} />
 
       <ReadingProgress />
 
