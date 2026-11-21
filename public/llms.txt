@@ -23,10 +23,21 @@ AKCY Technologies is a Turkey-based software and AI studio. It builds websites, 
 
 - [Hizmetler](https://akcy.com.tr/hizmetler/): Tüm hizmetler tek sayfada / All services ([English](https://akcy.com.tr/en/services/))
 - [Projelerimiz](https://akcy.com.tr/projelerimiz/): Müşteri projeleri ve vaka çalışmaları / Client projects and case studies ([English](https://akcy.com.tr/en/projects/))
-- [Hakkımızda](https://akcy.com.tr/hakkimizda/): Ekip, çalışma yaklaşımı ve süreç / About the studio
-- [Blog](https://akcy.com.tr/blog/): Yapay zekâ, otomasyon, web ve yazılım üzerine yazılar / Articles on AI, automation and software
-- [İletişim](https://akcy.com.tr/iletisim/): Teklif ve proje görüşmesi / Contact and project inquiries
+- [Hakkımızda](https://akcy.com.tr/hakkimizda/): Ekip, çalışma yaklaşımı ve süreç / About the studio ([English](https://akcy.com.tr/en/about/))
+- [Blog](https://akcy.com.tr/blog/): Yapay zekâ, otomasyon, web ve yazılım üzerine yazılar / Articles on AI, automation and software ([English](https://akcy.com.tr/en/blog/))
+- [Teklif Al](https://akcy.com.tr/teklif/): 4 adımlık proje ve teklif formu / 4-step project and quote form ([English](https://akcy.com.tr/en/quote/))
+- [İletişim](https://akcy.com.tr/iletisim/): Proje görüşmesi, e-posta ve telefon / Contact and project inquiries ([English](https://akcy.com.tr/en/contact/))
+
+## Projeler / Projects
+
+- [Çakıroğlu Savunma](https://akcy.com.tr/projelerimiz/cakiroglu-savunma/): Savunma ve kaynak teknolojileri firması için kurumsal web sitesi / Corporate website
+- [Gökçe Kombi](https://akcy.com.tr/projelerimiz/gokce-kombi/): Kombi ve ısıtma firması için kurumsal web sitesi / Corporate website for a heating company
+- [Calm Do](https://akcy.com.tr/projelerimiz/#proje-calm-do): Yapay zekâ destekli görev yönetimi uygulaması / AI-assisted task management app
+- [Guess Player](https://akcy.com.tr/projelerimiz/#proje-guess-player): Sporcu tahmin oyunu / Sports guessing game
+- [Connectly](https://akcy.com.tr/projelerimiz/#proje-connectly): Kişisel ilişki yönetimi uygulaması / Personal relationship management app
+- [BidFlow](https://akcy.com.tr/projelerimiz/#proje-bidflow): İhale, teklif ve satış yönetimi / Tender, proposal and sales management
 
 ## Optional
 
 - [Site haritası / Sitemap](https://akcy.com.tr/sitemap.xml)
+- [Blog RSS (Türkçe)](https://akcy.com.tr/rss.xml) · [Blog RSS (English)](https://akcy.com.tr/en/rss.xml)
