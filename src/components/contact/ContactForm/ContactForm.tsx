@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { getAllServices } from "@/data/services";
 import { useLocale, useT } from "@/i18n/LocaleProvider";
 import { trackEvent } from "@/lib/analytics";
+import { CONTACT_EMAIL } from "@/lib/contact";
 import type { Dictionary } from "@/i18n/dictionaries";
 import FormField from "./FormField";
 import TurnstileWidget, {
@@ -354,7 +355,7 @@ export default function ContactForm() {
           >
             {errorMessage ? `${errorMessage} ` : `${t.errorGeneric} `}
             {t.errorRetryStart}{" "}
-            <a href="mailto:akcyglobal@gmail.com">akcyglobal@gmail.com</a>{t.errorRetryEnd}
+            <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>{t.errorRetryEnd}
           </motion.p>
         )}
       </AnimatePresence>

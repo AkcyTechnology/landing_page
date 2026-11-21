@@ -3,14 +3,14 @@ import { localizeSlug, type Locale } from "@/i18n/config";
 import { getServiceBySlug } from "@/data/services";
 import { servicePhotos, servicesPageContent } from "@/content/services-page";
 
-import ServicesHero, { type ArcCard } from "./ServicesHero";
+import ServicesHero from "./ServicesHero";
 import FlipCard from "./FlipCard";
 import styles from "./ServicesPage.module.scss";
 
 const pad = (value: number) => String(value).padStart(2, "0");
 
 /*
-  Hizmetler: tek sayfa. Kartlı açılış, üç grupta hizmet kartları
+  Hizmetler: tek sayfa. Fotoğraflı açılış, üç grupta hizmet kartları
   (her kart #slug bağlantısıyla adreslenebilir) ve kapanış çağrısı.
 */
 export default function ServicesPage({ locale }: { locale: Locale }) {
@@ -30,13 +30,10 @@ export default function ServicesPage({ locale }: { locale: Locale }) {
     items: group.items.map((item) => ({ ...item, number: pad(++counter) })),
   }));
 
-  const cards: ArcCard[] = numbered.flatMap((group) =>
-    group.items.map((item) => ({ id: item.id, number: item.number, title: item.title, image: item.photo }))
-  );
 
   return (
     <>
-      <ServicesHero {...content.hero} cards={cards} />
+      <ServicesHero {...content.hero} />
 
       <div id="hizmet-gruplari" className={styles.groups}>
         {numbered.map((group, groupIndex) => (
@@ -49,8 +46,7 @@ export default function ServicesPage({ locale }: { locale: Locale }) {
             <div className={styles.rows}>
               {group.items.map((item) => (
                 <div key={item.slug} id={item.id} className={styles.row}>
-                  <article className={`${styles.card} ${styles[item.tone]}`} data-tilt="" data-reveal="">
-                    <span className={styles.cardGlow} aria-hidden="true" />
+                  <article className={`${styles.card} ${styles[item.tone]}`} data-reveal="">
 
                     <div className={styles.cardTop}>
                       <span className={styles.cardNumber}>{item.number}</span>

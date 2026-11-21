@@ -129,7 +129,8 @@ function BlogListing({
     pushParams({ page: nextPage });
 
     // Yeni sayfanın kartları görünsün diye yazı listesinin başına kaydır.
-    listTop.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    listTop.current?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
   };
 
   const handleClear = () => {

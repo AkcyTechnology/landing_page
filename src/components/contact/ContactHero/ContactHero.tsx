@@ -1,49 +1,30 @@
-import Image from "next/image";
-
 import { getT } from "@/i18n/server";
 import Container from "@/components/common/Container/Container";
 import ScrollToForm from "./ScrollToForm";
-import DropWords, { dropWordCount } from "@/components/common/DropWords/DropWords";
+import PageHero from "@/components/common/PageHero/PageHero";
 import styles from "./ContactHero.module.scss";
 
 /*
-  İletişim açılışı: sitenin lacivert–mavi–turkuaz tonlarına göre yeniden
-  renklendirilmiş ekip fotoğrafı, solda buzlu cam panel ve başlık.
-  Altında sürecin üç adımı yer alır.
+  İletişim açılışı: ortak fotoğraflı hero (ekip fotoğrafı) ve altında
+  sürecin üç adımı.
 */
 export default function ContactHero() {
   const t = getT().contact.hero;
 
   return (
     <>
-      <section className={styles.hero} aria-labelledby="contact-hero-title">
-        <Image
-          src="/images/contact/hero-ekip.webp"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className={styles.photo}
-        />
-        <span className={styles.shade} aria-hidden="true" />
-        <span className={styles.grid} aria-hidden="true" />
-
-        <Container className={styles.inner}>
-          <div className={styles.content}>
-            <span className={styles.eyebrow}>{t.eyebrow}</span>
-            <h1 id="contact-hero-title" className={styles.title}>
-              <span>
-                <DropWords text={t.titleLine1} delay={0.45} />
-              </span>
-              <span className={styles.accent}>
-                <DropWords text={t.titleLine2} start={dropWordCount(t.titleLine1)} delay={0.45} />
-              </span>
-            </h1>
-            <p className={styles.text}>{t.description}</p>
-            <ScrollToForm className={styles.cta} label={t.cta} />
-          </div>
-        </Container>
-      </section>
+      <PageHero
+        id="contact-hero-title"
+        eyebrow={t.eyebrow}
+        titleLead={t.titleLine1}
+        titleAccent={t.titleLine2}
+        description={t.description}
+        image="/images/contact/hero-ekip.webp"
+        objectPosition="62% 40%"
+        mobilePosition="64% 22%"
+      >
+        <ScrollToForm className={styles.cta} label={t.cta} />
+      </PageHero>
 
       <section className={styles.steps} aria-label={t.processLabel}>
         <Container>

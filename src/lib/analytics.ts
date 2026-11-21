@@ -31,7 +31,7 @@ export function trackLinkClick(anchor: HTMLAnchorElement) {
   if (url.origin !== window.location.origin) return;
 
   const path = url.pathname.replace(/^\/en(?=\/)/, "");
-  if (/^\/(iletisim|contact)\/?$/.test(path)) return trackEvent("click_quote", { link_text: label });
+  if (/^\/(iletisim|contact|teklif|quote)\/?$/.test(path)) return trackEvent("click_quote", { link_text: label });
   if (/^\/(projelerimiz|projects)\/[^/]+\/?$/.test(path)) return trackEvent("view_project_click", { project: path });
   if (/^\/(hizmetler|services)\/?$/.test(path)) return trackEvent("view_service_click", { service: url.hash.slice(1) || undefined });
 }

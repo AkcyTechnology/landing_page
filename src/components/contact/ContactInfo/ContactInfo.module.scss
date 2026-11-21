@@ -90,3 +90,7 @@ a.value:hover {
     margin-top: 36px;
   }
 }
+/* Randevu bağlantısı (NEXT_PUBLIC_BOOKING_URL tanımlıysa görünür) */
+.booking:not(:empty) {
+  margin-top: 28px;
+}

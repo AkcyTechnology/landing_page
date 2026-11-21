@@ -16,171 +16,12 @@ $mint: #dff3f1;
 }
 
 /* =========================
-   AÇILIŞ: perspektifli kart dizisi
+   AÇILIŞ: ortak fotoğraflı hero (PageHero) altındaki butonlar
 ========================= */
-
-.hero {
-  position: relative;
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  align-content: center;
-  justify-items: center;
-  gap: clamp(28px, 3.4vw, 44px);
-  box-sizing: border-box;
-  min-height: var(--page-hero-h);
-  padding: var(--page-hero-pt) 0 var(--page-hero-pb);
-  /* Ortak hero zemini: Teklif Al'ın koyu petrol yeşili */
-  background: var(--hero-bg);
-  color: $white;
-  text-align: center;
-}
-
-.heroHead {
-  width: min(100% - 32px, 820px);
-}
-
-.heroEyebrow {
-  margin: 0 0 18px;
-  color: var(--hero-accent);
-  font-size: 12px;
-  font-weight: 650;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  animation: hero-rise 0.8s $ease 0.1s both;
-}
-
-.heroTitle {
-  margin: 0;
-  font-size: var(--hero-title-size);
-  font-weight: var(--hero-title-weight);
-  line-height: 1.06;
-  letter-spacing: -0.04em;
-}
-
-.arc {
-  width: 100%;
-  perspective: 1100px;
-  perspective-origin: 50% 50%;
-}
-
-.arcTrack {
-  --u: min(1vw, 16px);
-  --tilt: 0deg;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: calc(var(--u) * 1.1);
-  transform: rotateY(var(--tilt));
-  transform-style: preserve-3d;
-}
-
-.arcCard {
-  --w: calc(var(--u) * (8.4 + var(--a) * 2.1));
-  flex: none;
-  width: var(--w);
-  aspect-ratio: 3 / 4.1;
-  color: $white;
-  text-decoration: none;
-  transform: rotateY(calc(var(--o) * -14deg));
-  transform-style: preserve-3d;
-  animation: arc-in 1s $ease calc(0.25s + var(--a) * 0.09s) both;
-  outline: none;
-
-  &:focus-visible .arcFace {
-    outline: 2px solid $turquoise;
-    outline-offset: 4px;
-  }
-}
-
-.arcFace {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  padding: calc(var(--u) * 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 14px;
-  background: $navy;
-  text-align: left;
-  transition:
-    transform 0.5s $ease,
-    border-color 0.3s ease;
-
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(0, 32, 34, 0) 40%, rgba(0, 32, 34, 0.88) 100%);
-    transition: opacity 0.4s ease;
-  }
-}
-
-.arcImage {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  transition: transform 0.8s $ease;
-}
-
-.arcNumber,
-.arcTitle {
-  position: relative;
-  z-index: 1;
-}
-
-.arcNumber {
-  color: $turquoise;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-}
-
-.arcTitle {
-  font-size: clamp(11px, calc(var(--u) * (0.95 + var(--a) * 0.12)), 17px);
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .arcCard:hover .arcFace {
-    transform: translateY(-10px);
-    border-color: rgba(22, 195, 206, 0.7);
-  }
-
-  .arcCard:hover .arcImage {
-    transform: scale(1.07);
-  }
-
-  .arcCard:hover .arcFace::after {
-    opacity: 0.75;
-  }
-}
-
-.heroFoot {
-  display: grid;
-  justify-items: center;
-  gap: 26px;
-  width: min(100% - 32px, 640px);
-  animation: hero-rise 0.9s $ease 0.5s both;
-}
-
-.heroText {
-  margin: 0;
-  color: var(--hero-text);
-  font-size: var(--hero-text-size);
-  line-height: 1.7;
-}
 
 .heroActions {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 12px;
 }
 
@@ -190,20 +31,6 @@ $mint: #dff3f1;
 
 .heroSecondary {
   @include btn.ghost-dark;
-}
-
-@keyframes hero-rise {
-  from {
-    opacity: 0;
-    transform: translateY(22px);
-  }
-}
-
-@keyframes arc-in {
-  from {
-    opacity: 0;
-    transform: rotateY(0deg) translateZ(-260px) scale(0.7);
-  }
 }
 
 /* =========================
@@ -294,7 +121,8 @@ $mint: #dff3f1;
   scroll-margin-top: 110px;
   transition:
     transform 0.5s $ease,
-    border-color 0.3s ease;
+    border-color 0.3s ease,
+    box-shadow 0.5s ease;
 
   outline: 2px solid transparent;
   outline-offset: 4px;
@@ -310,20 +138,6 @@ $mint: #dff3f1;
   transition:
     transform 0.5s $ease,
     border-color 0.3s ease;
-}
-
-/* Fareyi izleyen yumuşak ışık (--mx/--my: PointerEffects › data-tilt) */
-.cardGlow {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  opacity: 0;
-  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(22, 195, 206, 0.16), transparent 60%);
-  transition: opacity 0.4s ease;
-}
-
-.card[data-tilt-active] .cardGlow {
-  opacity: 1;
 }
 
 .cardTop {
@@ -397,7 +211,8 @@ $mint: #dff3f1;
 
 @media (hover: hover) and (pointer: fine) {
   .card:hover {
-    transform: translateY(-6px);
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px -28px rgba(7, 27, 70, 0.35);
 
     .cardMark {
       transform: translateX(4px);
@@ -470,55 +285,12 @@ $mint: #dff3f1;
 ========================= */
 
 @media (max-width: 1000px) {
-  .arcTitle {
-    display: none;
-  }
-
   .groupNumber {
     font-size: 52px;
   }
 }
 
-/* Mobil: düz, yatay kaydırılabilir şerit */
 @media (max-width: 760px) {
-  .arc {
-    perspective: none;
-  }
-
-  .arcTrack {
-    justify-content: flex-start;
-    gap: 10px;
-    padding: 4px 16px 12px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    transform: none;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-
-  .hero {
-    gap: 24px;
-  }
-
-  .arcCard {
-    width: 138px;
-    transform: none;
-    scroll-snap-align: start;
-    animation-name: hero-rise;
-  }
-
-  .arcFace {
-    padding: 14px;
-  }
-
-  .arcTitle {
-    display: block;
-    font-size: 14px;
-  }
-
   .group {
     width: calc(100% - 32px);
   }
@@ -529,13 +301,6 @@ $mint: #dff3f1;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .heroEyebrow,
-  .heroTitle,
-  .heroFoot,
-  .arcCard {
-    animation: none;
-  }
-
   .row:target {
     animation: none;
   }

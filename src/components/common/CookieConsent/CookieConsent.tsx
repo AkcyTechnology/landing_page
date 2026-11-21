@@ -9,13 +9,14 @@ import { trackLinkClick } from "@/lib/analytics";
 import styles from "./CookieConsent.module.scss";
 
 /*
-  Çerez onayı + Google Analytics 4.
-  - NEXT_PUBLIC_GA_ID boşsa hiçbir şey render edilmez (bant da GA da yok).
-  - GA betiği yalnızca ziyaretçi "Kabul et" dedikten sonra yüklenir.
+  Çerez onayı + Google Analytics 4 + Microsoft Clarity (ısı haritası).
+  - NEXT_PUBLIC_GA_ID ve NEXT_PUBLIC_CLARITY_ID boşsa hiçbir şey render edilmez.
+  - Analiz betikleri yalnızca ziyaretçi "Kabul et" dedikten sonra yüklenir.
   - Tercih bu tarayıcıda saklanır; alt bilgideki "Çerez Tercihleri"
     bağlantısı OPEN_EVENT olayını yayınlayarak bandı yeniden açar.
 */
 export const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "";
+export const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID || "";
 export const OPEN_EVENT = "akcy:cookie-settings";
 
 const STORAGE_KEY = "akcy-consent";
@@ -60,6 +61,9 @@ const SERVER_SNAPSHOT = "unknown" as const;
 function updateGtagConsent(value: Exclude<Consent, null>) {
   const w = window as typeof window & { gtag?: (...args: unknown[]) => void };
   w.gtag?.("consent", "update", { analytics_storage: value });
+  /* Clarity yüklüyse onay durumu ona da bildirilir (geri çekilirse çerezlerini siler) */
+  const clarity = (window as typeof window & { clarity?: (...args: unknown[]) => void }).clarity;
+  clarity?.("consent", value === "granted");
 }
 
 export default function CookieConsent() {
@@ -93,11 +97,24 @@ export default function CookieConsent() {
     setReopened(false);
   }, []);
 
-  if (!GA_ID) return null;
+  if (!GA_ID && !CLARITY_ID) return null;
 
   return (
     <>
-      {consent === "granted" && (
+      {consent === "granted" && CLARITY_ID && (
+        <Script
+          id="clarity"
+          strategy="lazyOnload"
+          dangerouslySetInnerHTML={{
+            __html: `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window,document,"clarity","script","${CLARITY_ID}");window.clarity("consent");`,
+          }}
+        />
+      )}
+
+      {consent === "granted" && GA_ID && (
         <>
           <Script
             id="ga-consent"
@@ -113,7 +130,7 @@ gtag('js',new Date());gtag('config','${GA_ID}',{anonymize_ip:true});`,
       )}
 
       {open && (
-        <div className={styles.banner} role="dialog" aria-live="polite" aria-label={t.label}>
+        <div className={styles.banner} data-cookie-banner role="dialog" aria-live="polite" aria-label={t.label}>
           <p className={styles.text}>
             {t.text} <Link href="/cookies">{t.policy}</Link>
           </p>

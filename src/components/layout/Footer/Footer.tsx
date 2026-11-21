@@ -6,6 +6,7 @@ import Link from "@/i18n/Link";
 import { GA_ID, OPEN_EVENT } from "@/components/common/CookieConsent/CookieConsent";
 import { usePathname } from "next/navigation";
 import { canonicalPath } from "@/i18n/config";
+import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from "@/lib/contact";
 import { useLocale, useT } from "@/i18n/LocaleProvider";
 import { motion, useReducedMotion } from "motion/react";
 import { footerNavigation, getServiceLinks } from "@/data/navigation";
@@ -44,10 +45,28 @@ export default function Footer() {
     <footer className={`${styles.footer} ${onContact ? styles.compact : ""}`}>
       <Container>
         {!onContact && <div className={styles.cta}>
-          <motion.p className={styles.ctaEyebrow} {...reveal()}>{f.eyebrow}</motion.p>
-          <motion.h2 className={styles.ctaHeading} {...reveal(0.08)}>{f.headingStart}<br /><span>{f.headingAccent}</span><br />{f.headingEnd}</motion.h2>
-          <motion.p className={styles.ctaDescription} {...reveal(0.16)}>{f.description}</motion.p>
-          <motion.div {...reveal(0.24)}><Link href="/iletisim" className={styles.ctaButton}>{f.cta} <Icon name="arrow" /></Link></motion.div>
+          <div className={styles.ctaMain}>
+            <motion.p className={styles.ctaEyebrow} {...reveal()}>{f.eyebrow}</motion.p>
+            <motion.h2 className={styles.ctaHeading} {...reveal(0.08)}>{f.headingStart}<br /><span>{f.headingAccent}</span><br />{f.headingEnd}</motion.h2>
+            <motion.p className={styles.ctaDescription} {...reveal(0.16)}>{f.description}</motion.p>
+            <motion.div {...reveal(0.24)}><Link href="/teklif" className={styles.ctaButton}>{f.cta} <Icon name="arrow" /></Link></motion.div>
+          </div>
+
+          {/* Butona basınca ne olacağı: iletişim sayfasındaki üç adımlı süreç */}
+          <motion.div className={styles.ctaSteps} {...reveal(0.2)}>
+            <p className={styles.ctaStepsLabel}>{t.contact.hero.processLabel}</p>
+            <ol>
+              {t.contact.hero.steps.map((step, index) => (
+                <li key={step.title}>
+                  <b>{String(index + 1).padStart(2, "0")}</b>
+                  <div>
+                    <strong>{step.title}</strong>
+                    <p>{step.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </motion.div>
         </div>}
 
         <div className={styles.grid}>
@@ -76,8 +95,8 @@ export default function Footer() {
           <motion.div className={`${styles.column} ${styles.contact}`} {...reveal(0.24)}>
             <h3 className={styles.columnLabel}>{f.contact}</h3>
             <address><ul>
-              <li><Icon name="mail" /><a href="mailto:akcyglobal@gmail.com">akcyglobal@gmail.com</a></li>
-              <li><Icon name="phone" /><a href="tel:+905526290420">+90 552 629 04 20</a></li>
+              <li><Icon name="mail" /><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></li>
+              <li><Icon name="phone" /><a href={`tel:${CONTACT_PHONE}`}>{CONTACT_PHONE_DISPLAY}</a></li>
               <li><Icon name="location" /><span>{f.location}</span></li>
             </ul></address>
           </motion.div>

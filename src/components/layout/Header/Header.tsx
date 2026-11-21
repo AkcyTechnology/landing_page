@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useSyncExternalStore } from "react";
 import Link from "@/i18n/Link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -10,6 +10,19 @@ import { navigation } from "@/data/navigation";
 import { canonicalPath } from "@/i18n/config";
 import { useT } from "@/i18n/LocaleProvider";
 import LanguageSwitcher from "@/components/layout/LanguageSwitcher/LanguageSwitcher";
+import SiteSearch from "@/components/common/SiteSearch/SiteSearch";
+import { OPEN_SEARCH_EVENT } from "@/components/common/SiteSearch/types";
+
+const noopSubscribe = () => () => {};
+
+function SearchIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+      <circle cx="11" cy="11" r="7" />
+      <path d="m20 20-3.5-3.5" />
+    </svg>
+  );
+}
 
 export default function Header() {
   const t = useT();
@@ -18,10 +31,16 @@ export default function Header() {
   /* Menü sayfalarının hepsi koyu petrol zeminli ortak hero ile açılır:
      sayfa en üstteyken menü bu zeminin üzerinde şeffaf ve beyaz yazılıdır,
      kaydırınca bütün sayfalarda aynı beyaz menüye döner. */
-  const onHero = ["/", "/hizmetler", "/projelerimiz", "/hakkimizda", "/blog", "/iletisim"].includes(pathname);
+  const onHero = ["/", "/hizmetler", "/projelerimiz", "/hakkimizda", "/blog", "/iletisim", "/teklif"].includes(pathname);
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  /* Kısayol ipucu: Mac'te ⌘K, diğerlerinde Ctrl K (sunucuda Ctrl K ile başlar) */
+  const shortcut = useSyncExternalStore(
+    noopSubscribe,
+    () => (/Mac|iPhone|iPad/.test(navigator.platform) ? "⌘K" : "Ctrl K"),
+    () => "Ctrl K"
+  );
   const menuButton = useRef<HTMLButtonElement>(null);
   const mobileMenu = useRef<HTMLDivElement>(null);
 
@@ -127,19 +146,41 @@ export default function Header() {
 
           {/* DESKTOP CTA */}
           <div className={styles.headerActions}>
+            <button
+              type="button"
+              className={styles.iconButton}
+              onClick={() => window.dispatchEvent(new Event(OPEN_SEARCH_EVENT))}
+              aria-label={t.search.open}
+              aria-keyshortcuts="Control+K Meta+K"
+              title={`${t.search.open} (${shortcut})`}
+            >
+              <SearchIcon />
+            </button>
+
+            <span className={styles.divider} aria-hidden="true" />
+
             <Link
-              href="/iletisim"
+              href="/teklif"
               className={styles.cta}
             >
               <span>{t.header.cta}</span>
 
-              <span aria-hidden="true">↗</span>
+              <span className={styles.ctaArrow} aria-hidden="true">↗</span>
             </Link>
 
             <LanguageSwitcher />
           </div>
 
-          {/* MOBILE BUTTON */}
+          {/* MOBILE: arama + menü */}
+          <button
+            type="button"
+            className={`${styles.iconButton} ${styles.mobileSearch}`}
+            onClick={() => window.dispatchEvent(new Event(OPEN_SEARCH_EVENT))}
+            aria-label={t.search.open}
+          >
+            <SearchIcon />
+          </button>
+
           <button
             ref={menuButton}
             aria-controls="mobile-navigation"
@@ -197,13 +238,15 @@ export default function Header() {
               {t.header.mobileIdea}
             </p>
 
-            <Link href="/iletisim" className={styles.mobileCta}>
+            <Link href="/teklif" className={styles.mobileCta}>
               {t.header.mobileCta}
               <span aria-hidden="true">↗</span>
             </Link>
           </div>
         </div>
       </div>
+
+      <SiteSearch />
     </>
   );
 }

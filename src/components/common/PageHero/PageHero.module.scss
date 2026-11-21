@@ -1,0 +1,214 @@
+@use "../../../styles/buttons" as btn;
+
+$ease: cubic-bezier(0.22, 0.8, 0.25, 1);
+
+/* =========================
+   ORTAK FOTOĞRAFLI AÇILIŞ
+   (İletişim, Hizmetler, Projelerimiz, Hakkımızda, Blog)
+========================= */
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: var(--page-hero-h);
+  background: var(--hero-bg);
+  color: #ffffff;
+}
+
+/* Fotoğraf: hafifçe soldurulur (marka tonlarına yaklaşır), açılışta yavaşça yerine oturur */
+.photo {
+  z-index: -3;
+  object-fit: cover;
+  object-position: var(--pos, center);
+  filter: saturate(0.8) brightness(0.88) contrast(1.02);
+  animation: photo-settle 2.4s $ease both;
+}
+
+/* Soldan sağa petrol geçiş: metin tarafı koyu, fotoğraf sağda doğal kalır */
+.shade {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 89, 93, 0.97) 0%,
+    rgba(0, 89, 93, 0.9) 30%,
+    rgba(0, 89, 93, 0.6) 50%,
+    rgba(0, 89, 93, 0.2) 70%,
+    rgba(0, 89, 93, 0.05) 86%
+  );
+  animation: fade 1.2s ease 0.1s both;
+}
+
+/* Alt kenarda hafif koyulaşma: alt satırdaki butonlar her zaman okunur */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  z-index: -1;
+  height: 45%;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.22), transparent);
+  pointer-events: none;
+}
+
+.inner {
+  padding-top: var(--page-hero-pt);
+  padding-bottom: var(--page-hero-pb);
+}
+
+.content {
+  max-width: 720px;
+}
+
+/* Sayfa yolu (Hakkımızda) */
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 22px;
+  padding: 0;
+  list-style: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 13px;
+  animation: rise 0.9s $ease 0.3s both;
+
+  li + li::before {
+    content: "/";
+    margin-right: 8px;
+    color: rgba(255, 255, 255, 0.45);
+  }
+
+  a {
+    color: rgba(255, 255, 255, 0.72);
+    text-decoration: none;
+
+    &:hover {
+      color: #ffffff;
+    }
+  }
+
+  [aria-current="page"] {
+    color: #ffffff;
+    font-weight: 600;
+  }
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  color: var(--hero-accent);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  animation: rise 0.9s $ease 0.4s both;
+
+  &::before {
+    content: "";
+    width: 22px;
+    height: 1px;
+    background: currentColor;
+  }
+}
+
+.title {
+  display: grid;
+  margin: 20px 0 22px;
+  font-size: var(--hero-title-size);
+  font-weight: var(--hero-title-weight);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.accent {
+  color: var(--hero-accent);
+}
+
+.text {
+  max-width: 520px;
+  margin: 0;
+  color: var(--hero-text);
+  font-size: var(--hero-text-size);
+  line-height: 1.7;
+  animation: rise 1s $ease 0.8s both;
+}
+
+/* Sayfaya özel alt satır (butonlar, sayaçlar, arama) */
+.extra {
+  margin-top: 30px;
+  animation: rise 1s $ease 0.95s both;
+}
+
+@keyframes photo-settle {
+  from {
+    opacity: 0;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* Tablet: geçiş biraz daha geniş tutulur */
+@media (max-width: 1000px) {
+  .shade {
+    background: linear-gradient(
+      90deg,
+      rgba(0, 89, 93, 0.97) 0%,
+      rgba(0, 89, 93, 0.86) 40%,
+      rgba(0, 89, 93, 0.42) 70%,
+      rgba(0, 89, 93, 0.14) 100%
+    );
+  }
+}
+
+/* Mobil: fotoğraf üstte görünür, petrol geçiş alttan yükselir, metin alta yaslanır */
+@media (max-width: 700px) {
+  .hero {
+    align-items: flex-end;
+  }
+
+  .photo {
+    object-position: var(--pos-mobile, var(--pos, center));
+  }
+
+  .shade {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 89, 93, 0.1) 0%,
+      rgba(0, 89, 93, 0.3) 22%,
+      rgba(0, 89, 93, 0.86) 44%,
+      rgba(0, 89, 93, 0.98) 64%
+    );
+  }
+
+  .inner {
+    padding-top: 260px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo,
+  .shade,
+  .breadcrumb ol,
+  .eyebrow,
+  .text,
+  .extra {
+    animation: none;
+  }
+}

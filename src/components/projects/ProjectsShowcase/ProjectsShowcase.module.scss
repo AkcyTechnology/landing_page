@@ -2,159 +2,67 @@
 @use "../../../styles/buttons" as btn;
 
 /* ==========================
-   AÇILIŞ (kısa tutulur; ilk proje ekranın devamında görünür)
+   AÇILIŞ: ortak fotoğraflı hero (PageHero) altındaki butonlar ve sayaçlar
 ========================== */
 
-.intro {
-  position: relative;
-  overflow: hidden;
+.introActions {
   display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  min-height: var(--page-hero-h);
-  padding: var(--page-hero-pt) 0 var(--page-hero-pb);
-  /* Ortak hero zemini: Teklif Al'ın koyu petrol yeşili */
-  background: var(--hero-bg);
-  color: $white;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
-.introInner {
-  position: relative;
-  z-index: 1;
+.introPrimary {
+  @include btn.on-dark;
+  gap: 10px;
 }
 
-/* Arka plandaki düğüm ağı: çizgiler çizilir, düğümler belirip yavaşça süzülür */
-.introNet {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: min(56%, 820px);
-  height: 100%;
-  pointer-events: none;
-  /* Sol kenar başlığa doğru yumuşakça kaybolur */
-  mask-image: linear-gradient(90deg, transparent 0%, #000 35%);
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 35%);
+.introSecondary {
+  @include btn.ghost-dark;
+  gap: 10px;
 }
 
-.netLines line {
-  stroke: rgba(255, 255, 255, 0.2);
-  stroke-width: 1.2;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: net-draw 1.1s cubic-bezier(0.65, 0, 0.35, 1) var(--d) forwards;
-}
+.introStats {
+  display: flex;
+  gap: clamp(24px, 4vw, 48px);
+  margin: 36px 0 0;
+  padding-top: 22px;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
 
-.netNodes circle {
-  fill: rgba(255, 255, 255, 0.55);
-  transform-box: fill-box;
-  transform-origin: center;
-  opacity: 0;
-  animation:
-    net-pop 0.6s $ease var(--d) forwards,
-    net-float var(--f) ease-in-out calc(var(--d) + 0.6s) infinite alternate;
-}
+  div {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 4px;
+  }
 
-.netNodes circle:nth-child(3n) {
-  fill: var(--hero-accent);
-}
+  dt {
+    color: rgba(255, 255, 255, 0.66);
+    font-size: 13px;
+  }
 
-@keyframes net-draw {
-  to {
-    stroke-dashoffset: 0;
+  dd {
+    margin: 0;
+    color: $white;
+    font-size: clamp(28px, 2.6vw, 36px);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.03em;
   }
 }
 
-@keyframes net-pop {
-  from {
-    opacity: 0;
-    transform: scale(0);
+@media (max-width: 700px) {
+  .introActions {
+    flex-direction: column;
   }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
 
-@keyframes net-float {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(-6px);
-  }
-}
-
-.intro .eyebrow {
-  animation: intro-fade 0.7s ease 0.05s both;
-}
-
-.intro .lead {
-  animation: intro-fade 0.8s ease 1s both;
-}
-
-@keyframes intro-fade {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-}
-
-@media (max-width: 760px) {
-  .introNet {
+  .introPrimary,
+  .introSecondary {
     width: 100%;
-    opacity: 0.35;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .intro .eyebrow,
-  .intro .lead,
-  .netLines line,
-  .netNodes circle {
-    animation: none;
   }
 
-  .netLines line {
-    stroke-dashoffset: 0;
+  .introStats {
+    gap: 20px;
+    margin-top: 28px;
   }
-
-  .netNodes circle {
-    opacity: 1;
-  }
-}
-
-.eyebrow {
-  @include eyebrow;
-  margin: 0 0 18px;
-  font-size: 12px;
-}
-
-.intro .eyebrow {
-  color: var(--hero-accent);
-}
-
-.heading {
-  max-width: var(--hero-title-max);
-  margin: 0;
-  color: $white;
-  font-size: var(--hero-title-size);
-  font-weight: var(--hero-title-weight);
-  line-height: 1.08;
-  letter-spacing: -0.035em;
-
-  .headingAccent {
-    color: var(--hero-accent);
-  }
-}
-
-.lead {
-  max-width: var(--hero-text-max);
-  margin: 22px 0 0;
-  color: var(--hero-text);
-  font-size: var(--hero-text-size);
-  line-height: 1.7;
 }
 
 /* ==========================
@@ -588,10 +496,6 @@
 ========================== */
 
 @media (max-width: 1050px) {
-  .intro {
-    padding: 124px 0 44px;
-  }
-
   .project {
     padding: 64px 0;
   }
@@ -616,15 +520,6 @@
 }
 
 @media (max-width: 700px) {
-  .intro {
-    padding: 104px 0 36px;
-  }
-
-  .heading {
-    font-size: clamp(28px, 8vw, 36px);
-  }
-
-  .lead,
   .description {
     font-size: 15px;
   }

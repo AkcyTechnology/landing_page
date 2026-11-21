@@ -29,6 +29,7 @@ function generateSiteMap() {
     { path: "/hakkimizda", changefreq: "monthly", priority: "0.7" },
     { path: "/blog", changefreq: "weekly", priority: "0.8" },
     { path: "/iletisim", changefreq: "monthly", priority: "0.7" },
+    { path: "/teklif", changefreq: "monthly", priority: "0.7" },
   ];
 
   // Hizmet detay adresleri artık Hizmetler sayfasına yönlendirir (noindex), haritaya alınmaz.

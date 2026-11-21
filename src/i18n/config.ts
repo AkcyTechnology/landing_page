@@ -24,6 +24,7 @@ const SEGMENTS: Record<string, string> = {
   projelerimiz: "projects",
   blog: "blog",
   iletisim: "contact",
+  teklif: "quote",
   privacy: "privacy",
   kvkk: "kvkk",
   cookies: "cookies",

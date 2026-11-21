@@ -6,8 +6,11 @@
 */
 
 return [
-    // Cloudflare Turnstile → "Secret Key". Boş bırakılırsa robot doğrulaması kapalıdır.
+    // Cloudflare Turnstile → "Secret Key". Boş bırakılırsa form gönderimleri reddedilir.
     'turnstile_secret' => '',
+
+    // Yalnızca yerel test için: true yapılırsa Turnstile doğrulaması tamamen atlanır.
+    'turnstile_disabled' => false,
 
     // Form mesajlarının gönderileceği adres.
     'mail_to' => 'akcyglobal@gmail.com',

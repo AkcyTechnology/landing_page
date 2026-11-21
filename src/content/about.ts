@@ -14,9 +14,6 @@ export interface AboutContent {
     description: string;
     primaryCta: string;
     breadcrumb: string;
-    tags: string[];
-    /** Sağdaki üst üste görseller. src boşsa sade bir çerçeve gösterilir (görseller sonra eklenecek). */
-    gallery: { src: string; alt: string }[];
   };
   intro: {
     eyebrow: string;
@@ -54,18 +51,6 @@ export const aboutContent: Record<Locale, AboutContent> = {
         "İşletmelerin ihtiyaçlarını anlayarak web, mobil, yapay zekâ ve otomasyon çözümleri geliştiriyoruz. Fikirleri kullanılabilir ürünlere, karmaşık süreçleri daha verimli iş akışlarına dönüştürüyoruz.",
       primaryCta: "Projenizi Konuşalım",
       breadcrumb: "Ana Sayfa",
-      tags: [
-        "Web Tasarım", "Mobil Uygulama", "Yapay Zekâ", "Otomasyon", "Yazılım", "Entegrasyon",
-        "Dijital Deneyim", "API", "E-Ticaret", "Arayüz Tasarımı", "Kullanıcı Deneyimi", "Veri Analizi",
-        "İş Süreçleri", "Bulut Çözümleri", "Dijital Dönüşüm", "Fikir", "Tasarım", "Teknoloji",
-        "Geliştirme", "İnovasyon", "Ürün", "Strateji",
-      ],
-      // Görseller eklendiğinde src alanlarını doldurun (ör. "/images/about/ekip-1.jpg")
-      gallery: [
-        { src: "", alt: "" },
-        { src: "", alt: "" },
-        { src: "", alt: "" },
-      ],
     },
     intro: {
       eyebrow: "Biz kimiz?",
@@ -125,17 +110,6 @@ export const aboutContent: Record<Locale, AboutContent> = {
         "We build web, mobile, AI and automation solutions by understanding what businesses need. We turn ideas into usable products and complex processes into more efficient workflows.",
       primaryCta: "Let’s Talk About Your Project",
       breadcrumb: "Home",
-      tags: [
-        "Web Design", "Mobile App", "AI", "Automation", "Software", "Integration",
-        "Digital Experience", "API", "E-Commerce", "Interface Design", "User Experience", "Data Analysis",
-        "Business Processes", "Cloud Solutions", "Digital Transformation", "Idea", "Design", "Technology",
-        "Development", "Innovation", "Product", "Strategy",
-      ],
-      gallery: [
-        { src: "", alt: "" },
-        { src: "", alt: "" },
-        { src: "", alt: "" },
-      ],
     },
     intro: {
       eyebrow: "Who are we?",

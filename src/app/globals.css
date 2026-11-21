@@ -57,7 +57,7 @@
   --btn-disabled-fg: #6b7280;
   --btn-focus: #0077b6;
   --btn-focus-on-dark: #ffffff;
-  --btn-radius: 4px;
+  --btn-radius: 8px;
   --btn-height: 48px;
   --btn-height-sm: 40px;
   --btn-padding-x: 24px;
@@ -101,14 +101,13 @@ main {
   flex: 1;
 }
 
-/* Başlık fontu (Sora); intro yazıları da aynı fontla oynar */
+/* Başlık fontu (Sora) */
 h1,
 h2,
 h3,
 h4,
 h5,
-h6,
-.site-intro__stage {
+h6 {
   font-family: var(--font-display);
 }
 
@@ -175,339 +174,6 @@ button {
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
 
 /* ==========================
-   AÇILIŞ EKRANI (src/views/SiteShell.tsx)
-   Oturumun ilk sayfasında görünür: ortadan dışa ağ düğümleri ve bağlantılar
-   çizilir, logo yükselir, ekran perde gibi yukarı açılır. JS gerekmez.
-========================== */
-.site-loader {
-  position: fixed;
-  inset: 0;
-  z-index: 3000;
-  display: grid;
-  place-items: center;
-  background: #06101f;
-  pointer-events: none;
-  clip-path: inset(0 0 0 0);
-  animation: site-loader-out 0.7s cubic-bezier(0.76, 0, 0.24, 1) 1.75s forwards;
-}
-
-html[data-loaded] .site-loader {
-  display: none;
-}
-
-/* İngilizceye yönlendirilirken Türkçe sayfa bir an bile görünmesin */
-html[data-redirect] body {
-  visibility: hidden;
-}
-
-.site-loader__inner {
-  display: grid;
-  justify-items: center;
-  gap: 18px;
-}
-
-.site-loader__lines line {
-  stroke: rgba(22, 195, 206, 0.55);
-  stroke-width: 1.4;
-  stroke-linecap: round;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: site-loader-draw 0.55s cubic-bezier(0.65, 0, 0.35, 1) forwards;
-}
-
-.site-loader__nodes circle {
-  fill: #16c3ce;
-  transform-box: fill-box;
-  transform-origin: center;
-  transform: scale(0);
-  animation: site-loader-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-.site-loader__nodes circle:first-child {
-  fill: #ffffff;
-}
-
-.site-loader__logo {
-  display: block;
-  width: 120px;
-  height: auto;
-  filter: brightness(0) invert(1);
-  opacity: 0;
-  animation: site-loader-rise 0.6s cubic-bezier(0.22, 0.8, 0.25, 1) 0.95s forwards;
-}
-
-@keyframes site-loader-draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes site-loader-pop {
-  to {
-    transform: scale(1);
-  }
-}
-
-@keyframes site-loader-rise {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-/* Perde yukarı çekilerek açılır */
-@keyframes site-loader-out {
-  to {
-    clip-path: inset(0 0 100% 0);
-    visibility: hidden;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .site-loader {
-    animation: site-loader-fade 0.2s linear 0.3s forwards !important;
-  }
-
-  .site-loader__lines line,
-  .site-loader__nodes circle,
-  .site-loader__logo {
-    animation: none !important;
-    stroke-dashoffset: 0;
-    transform: none;
-    opacity: 1;
-  }
-}
-
-@keyframes site-loader-fade {
-  to {
-    opacity: 0;
-    visibility: hidden;
-  }
-}
-
-/* ==========================
-   SİTE İNTROSU (src/components/common/SiteIntro)
-   Yalnızca html[data-intro] varken (ana sayfanın oturumdaki ilk açılışı)
-   görünür. Dört ifade sırayla, tek tek gelir: alttan kayarak belirir, kısa
-   süre kalır, yukarı kayarak solar; sonraki yine alttan gelir. Son aşamadan
-   sonra perde yukarı çekilir, altındaki hero hafifçe yükselerek görünür.
-   Toplam: masaüstünde ~3 sn, mobilde ~2,3 sn. Animasyon bitince katman
-   gizlenir; tıklamayı hiçbir zaman engellemez.
-========================== */
-.site-intro {
-  display: none;
-}
-
-html[data-intro] {
-  --intro-start: 0.15s;
-  --intro-step: 0.56s;
-  --intro-hold: 0.62s;
-  --intro-exit: 0.62s;
-  --intro-end: calc(var(--intro-start) + 3 * var(--intro-step) + var(--intro-hold));
-}
-
-html[data-intro] .site-intro {
-  position: fixed;
-  inset: 0;
-  z-index: 3000;
-  display: grid;
-  place-items: center;
-  background: #071b46;
-  color: #ffffff;
-  pointer-events: none;
-  clip-path: inset(0 0 0 0);
-  animation: site-intro-out var(--intro-exit) cubic-bezier(0.76, 0, 0.24, 1) var(--intro-end) forwards;
-}
-
-/* Logo, menüdeki logonun konumunda durur; perde kalkınca kesintisiz devam eder */
-.site-intro__bar {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: min(100% - 64px, 1380px);
-  height: 88px;
-  display: flex;
-  align-items: center;
-  transform: translateX(-50%);
-}
-
-/* Logo intro boyunca ortada durur; perde kalkmadan hemen önce menüdeki
-   asıl yerine (sola) kayar */
-.site-intro__logo {
-  position: relative;
-  left: 50%;
-  display: block;
-  width: auto;
-  height: 62px;
-  filter: brightness(0) invert(1);
-  transform: translateX(-50%);
-  animation:
-    site-intro-logo-in 0.7s cubic-bezier(0.22, 0.8, 0.25, 1) 0.05s both,
-    site-intro-logo-home 0.75s cubic-bezier(0.65, 0, 0.35, 1) calc(var(--intro-end) - 0.4s) forwards;
-}
-
-@keyframes site-intro-logo-in {
-  from {
-    opacity: 0;
-    translate: 0 -10px;
-  }
-}
-
-@keyframes site-intro-logo-home {
-  to {
-    left: 0;
-    transform: translateX(0);
-  }
-}
-
-.site-intro__stage {
-  position: relative;
-  display: grid;
-  width: calc(100% - 32px);
-  height: 1.2em;
-  overflow: hidden;
-  font-size: clamp(46px, 8.2vw, 120px);
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: -0.045em;
-  text-align: center;
-}
-
-.site-intro__word {
-  grid-area: 1 / 1;
-  align-self: center;
-  white-space: nowrap;
-  opacity: 0;
-  transform: translateY(105%);
-  animation: site-intro-word var(--intro-step) linear calc(var(--intro-start) + var(--i) * var(--intro-step)) both;
-}
-
-/* Son aşama: kalır ve perdeyle birlikte yukarı süzülür */
-.site-intro__word--areas {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6em;
-  font-size: clamp(17px, 3.3vw, 46px);
-  font-weight: 500;
-  letter-spacing: -0.015em;
-  animation:
-    site-intro-in calc(var(--intro-step) * 0.45) cubic-bezier(0.22, 0.8, 0.25, 1) calc(var(--intro-start) + 3 * var(--intro-step)) both,
-    site-intro-leave var(--intro-exit) cubic-bezier(0.76, 0, 0.24, 1) var(--intro-end) forwards;
-}
-
-.site-intro__word--areas > span {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6em;
-}
-
-.site-intro__dot {
-  display: block;
-  width: 0.24em;
-  height: 0.24em;
-  border-radius: 50%;
-  background: #16c3ce;
-}
-
-/* İçerik, perde kalkarken hafifçe yükselir */
-html[data-intro] main {
-  animation: site-intro-content 0.9s cubic-bezier(0.22, 0.8, 0.25, 1) calc(var(--intro-end) + 0.12s) backwards;
-}
-
-@keyframes site-intro-word {
-  0% {
-    opacity: 0;
-    transform: translateY(105%);
-    animation-timing-function: cubic-bezier(0.22, 0.8, 0.25, 1);
-  }
-  30% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  72% {
-    opacity: 1;
-    transform: translateY(0);
-    animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.4);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-105%);
-  }
-}
-
-@keyframes site-intro-in {
-  from {
-    opacity: 0;
-    transform: translateY(105%);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes site-intro-leave {
-  to {
-    opacity: 0;
-    transform: translateY(-40%);
-  }
-}
-
-@keyframes site-intro-out {
-  to {
-    clip-path: inset(0 0 100% 0);
-    visibility: hidden;
-  }
-}
-
-@keyframes site-intro-content {
-  from {
-    opacity: 0.35;
-    transform: translateY(24px);
-  }
-}
-
-/* Mobil: daha kısa ve hafif */
-@media (max-width: 1100px) {
-  html[data-intro] {
-    --intro-start: 0.1s;
-    --intro-step: 0.44s;
-    --intro-hold: 0.5s;
-    --intro-exit: 0.5s;
-  }
-
-  .site-intro__bar {
-    width: calc(100% - 36px);
-    height: 64px;
-  }
-
-  .site-intro__logo {
-    height: 50px;
-  }
-}
-
-@media (max-width: 640px) {
-  html[data-intro] main {
-    animation: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html[data-intro] .site-intro {
-    display: none;
-  }
-
-  html[data-intro] main {
-    animation: none;
-  }
-}
-
-/* ==========================
    KAYDIRINCA BELİRME (RevealObserver)
    --reveal-delay ile sıralı gecikme verilebilir.
 ========================== */
@@ -523,38 +189,23 @@ html[data-reveal-ready] [data-reveal]:not([data-in]) {
 }
 
 /* ==========================
-   HERO BAŞLIKLARI: DÜŞEN KELİMELER (components/common/DropWords)
+   HERO BAŞLIKLARI (components/common/DropWords)
+   Her satır bir bütün olarak hafifçe yukarı süzülerek belirir.
 ========================== */
-.drop-word {
+.hero-line {
   display: inline-block;
-  animation: drop-word 1.15s cubic-bezier(0.3, 0.7, 0.3, 1) var(--drop-delay, 0.2s) both;
+  animation: hero-line 0.9s var(--ease-standard) var(--line-delay, 0.2s) both;
 }
 
-@keyframes drop-word {
-  0% {
+@keyframes hero-line {
+  from {
     opacity: 0;
-    transform: translateY(-160px) rotate(var(--tilt, 0deg));
-  }
-  12% {
-    opacity: 1;
-  }
-  58% {
-    transform: translateY(10px) rotate(calc(var(--tilt, 0deg) * -0.25));
-  }
-  76% {
-    transform: translateY(-5px) rotate(calc(var(--tilt, 0deg) * 0.1));
-  }
-  90% {
-    transform: translateY(2px) rotate(0deg);
-  }
-  100% {
-    opacity: 1;
-    transform: none;
+    transform: translateY(18px);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .drop-word {
+  .hero-line {
     animation: none;
   }
 }
@@ -571,7 +222,9 @@ html[data-reveal-ready] [data-reveal]:not([data-in]) {
   --hero-bg: var(--btn-primary);
   --hero-accent: var(--color-accent-hover);
   --hero-text: rgba(255, 255, 255, 0.78);
-  --page-hero-h: 860px;
+  /* Ekrandan uzun olmasın: kısa ekranlarda (laptop, tarayıcı yakınlaştırması)
+     içerik görünür alanın ortasında kalır. İçerik daha uzunsa hero uzar. */
+  --page-hero-h: min(860px, 100svh);
   --page-hero-pt: 128px;
   --page-hero-pb: 72px;
   --hero-title-size: clamp(36px, 3.9vw, 56px);
@@ -583,7 +236,7 @@ html[data-reveal-ready] [data-reveal]:not([data-in]) {
 
 @media (max-width: 1100px) {
   :root {
-    --page-hero-h: 720px;
+    --page-hero-h: min(720px, 100svh);
     --page-hero-pt: 112px;
     --page-hero-pb: 56px;
   }

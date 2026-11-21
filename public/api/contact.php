@@ -188,9 +188,15 @@ function spamScore(string $name, string $company, string $message): int
     return $score;
 }
 
-function verifyTurnstile(string $secret, $token, string $ip): bool
+function verifyTurnstile(string $secret, $token, string $ip, bool $disabled = false): bool
 {
-    if ($secret === '') return true; // Anahtar tanımlı değilse doğrulama kapalı.
+    // Doğrulama yalnızca config.php'de açıkça kapatılmışsa atlanır; anahtarın
+    // yanlışlıkla boş kalması formu korumasız bırakmaz.
+    if ($disabled) return true;
+    if ($secret === '') {
+        error_log('AKCY: turnstile_secret boş — doğrulamayı kapatmak için config.php içinde turnstile_disabled => true kullanın.');
+        return false;
+    }
     if (!is_string($token) || $token === '' || strlen($token) > 2048) return false;
 
     $fields = ['secret' => $secret, 'response' => $token];
@@ -402,8 +408,9 @@ if (spamScore($fields['name'], $fields['company'], $message) >= SPAM_THRESHOLD) 
     silentlyDrop('spam içerik', $ip);
 }
 
-// Robot doğrulaması (config.php'de gizli anahtar tanımlıysa zorunlu)
-if (!verifyTurnstile((string) ($config['turnstile_secret'] ?? ''), $raw['turnstileToken'] ?? null, $ip)) {
+// Robot doğrulaması (config.php'de turnstile_disabled => true değilse zorunlu)
+$turnstileDisabled = ($config['turnstile_disabled'] ?? false) === true;
+if (!verifyTurnstile((string) ($config['turnstile_secret'] ?? ''), $raw['turnstileToken'] ?? null, $ip, $turnstileDisabled)) {
     respond(400, ['error' => 'Robot doğrulaması başarısız. Lütfen sayfayı yenileyip tekrar deneyin.']);
 }
 

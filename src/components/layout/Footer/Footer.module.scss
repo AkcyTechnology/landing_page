@@ -17,7 +17,44 @@
   color: white;
 }
 
-.cta { padding: 100px 0 116px; }
+.cta {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  align-items: center;
+  gap: clamp(40px, 6vw, 96px);
+  padding: 100px 0 116px;
+}
+
+/* Sağdaki süreç paneli */
+.ctaSteps {
+  padding: 32px;
+  border: 1px solid var(--footer-border);
+  border-radius: 16px;
+  background: rgba(2, 18, 34, .45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  ol { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; }
+
+  li {
+    display: flex;
+    gap: 18px;
+    padding: 20px 0;
+    & + li { border-top: 1px solid var(--footer-border); }
+    &:last-child { padding-bottom: 0; }
+  }
+
+  b { flex: none; color: var(--footer-accent); font-size: 13px; font-weight: 700; line-height: 1.7; }
+  strong { display: block; font-size: 17px; font-weight: 600; }
+  p { margin: 6px 0 0; color: var(--footer-text); font-size: 14px; line-height: 1.7; }
+}
+.ctaStepsLabel {
+  margin: 0 0 4px;
+  color: rgba(255, 255, 255, .6);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .18em;
+}
 .ctaEyebrow {
   display: flex;
   align-items: center;
@@ -35,17 +72,8 @@
   font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.08;
-  /* Vurgulu satırda yavaşça geçen ışık süpürmesi */
-  span {
-    color: var(--footer-accent);
-    background: linear-gradient(110deg, var(--footer-accent) 40%, #e9fdff 50%, var(--footer-accent) 60%) 0 0 / 250% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: light-sweep 7s ease-in-out infinite;
-  }
+  span { color: var(--footer-accent); }
 }
-@keyframes light-sweep { 0%, 55% { background-position: 100% 0; } 100% { background-position: -150% 0; } }
 
 /* Arka plan, footer ekrana girdikçe yavaşça kayar (parallax) */
 @supports (animation-timeline: view()) {
@@ -139,7 +167,7 @@
 
 @media (max-width: 1050px) {
   .footer { min-height: 0; }
-  .cta { padding: 84px 0 100px; }
+  .cta { grid-template-columns: minmax(0, 1fr); padding: 84px 0 100px; }
   .ctaHeading { font-size: clamp(34px, 5.2vw, 46px); }
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 56px; }
   .brand { border: 0; padding-right: 0; }
@@ -154,6 +182,7 @@
       linear-gradient(to right, rgba(2, 18, 34, .55), rgba(2, 18, 34, .12)),
       url('/images/hero/hero-bg.jpg');
   }
+  .ctaSteps { padding: 24px; }
   .cta { padding: 72px 0 86px; }
   .ctaEyebrow { gap: 10px; margin-bottom: 28px; font-size: 11px; letter-spacing: .16em; &::before { width: 20px; } }
   .ctaHeading { font-size: clamp(28px, 8vw, 36px); line-height: 1.15; letter-spacing: -0.03em; }
@@ -171,7 +200,6 @@
 @media (prefers-reduced-motion: reduce) {
   .cta > *, .grid > * { opacity: 1 !important; transform: none !important; }
   .footer *, .footer *::before { transition: none !important; }
-  .ctaHeading span { animation: none; }
 }
 
 /* Ortak buton standardı (src/styles/_buttons.scss) */

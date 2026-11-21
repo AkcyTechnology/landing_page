@@ -1,0 +1,331 @@
+$ink: #071b46;
+$ease: cubic-bezier(0.22, 0.8, 0.25, 1);
+
+/* =========================
+   PANEL: sağ altta, iletişim menüsünün (ContactDock) açıldığı köşede.
+   Pencere src/components/common/FaqChat/events.ts → openFaq() ile açılır.
+========================= */
+.panel {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  width: min(390px, calc(100vw - 32px));
+  height: min(620px, calc(100dvh - 48px));
+  overflow: hidden;
+  border: 1px solid rgba(7, 27, 70, 0.08);
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 40px 90px -30px rgba(6, 16, 31, 0.55);
+  color: $ink;
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.panelOpen {
+  animation: panel-in 0.32s $ease both;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  background: var(--hero-bg);
+  color: #ffffff;
+}
+
+.avatar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #ffffff;
+  color: var(--btn-primary);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.headText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+
+  strong {
+    font-size: 15px;
+  }
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 12.5px;
+  }
+
+  i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #3ddc97;
+  }
+}
+
+.close {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.18);
+  }
+}
+
+.thread {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 18px 16px;
+  background: #f6f8fa;
+}
+
+.botGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bot,
+.user {
+  max-width: 88%;
+  padding: 11px 14px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-line;
+  animation: bubble-in 0.3s $ease both;
+
+  p {
+    margin: 0;
+  }
+
+  p + p {
+    margin-top: 8px;
+  }
+}
+
+.bot {
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(7, 27, 70, 0.06);
+}
+
+.user {
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+  background: var(--btn-primary);
+  color: #ffffff;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+
+  a {
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: #eef6f6;
+    color: var(--btn-primary);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+      background: #e0efef;
+    }
+  }
+}
+
+.suggestions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+
+  button {
+    max-width: 88%;
+    padding: 9px 14px;
+    border: 1px solid rgba(0, 89, 93, 0.25);
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--btn-primary);
+    font: inherit;
+    font-size: 13.5px;
+    font-weight: 550;
+    text-align: right;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+
+    &:hover {
+      border-color: var(--btn-primary);
+      background: #f0f7f7;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+    }
+  }
+}
+
+.suggestionsLabel {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.typing {
+  display: flex;
+  gap: 5px;
+  padding: 14px 16px;
+
+  i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #94a3b8;
+    animation: dot 1s ease-in-out infinite;
+
+    &:nth-child(2) {
+      animation-delay: 0.15s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+  }
+}
+
+.composer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid rgba(7, 27, 70, 0.07);
+
+  input {
+    flex: 1;
+    min-width: 0;
+    height: 44px;
+    padding: 0 16px;
+    border: 1px solid rgba(7, 27, 70, 0.12);
+    border-radius: 999px;
+    background: #ffffff;
+    color: $ink;
+    font: inherit;
+    font-size: 14.5px;
+
+    &:focus {
+      border-color: var(--btn-primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0, 89, 93, 0.12);
+    }
+  }
+
+  button {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--btn-primary);
+    color: #ffffff;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+  }
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+}
+
+@keyframes bubble-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes dot {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Mobil: panel alttan açılan tam genişlik sayfa */
+@media (max-width: 700px) {
+  .panel {
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: min(88dvh, 680px);
+    border-radius: 20px 20px 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panelOpen,
+  .bot,
+  .user,
+  .typing i {
+    animation: none;
+  }
+}

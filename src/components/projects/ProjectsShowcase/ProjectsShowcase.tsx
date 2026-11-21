@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, type CSSProperties } from "react";
+import { useEffect, useRef } from "react";
 
 import Link from "@/i18n/Link";
 import Container from "@/components/common/Container/Container";
-import DropWords, { dropWordCount } from "@/components/common/DropWords/DropWords";
+import PageHero from "@/components/common/PageHero/PageHero";
+import { useT } from "@/i18n/LocaleProvider";
 import ProjectEmblem from "@/components/projects/ProjectEmblem/ProjectEmblem";
 import type { ProjectsPageContent, ShowcaseProject } from "@/content/projects-page";
 
@@ -19,41 +20,6 @@ import styles from "./ProjectsShowcase.module.scss";
     amblem kendini çizer, metinler sırayla yükselir
   Kaydırma kilitlenmez, otomatik kayan galeri yoktur.
 */
-
-/* Arka plan: proje amblemlerinin düğüm-ağ dilinde, yavaşça süzülen bir ağ */
-const NET_NODES: [number, number, number][] = [
-  [620, 70, 5], [720, 40, 3.5], [800, 110, 6], [900, 60, 4], [980, 150, 5.5], [1080, 90, 3.5],
-  [700, 190, 4], [860, 220, 7], [1000, 260, 4], [1120, 210, 5], [760, 300, 3.5], [940, 330, 5],
-  [1180, 320, 4], [1060, 360, 3],
-];
-const NET_LINKS: [number, number][] = [
-  [0, 1], [1, 2], [0, 2], [2, 3], [3, 4], [4, 5], [2, 6], [6, 7], [2, 7], [7, 4], [4, 8], [8, 9], [5, 9],
-  [7, 8], [6, 10], [10, 7], [10, 11], [11, 8], [8, 12], [9, 12], [11, 13], [12, 13],
-];
-function IntroNetwork() {
-  return (
-    <svg className={styles.introNet} viewBox="560 0 680 400" preserveAspectRatio="xMaxYMid slice" aria-hidden="true" focusable="false">
-      <g className={styles.netLines}>
-        {NET_LINKS.map(([a, b], index) => (
-          <line
-            key={`${a}-${b}`}
-            x1={NET_NODES[a][0]}
-            y1={NET_NODES[a][1]}
-            x2={NET_NODES[b][0]}
-            y2={NET_NODES[b][1]}
-            pathLength={1}
-            style={{ "--d": `${0.5 + index * 0.06}s` } as CSSProperties}
-          />
-        ))}
-      </g>
-      <g className={styles.netNodes}>
-        {NET_NODES.map(([x, y, r], index) => (
-          <circle key={`${x}-${y}`} cx={x} cy={y} r={r} style={{ "--d": `${0.35 + index * 0.07}s`, "--f": `${6 + (index % 4) * 1.5}s` } as CSSProperties} />
-        ))}
-      </g>
-    </svg>
-  );
-}
 
 function Visual({ project, priority }: { project: ShowcaseProject; priority: boolean }) {
   const { visual } = project;
@@ -172,6 +138,7 @@ function Visual({ project, priority }: { project: ShowcaseProject; priority: boo
 }
 
 export default function ProjectsShowcase({ content }: { content: ProjectsPageContent }) {
+  const t = useT().projects;
   const listRef = useRef<HTMLDivElement>(null);
   const journeyRef = useRef<HTMLDivElement>(null);
 
@@ -242,22 +209,41 @@ export default function ProjectsShowcase({ content }: { content: ProjectsPageCon
 
   return (
     <>
-      <section className={styles.intro}>
-        <IntroNetwork />
-        <Container className={styles.introInner}>
-          <p className={styles.eyebrow}>{content.eyebrow}</p>
-          {/* Kelimeler menünün altından düşüp başlıktaki yerlerine oturur */}
-          <h1 className={styles.heading}>
-            <DropWords text={content.title} start={0} />{" "}
-            <span className={styles.headingAccent}>
-              <DropWords text={content.titleAccent} start={dropWordCount(content.title)} />
-            </span>
-          </h1>
-          <p className={styles.lead}>{content.description}</p>
-        </Container>
-      </section>
+      <PageHero
+        id="projects-hero-title"
+        eyebrow={content.eyebrow}
+        titleLead={content.title}
+        titleAccent={content.titleAccent}
+        description={content.description}
+        image="/images/solutions/integration.jpg"
+        objectPosition="70% 50%"
+      >
+        <div className={styles.introActions}>
+          <Link href="/teklif" className={styles.introPrimary}>
+            {t.hero.ctaPrimary} <span aria-hidden="true">↗</span>
+          </Link>
+          <a href="#proje-listesi" className={styles.introSecondary}>
+            {t.hero.ctaSecondary} <span aria-hidden="true">↓</span>
+          </a>
+        </div>
 
-      <div ref={listRef} className={styles.list}>
+        <dl className={styles.introStats}>
+          <div>
+            <dt>{t.hero.statProjects}</dt>
+            <dd>{content.projects.length}</dd>
+          </div>
+          <div>
+            <dt>{t.hero.statWeb}</dt>
+            <dd>{content.projects.filter((project) => project.visual.kind === "web").length}</dd>
+          </div>
+          <div>
+            <dt>{t.hero.statApps}</dt>
+            <dd>{content.projects.filter((project) => project.visual.kind === "app").length}</dd>
+          </div>
+        </dl>
+      </PageHero>
+
+      <div ref={listRef} id="proje-listesi" className={styles.list}>
         <div ref={journeyRef} className={styles.journey} aria-hidden="true">
           <i className={styles.journeyFill} />
           {content.projects.map((project) => (
@@ -268,6 +254,7 @@ export default function ProjectsShowcase({ content }: { content: ProjectsPageCon
         {content.projects.map((project, index) => (
           <section
             key={project.id}
+            id={`proje-${project.id}`}
             className={styles.project}
             data-project
             aria-labelledby={`project-${project.id}`}

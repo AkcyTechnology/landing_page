@@ -11,8 +11,8 @@ import type { FaqItem } from "@/data/blog";
 
 export const BRAND_NAME = "AKCY Technologies";
 export const BRAND_SHORT_NAME = "AKCY";
-export const CONTACT_EMAIL = "akcyglobal@gmail.com";
-export const CONTACT_PHONE = "+905526290420";
+import { CONTACT_EMAIL, CONTACT_PHONE } from "@/lib/contact";
+export { CONTACT_EMAIL, CONTACT_PHONE };
 export const SAME_AS = ["https://www.instagram.com/akcytechnology/"];
 
 export const ORGANIZATION_ID = `${baseUrl}/#organization`;

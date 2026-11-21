@@ -4,10 +4,10 @@ import { localizePath, ogLocale, type Locale } from "@/i18n/config";
 
 export const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://akcy.com.tr";
 
-/* Varsayılan paylaşım görseli: hero-bg.jpg 1920×1152 */
-const DEFAULT_OG_IMAGE: Record<Locale, { url: string; alt: string; width: number; height: number }> = {
-  tr: { url: "/images/hero/hero-bg.jpg", alt: "AKCY — Yapay zekâ ve otomasyon çözümleri", width: 1920, height: 1152 },
-  en: { url: "/images/hero/hero-bg.jpg", alt: "AKCY — AI and automation solutions", width: 1920, height: 1152 },
+/* Varsayılan paylaşım görseli: og-default.jpg 1200×630 (sosyal medya önerilen boyutu) */
+export const DEFAULT_OG_IMAGE: Record<Locale, { url: string; alt: string; width: number; height: number }> = {
+  tr: { url: "/images/og/og-default.jpg", alt: "AKCY — Yapay zekâ ve otomasyon çözümleri", width: 1200, height: 630 },
+  en: { url: "/images/og/og-default.jpg", alt: "AKCY — AI and automation solutions", width: 1200, height: 630 },
 };
 
 /* Statik yayında sayfalar "/" ile biten klasör adresleriyle sunulur */

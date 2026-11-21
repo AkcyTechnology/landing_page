@@ -82,7 +82,7 @@ export default function BlogView({ locale }: { locale: Locale }) {
   return (
     <>
       <StructuredData data={schema} />
-      <BlogHero />
+      <BlogHero stats={{ posts: allPosts.length, topics: topics.length }} />
 
       <BlogListingClient
         allPosts={allPosts}

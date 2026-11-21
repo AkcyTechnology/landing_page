@@ -40,7 +40,7 @@
 .reject {
   padding: 9px 18px;
 
-  border-radius: 999px;
+  border-radius: var(--btn-radius);
   font: inherit;
   font-size: 13px;
   font-weight: 600;

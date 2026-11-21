@@ -1,17 +1,19 @@
+import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from "@/lib/contact";
 import { getT } from "@/i18n/server";
+import BookingLink from "@/components/common/BookingLink/BookingLink";
 import styles from "./ContactInfo.module.scss";
 
 function getItems(t: { email: string; phone: string; location: string; locationValue: string }) {
   return [
   {
     label: t.email,
-    value: "akcyglobal@gmail.com",
-    href: "mailto:akcyglobal@gmail.com",
+    value: CONTACT_EMAIL,
+    href: `mailto:${CONTACT_EMAIL}`,
   },
   {
     label: t.phone,
-    value: "+90 552 629 04 20",
-    href: "tel:+905526290420",
+    value: CONTACT_PHONE_DISPLAY,
+    href: `tel:${CONTACT_PHONE}`,
   },
   {
     label: "Instagram",
@@ -59,6 +61,10 @@ export default function ContactInfo() {
             )}
           </div>
         ))}
+      </div>
+
+      <div className={styles.booking}>
+        <BookingLink variant="card" />
       </div>
     </aside>
   );

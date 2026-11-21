@@ -28,7 +28,6 @@ export interface ServicesPageContent {
     description: string;
     primaryCta: string;
     secondaryCta: string;
-    arcLabel: string;
   };
   quoteCta: string;
   flip: { show: string; hide: string; overview: string; more: string };
@@ -52,7 +51,6 @@ export const servicesPageContent: Record<Locale, ServicesPageContent> = {
         "İhtiyacı anlamadan tasarım ve geliştirmeye, yayına alma sürecinden sonrasına kadar dijital ürününüzün tüm aşamalarında yanınızdayız. Web, mobil, özel yazılım, yapay zekâ ve otomasyon çözümlerini tek ekipte geliştiriyoruz.",
       primaryCta: "Hizmetleri incele",
       secondaryCta: "Projenizi konuşalım",
-      arcLabel: "Hizmetlerimiz",
     },
     quoteCta: "Teklif al",
     flip: { show: "Detayları gör", hide: "Görsele dön", overview: "Genel bakış", more: "Ayrıca" },
@@ -94,7 +92,6 @@ export const servicesPageContent: Record<Locale, ServicesPageContent> = {
         "From understanding the need through design and development to launch and beyond, we’re with you at every stage of your digital product. We build web, mobile, custom software, AI and automation solutions in one team.",
       primaryCta: "Explore services",
       secondaryCta: "Let’s talk about your project",
-      arcLabel: "Our services",
     },
     quoteCta: "Get a quote",
     flip: { show: "See details", hide: "Back to image", overview: "Overview", more: "Also" },

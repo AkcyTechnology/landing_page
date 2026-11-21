@@ -1,11 +1,8 @@
 import Link from "@/i18n/Link";
-import DropWords, { dropWordCount } from "@/components/common/DropWords/DropWords";
 import { getT } from "@/i18n/server";
-import Container from "@/components/common/Container/Container";
+import PageHero from "@/components/common/PageHero/PageHero";
 import type { AboutContent } from "@/content/about";
 
-import PhotoStack from "./PhotoStack";
-import TagRain from "./TagRain";
 import styles from "./AboutHero.module.scss";
 
 interface AboutHeroProps {
@@ -14,49 +11,29 @@ interface AboutHeroProps {
 }
 
 /*
-  Hakkımızda hero: metin solda ve üstte, etiketlerin önünde.
-  Başlık, açıklama ve buton her zaman ilk HTML'de görünür (JS'e bağlı gizleme yok).
+  Hakkımızda açılışı: ortak fotoğraflı hero (ürün akışı çizilen bir masa).
+  Başlığın son satırı turkuaz vurguyla gösterilir.
 */
 export default function AboutHero({ content, pageName }: AboutHeroProps) {
+  const lines = content.titleLines;
+  const lead = lines.slice(0, -1).join(" ");
+  const accent = lines.at(-1);
+
   return (
-    <section className={styles.hero}>
-      <TagRain tags={content.tags} />
-
-      <Container className={styles.container}>
-        <div className={styles.layout}>
-        <div className={styles.content}>
-          <nav className={styles.breadcrumb} aria-label={getT().blog.detail.breadcrumb}>
-            <ol>
-              <li>
-                <Link href="/">{content.breadcrumb}</Link>
-              </li>
-              <li aria-current="page">{pageName}</li>
-            </ol>
-          </nav>
-
-          <p className={styles.eyebrow}>{content.eyebrow}</p>
-
-          <h1 className={styles.heading}>
-            {content.titleLines.map((line, index) => (
-              <span key={line} className={styles.line}>
-                <DropWords text={line} start={content.titleLines.slice(0, index).reduce((sum, item) => sum + dropWordCount(item), 0)} />{" "}
-              </span>
-            ))}
-          </h1>
-
-          <p className={styles.description}>{content.description}</p>
-
-          <div className={styles.actions}>
-            <Link href="/iletisim" className={styles.primary}>
-              {content.primaryCta}
-              <span aria-hidden="true">→</span>
-            </Link>
-          </div>
-        </div>
-
-        <PhotoStack images={content.gallery} />
-        </div>
-      </Container>
-    </section>
+    <PageHero
+      id="about-hero-title"
+      eyebrow={content.eyebrow}
+      titleLead={lead || accent || ""}
+      titleAccent={lead ? accent : undefined}
+      description={content.description}
+      image="/images/solutions/automation.jpg"
+      objectPosition="65% 50%"
+      breadcrumb={{ label: getT().blog.detail.breadcrumb, homeLabel: content.breadcrumb, current: pageName }}
+    >
+      <Link href="/teklif" className={styles.primary}>
+        {content.primaryCta}
+        <span aria-hidden="true">→</span>
+      </Link>
+    </PageHero>
   );
 }
