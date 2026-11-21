@@ -1,6 +1,7 @@
 import { getT } from "@/i18n/server";
 import PageHero from "@/components/common/PageHero/PageHero";
 import SearchTrigger from "@/components/common/SiteSearch/SearchTrigger";
+import RollingNumber from "@/components/common/RollingNumber/RollingNumber";
 import styles from "./BlogHero.module.scss";
 
 /*
@@ -29,9 +30,9 @@ export default function BlogHero({ stats }: { stats: { posts: number; topics: nu
           {t.search}
         </SearchTrigger>
         <p className={styles.stats}>
-          <strong>{stats.posts}</strong> {t.statPosts}
+          <strong><RollingNumber value={stats.posts} /></strong> {t.statPosts}
           <span aria-hidden="true" />
-          <strong>{stats.topics}</strong> {t.statTopics}
+          <strong><RollingNumber value={stats.topics} /></strong> {t.statTopics}
         </p>
       </div>
     </PageHero>

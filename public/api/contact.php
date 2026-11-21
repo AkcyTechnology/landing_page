@@ -57,6 +57,27 @@ const RATE_LIMIT_WINDOW = 600;
 const RATE_LIMIT_MAX = 5;
 const SPAM_THRESHOLD = 3;
 
+/*
+  Teklif formundaki isteğe bağlı dosya eki (brief, örnek doküman, görsel).
+  Dosya eklenmezse istek eskisi gibi JSON gelir; eklenirse multipart/form-data
+  gelir ve form alanları "payload" alanında JSON olarak taşınır.
+  Sunucunun upload_max_filesize / post_max_size değerleri bu sınırdan küçükse
+  PHP dosyayı reddeder; bu durumda kullanıcıya "dosya çok büyük" denir.
+*/
+const MAX_UPLOAD_BYTES = 5242880; // 5 MB
+const ALLOWED_UPLOADS = [
+    'pdf' => ['application/pdf'],
+    'doc' => ['application/msword', 'application/vnd.ms-office', 'application/octet-stream'],
+    'docx' => ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/zip', 'application/octet-stream'],
+    'ppt' => ['application/vnd.ms-powerpoint', 'application/vnd.ms-office', 'application/octet-stream'],
+    'pptx' => ['application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/zip', 'application/octet-stream'],
+    'xls' => ['application/vnd.ms-excel', 'application/vnd.ms-office', 'application/octet-stream'],
+    'xlsx' => ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/zip', 'application/octet-stream'],
+    'png' => ['image/png'],
+    'jpg' => ['image/jpeg'],
+    'jpeg' => ['image/jpeg'],
+];
+
 function respond(int $status, array $data): void
 {
     // Reddedilen her istek sebebiyle birlikte error_log dosyasına yazılır.
@@ -232,6 +253,60 @@ function verifyTurnstile(string $secret, $token, string $ip, bool $disabled = fa
     return is_array($data) && ($data['success'] ?? false) === true;
 }
 
+/*
+  Yüklenen dosyayı doğrular: yükleme hatası, boyut, uzantı ve gerçek içerik
+  türü (finfo). Geçerliyse ['name', 'type', 'data'] döner; dosya yoksa null.
+  Geçersizse kullanıcıya gösterilecek hata mesajıyla respond() çağrılır.
+*/
+function readAttachment(): ?array
+{
+    $file = $_FILES['attachment'] ?? null;
+    if (!is_array($file) || ($file['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
+        return null;
+    }
+
+    $error = (int) ($file['error'] ?? UPLOAD_ERR_NO_FILE);
+    if ($error === UPLOAD_ERR_INI_SIZE || $error === UPLOAD_ERR_FORM_SIZE) {
+        respond(413, ['error' => 'Dosya çok büyük. En fazla 5 MB yükleyebilirsiniz.']);
+    }
+    if ($error !== UPLOAD_ERR_OK || !is_uploaded_file((string) $file['tmp_name'])) {
+        respond(400, ['error' => 'Dosya yüklenemedi. Lütfen tekrar deneyin.']);
+    }
+
+    $size = (int) ($file['size'] ?? 0);
+    if ($size <= 0 || $size > MAX_UPLOAD_BYTES) {
+        respond(413, ['error' => 'Dosya çok büyük. En fazla 5 MB yükleyebilirsiniz.']);
+    }
+
+    // Dosya adı: yalnızca güvenli karakterler, uzunluk sınırlı
+    $original = (string) ($file['name'] ?? 'dosya');
+    $extension = strtolower((string) pathinfo($original, PATHINFO_EXTENSION));
+    if (!isset(ALLOWED_UPLOADS[$extension])) {
+        respond(400, ['error' => 'Bu dosya türü desteklenmiyor. PDF, Word, PowerPoint, Excel, PNG veya JPG yükleyebilirsiniz.']);
+    }
+    $base = (string) preg_replace('/[^A-Za-z0-9._-]+/', '-', (string) pathinfo($original, PATHINFO_FILENAME));
+    $base = trim(substr($base, 0, 80), '-.') ?: 'dosya';
+    $name = $base . '.' . $extension;
+
+    // Gerçek içerik türü uzantıyla uyuşmalı (uzantısı değiştirilmiş dosyalara karşı)
+    $type = ALLOWED_UPLOADS[$extension][0];
+    if (function_exists('finfo_open')) {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $detected = $finfo ? (string) finfo_file($finfo, (string) $file['tmp_name']) : '';
+        if ($finfo) finfo_close($finfo);
+        if ($detected !== '' && !in_array($detected, ALLOWED_UPLOADS[$extension], true)) {
+            respond(400, ['error' => 'Dosyanın içeriği uzantısıyla uyuşmuyor.']);
+        }
+    }
+
+    $data = (string) file_get_contents((string) $file['tmp_name']);
+    if ($data === '') {
+        respond(400, ['error' => 'Dosya yüklenemedi. Lütfen tekrar deneyin.']);
+    }
+
+    return ['name' => $name, 'type' => $type, 'data' => $data];
+}
+
 function escapeHtml(string $value): string
 {
     return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
@@ -343,15 +418,31 @@ if (!isSameOrigin($config)) {
     respond(403, ['error' => 'İzin verilmeyen istek.']);
 }
 
-if (stripos($_SERVER['CONTENT_TYPE'] ?? '', 'application/json') === false) {
+/*
+  İki biçim kabul edilir:
+  - application/json: dosyasız gönderim (iletişim formu, dosyasız teklif)
+  - multipart/form-data: dosya ekli teklif; alanlar "payload" içinde JSON
+*/
+$contentType = (string) ($_SERVER['CONTENT_TYPE'] ?? '');
+$isMultipart = stripos($contentType, 'multipart/form-data') !== false;
+if (!$isMultipart && stripos($contentType, 'application/json') === false) {
     respond(415, ['error' => 'Geçersiz istek.']);
 }
 
-if ((int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > MAX_BODY_BYTES) {
-    respond(413, ['error' => 'İstek çok büyük.']);
+$contentLength = (int) ($_SERVER['CONTENT_LENGTH'] ?? 0);
+if ($contentLength > ($isMultipart ? MAX_UPLOAD_BYTES + MAX_BODY_BYTES + 8192 : MAX_BODY_BYTES)) {
+    respond(413, ['error' => $isMultipart ? 'Dosya çok büyük. En fazla 5 MB yükleyebilirsiniz.' : 'İstek çok büyük.']);
 }
 
-$rawBody = (string) file_get_contents('php://input', false, null, 0, MAX_BODY_BYTES + 1);
+if ($isMultipart) {
+    // post_max_size aşılırsa PHP $_POST ve $_FILES'ı boş bırakır
+    if (empty($_POST) && empty($_FILES) && $contentLength > 0) {
+        respond(413, ['error' => 'Dosya çok büyük. En fazla 5 MB yükleyebilirsiniz.']);
+    }
+    $rawBody = (string) ($_POST['payload'] ?? '');
+} else {
+    $rawBody = (string) file_get_contents('php://input', false, null, 0, MAX_BODY_BYTES + 1);
+}
 if (strlen($rawBody) > MAX_BODY_BYTES) {
     respond(413, ['error' => 'İstek çok büyük.']);
 }
@@ -414,6 +505,9 @@ if (!verifyTurnstile((string) ($config['turnstile_secret'] ?? ''), $raw['turnsti
     respond(400, ['error' => 'Robot doğrulaması başarısız. Lütfen sayfayı yenileyip tekrar deneyin.']);
 }
 
+// Dosya eki yalnızca bütün bot kontrolleri geçildikten sonra okunur
+$attachment = $isMultipart ? readAttachment() : null;
+
 /* ==========================
    MAİL GÖNDERİMİ
 ========================== */
@@ -433,6 +527,7 @@ $rows = [
     'Proje türü' => $fields['projectType'] ?: '—',
     'Tahmini bütçe' => $fields['budget'] ?: '—',
     'Tahmini başlangıç' => $fields['startTimeline'] ?: '—',
+    'Ek dosya' => $attachment ? $attachment['name'] . ' (' . max(1, (int) round(strlen($attachment['data']) / 1024)) . ' KB)' : '—',
 ];
 
 $tableRows = '';
@@ -454,13 +549,31 @@ $fromName = '=?UTF-8?B?' . base64_encode('AKCY Web Sitesi') . '?=';
 
 $headers = [
     'MIME-Version: 1.0',
-    'Content-Type: text/html; charset=UTF-8',
-    'Content-Transfer-Encoding: base64',
     "From: $fromName <$from>",
     'Reply-To: ' . $fields['email'],
     'X-Mailer: AKCY-Contact',
 ];
-$body = chunk_split(base64_encode($html));
+
+if ($attachment) {
+    // Dosya ekli: HTML gövde + ek, multipart/mixed
+    $boundary = 'akcy-' . bin2hex(random_bytes(12));
+    $headers[] = "Content-Type: multipart/mixed; boundary=\"$boundary\"";
+    $fileName = '=?UTF-8?B?' . base64_encode($attachment['name']) . '?=';
+    $body = "--$boundary\r\n"
+        . "Content-Type: text/html; charset=UTF-8\r\n"
+        . "Content-Transfer-Encoding: base64\r\n\r\n"
+        . chunk_split(base64_encode($html))
+        . "--$boundary\r\n"
+        . "Content-Type: {$attachment['type']}; name=\"$fileName\"\r\n"
+        . "Content-Transfer-Encoding: base64\r\n"
+        . "Content-Disposition: attachment; filename=\"$fileName\"\r\n\r\n"
+        . chunk_split(base64_encode($attachment['data']))
+        . "--$boundary--\r\n";
+} else {
+    $headers[] = 'Content-Type: text/html; charset=UTF-8';
+    $headers[] = 'Content-Transfer-Encoding: base64';
+    $body = chunk_split(base64_encode($html));
+}
 
 $smtp = $config['smtp'] ?? [];
 

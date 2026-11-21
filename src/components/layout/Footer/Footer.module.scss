@@ -65,8 +65,20 @@
   line-height: 1.6;
   font-weight: 600;
   letter-spacing: .22em;
-  &::before { content: ""; width: 28px; height: 1px; flex-shrink: 0; background: currentColor; }
+  &::before { content: ""; width: 28px; height: 1px; flex-shrink: 0; background: currentColor; transform-origin: 0 50%; }
 }
+/* Etiket çizgisi, bölüm ekrana girerken soldan sağa çizilir */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .ctaEyebrow { view-timeline-name: --cta-eyebrow; }
+    .ctaEyebrow::before {
+      animation: line-draw linear both;
+      animation-timeline: --cta-eyebrow;
+      animation-range: entry 30% cover 40%;
+    }
+  }
+}
+@keyframes line-draw { from { transform: scaleX(0); } }
 .ctaHeading {
   font-size: clamp(36px, 3.8vw, 56px);
   font-weight: 600;

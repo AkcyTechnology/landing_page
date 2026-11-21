@@ -824,3 +824,46 @@
   @include btn.text;
   font-size: 17px;
 }
+
+/* =========================
+   OKUMA ÇİZGİSİ
+   Sayfa kaydırıldıkça alt kenarda soldan sağa dolar (kaydırmaya bağlı CSS
+   animasyonu; desteklemeyen tarayıcılarda görünmez). Yalnızca menü beyaza
+   döndükten sonra görünür.
+========================= */
+.progress {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  background: var(--btn-primary);
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+@supports (animation-timeline: scroll()) {
+  .progress {
+    animation: read-progress linear both;
+    animation-timeline: scroll(root);
+  }
+
+  .scrolled .progress {
+    opacity: 1;
+  }
+}
+
+@keyframes read-progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress {
+    display: none;
+  }
+}

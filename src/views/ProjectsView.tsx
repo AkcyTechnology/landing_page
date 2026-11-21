@@ -16,6 +16,7 @@ import ProjectProblemApproach from "@/components/projects/ProjectProblemApproach
 import ProjectFeatureHighlight from "@/components/projects/ProjectFeatureHighlight/ProjectFeatureHighlight";
 import ProjectCaseStudy from "@/components/projects/ProjectCaseStudy/ProjectCaseStudy";
 import ProjectResults from "@/components/projects/ProjectResults/ProjectResults";
+import OtherProjects from "@/components/projects/OtherProjects/OtherProjects";
 import NextProject from "@/components/projects/NextProject/NextProject";
 
 
@@ -144,6 +145,8 @@ export function ProjectDetailView({ slug, locale }: { slug: string; locale: Loca
       />
 
       <ProjectResults metrics={project.metrics} testimonial={project.testimonial} />
+
+      <OtherProjects currentHref={path} />
 
       <NextProject project={nextProject} />
     </>

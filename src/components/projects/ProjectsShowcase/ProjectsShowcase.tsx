@@ -6,6 +6,7 @@ import { useEffect, useRef } from "react";
 import Link from "@/i18n/Link";
 import Container from "@/components/common/Container/Container";
 import PageHero from "@/components/common/PageHero/PageHero";
+import RollingNumber from "@/components/common/RollingNumber/RollingNumber";
 import { useT } from "@/i18n/LocaleProvider";
 import ProjectEmblem from "@/components/projects/ProjectEmblem/ProjectEmblem";
 import type { ProjectsPageContent, ShowcaseProject } from "@/content/projects-page";
@@ -230,15 +231,15 @@ export default function ProjectsShowcase({ content }: { content: ProjectsPageCon
         <dl className={styles.introStats}>
           <div>
             <dt>{t.hero.statProjects}</dt>
-            <dd>{content.projects.length}</dd>
+            <dd><RollingNumber value={content.projects.length} /></dd>
           </div>
           <div>
             <dt>{t.hero.statWeb}</dt>
-            <dd>{content.projects.filter((project) => project.visual.kind === "web").length}</dd>
+            <dd><RollingNumber value={content.projects.filter((project) => project.visual.kind === "web").length} /></dd>
           </div>
           <div>
             <dt>{t.hero.statApps}</dt>
-            <dd>{content.projects.filter((project) => project.visual.kind === "app").length}</dd>
+            <dd><RollingNumber value={content.projects.filter((project) => project.visual.kind === "app").length} /></dd>
           </div>
         </dl>
       </PageHero>

@@ -168,6 +168,8 @@ export const tr = {
     emptyMessage: "Bu kategoride henüz yayınlanmış bir proje bulunmuyor.",
     clearFilters: "Filtreleri Temizle",
     nextProject: "SONRAKİ PROJE",
+    otherProjects: "Diğer projelerimiz",
+    allProjects: "Tüm projeler",
     factService: "Hizmet",
     factYear: "Yıl",
     factSector: "Sektör",
@@ -193,6 +195,7 @@ export const tr = {
   },
   about: aboutContent.tr,
   home: {
+    techBand: { label: "Çalıştığımız teknolojiler" },
     hero: {
       eyebrow: "YAPAY ZEKÂ · OTOMASYON · DİJİTAL ÜRÜNLER",
       titleFixed: "İşinizi",
@@ -597,6 +600,11 @@ export const tr = {
     stageLabel: "Projenin aşaması",
     stages: ["Sıfırdan yeni bir proje", "Mevcut ürünü geliştirme", "Yeniden tasarım", "Henüz fikir aşamasında"],
     descriptionLabel: "Kısaca anlatın *",
+    fileLabel: "Dosya ekleyin (isteğe bağlı)",
+    fileHint: "Brief, örnek doküman veya görsel — PDF, Word, PowerPoint, Excel, PNG, JPG · en fazla 5 MB",
+    fileRemove: "Kaldır",
+    fileType: "Bu dosya türü desteklenmiyor. PDF, Word, PowerPoint, Excel, PNG veya JPG yükleyebilirsiniz.",
+    fileTooBig: "Dosya çok büyük. En fazla 5 MB yükleyebilirsiniz.",
     errors: {
       services: "Lütfen en az bir hizmet seçin.",
       description: "Lütfen projenizi birkaç cümleyle anlatın.",

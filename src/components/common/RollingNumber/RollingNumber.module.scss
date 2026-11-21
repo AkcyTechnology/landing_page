@@ -1,0 +1,75 @@
+.number {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Genel belirme kuralı (globals.css › [data-reveal]) bu öğede kullanılmaz:
+   hareketi rakam şeritleri yapar */
+:global(html[data-reveal-ready]) .number[data-reveal]:not([data-in]) {
+  opacity: 1;
+  transform: none;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.digits {
+  display: inline-flex;
+}
+
+/* Tek rakam yüksekliğinde pencere */
+.digit {
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+  line-height: 1;
+}
+
+/* Varsayılan (JS yok / hareket azaltma): şerit doğrudan doğru rakamda */
+.strip {
+  display: flex;
+  flex-direction: column;
+  transform: translateY(calc(var(--d) * -1em));
+
+  span {
+    display: block;
+    height: 1em;
+    line-height: 1;
+  }
+}
+
+/* JS çalışıyorsa: ekrana girene kadar şerit 0'da bekler */
+:global(html[data-reveal-ready]) .number:not([data-in]) .strip {
+  transform: translateY(0);
+}
+
+/*
+  Ekrana girince: gecikme boyunca 0'da durur (fill: both), sonra doğru rakama
+  döner. Geçiş (transition) yerine animasyon kullanılır; böylece sayfa
+  açılışında "0'a dön / rakama dön" komutları birbirini iptal etmez.
+*/
+:global(html[data-reveal-ready]) .number[data-in] .strip {
+  animation: digit-roll 1.4s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--base, 0.1s) + var(--i) * 0.12s) both;
+}
+
+@keyframes digit-roll {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(calc(var(--d) * -1em));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html[data-reveal-ready]) .number[data-in] .strip {
+    animation: none;
+  }
+}

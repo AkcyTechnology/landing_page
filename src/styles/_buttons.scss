@@ -82,6 +82,19 @@
     transition: none;
   }
 
+  // Sondaki ok ikonu: üzerine gelince hafifçe ileri kayar (tüm butonlarda aynı)
+  > svg:last-child,
+  > [aria-hidden="true"]:last-child {
+    transition: transform 0.35s cubic-bezier(0.22, 0.8, 0.25, 1);
+  }
+
+  @include hover {
+    > svg:last-child,
+    > [aria-hidden="true"]:last-child {
+      transform: translateX(3px);
+    }
+  }
+
   &:focus-visible {
     outline: 2px solid var(--btn-focus);
     outline-offset: 3px;

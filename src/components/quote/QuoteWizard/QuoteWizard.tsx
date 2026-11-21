@@ -44,6 +44,14 @@ const EMPTY: Answers = {
 };
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/* public/api/contact.php › ALLOWED_UPLOADS ve MAX_UPLOAD_BYTES ile aynı */
+const ACCEPTED_FILES = ".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.png,.jpg,.jpeg";
+const MAX_FILE_BYTES = 5 * 1024 * 1024;
+
+function formatSize(bytes: number) {
+  return bytes < 1024 * 1024 ? `${Math.max(1, Math.round(bytes / 1024))} KB` : `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+}
 const STEPS = 4;
 
 function Choice({
@@ -84,6 +92,10 @@ export default function QuoteWizard() {
   const [errorMessage, setErrorMessage] = useState("");
   const [website, setWebsite] = useState("");
   const [turnstileToken, setTurnstileToken] = useState("");
+  /* İsteğe bağlı ek: brief, örnek doküman veya görsel (en fazla 5 MB) */
+  const [file, setFile] = useState<File | null>(null);
+  const [fileError, setFileError] = useState("");
+  const fileInput = useRef<HTMLInputElement>(null);
   const startedAt = useRef(0);
   const turnstile = useRef<TurnstileHandle>(null);
   const heading = useRef<HTMLHeadingElement>(null);
@@ -137,6 +149,22 @@ export default function QuoteWizard() {
 
   const back = () => setStep((value) => Math.max(value - 1, 0));
 
+  /* Dosya seçimi: sunucudaki kurallarla aynı tür ve boyut kontrolü */
+  const pickFile = (picked: File | null) => {
+    setFileError("");
+    if (!picked) return;
+    const extension = picked.name.split(".").pop()?.toLowerCase() ?? "";
+    if (!ACCEPTED_FILES.split(",").includes(`.${extension}`)) {
+      setFileError(t.fileType);
+      return;
+    }
+    if (picked.size > MAX_FILE_BYTES) {
+      setFileError(t.fileTooBig);
+      return;
+    }
+    setFile(picked);
+  };
+
   const submit = async (event: FormEvent) => {
     event.preventDefault();
     if (step < STEPS - 1) return next();
@@ -150,24 +178,34 @@ export default function QuoteWizard() {
       answers.description.trim(),
     ].join("\n");
 
+    const payload = JSON.stringify({
+      name: answers.name.trim(),
+      email: answers.email.trim(),
+      phone: answers.phone.trim(),
+      company: answers.company.trim(),
+      projectType: `[${t.source}] ${answers.services.join(", ")}`,
+      budget: answers.budget,
+      startTimeline: answers.timeline,
+      message,
+      website,
+      elapsedMs: Date.now() - startedAt.current,
+      turnstileToken,
+    });
+
+    /* Dosya yoksa eskisi gibi JSON; dosya varsa multipart (alanlar "payload" içinde) */
+    let body: BodyInit = payload;
+    const headers: HeadersInit = {};
+    if (file) {
+      const data = new FormData();
+      data.append("payload", payload);
+      data.append("attachment", file);
+      body = data;
+    } else {
+      headers["Content-Type"] = "application/json";
+    }
+
     try {
-      const response = await fetch("/api/contact.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: answers.name.trim(),
-          email: answers.email.trim(),
-          phone: answers.phone.trim(),
-          company: answers.company.trim(),
-          projectType: `[${t.source}] ${answers.services.join(", ")}`,
-          budget: answers.budget,
-          startTimeline: answers.timeline,
-          message,
-          website,
-          elapsedMs: Date.now() - startedAt.current,
-          turnstileToken,
-        }),
-      });
+      const response = await fetch("/api/contact.php", { method: "POST", headers, body });
       if (!response.ok) {
         const data = (await response.json().catch(() => null)) as { error?: string } | null;
         setErrorMessage(
@@ -301,6 +339,57 @@ export default function QuoteWizard() {
                   />
                 </label>
                 {errors.description && <p className={styles.error} role="alert">{errors.description}</p>}
+
+                {/* İsteğe bağlı dosya: tıklayarak veya sürükleyip bırakarak */}
+                <div
+                  className={`${styles.upload} ${file ? styles.uploadFilled : ""}`}
+                  onDragOver={(event) => event.preventDefault()}
+                  onDrop={(event) => {
+                    event.preventDefault();
+                    pickFile(event.dataTransfer.files?.[0] ?? null);
+                  }}
+                >
+                  <input
+                    ref={fileInput}
+                    id="quote-file"
+                    type="file"
+                    className={styles.uploadInput}
+                    accept={ACCEPTED_FILES}
+                    onChange={(event) => pickFile(event.target.files?.[0] ?? null)}
+                  />
+                  {file ? (
+                    <div className={styles.uploadFile}>
+                      <span className={styles.uploadIcon} aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z" /><path d="M14 3v5h5" /></svg>
+                      </span>
+                      <span className={styles.uploadName}>
+                        <strong>{file.name}</strong>
+                        <span>{formatSize(file.size)}</span>
+                      </span>
+                      <button
+                        type="button"
+                        className={styles.uploadRemove}
+                        onClick={() => {
+                          setFile(null);
+                          if (fileInput.current) fileInput.current.value = "";
+                        }}
+                      >
+                        {t.fileRemove}
+                      </button>
+                    </div>
+                  ) : (
+                    <label htmlFor="quote-file" className={styles.uploadLabel}>
+                      <span className={styles.uploadIcon} aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5" /><path d="M5 15v4h14v-4" /></svg>
+                      </span>
+                      <span>
+                        <strong>{t.fileLabel}</strong>
+                        <span>{t.fileHint}</span>
+                      </span>
+                    </label>
+                  )}
+                </div>
+                {fileError && <p className={styles.error} role="alert">{fileError}</p>}
               </>
             )}
 

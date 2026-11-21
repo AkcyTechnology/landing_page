@@ -202,6 +202,9 @@ export default function Header() {
             <span />
           </button>
         </div>
+
+        {/* Okuma çizgisi: sayfa kaydırıldıkça menünün alt kenarında dolar */}
+        <span className={styles.progress} aria-hidden="true" />
       </header>
 
       {/* MOBILE MENU */}

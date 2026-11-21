@@ -1,0 +1,93 @@
+$ease: cubic-bezier(0.22, 0.8, 0.25, 1);
+
+.band {
+  padding: clamp(36px, 4vw, 52px) 0;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface, #ffffff);
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  align-items: baseline;
+  gap: 32px;
+}
+
+.label {
+  margin: 0;
+  color: var(--color-accent);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: inline-flex;
+    align-items: center;
+    /* Maske: isim bu kutunun altından yukarı kayarak açılır */
+    overflow: hidden;
+    color: #475569;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+
+    /* İsimler arasında ince ayraç */
+    &:not(:last-child)::after {
+      content: "";
+      width: 4px;
+      height: 4px;
+      margin: 0 18px;
+      border-radius: 50%;
+      background: rgba(7, 27, 70, 0.18);
+    }
+  }
+
+  span {
+    display: inline-block;
+    transition:
+      transform 0.7s $ease,
+      color 0.25s ease;
+    transition-delay: calc(var(--i) * 45ms);
+  }
+
+  li:hover span {
+    color: var(--color-text-primary, #071b46);
+  }
+}
+
+/* JS çalışıyorsa: bant ekrana girene kadar isimler maskenin altında bekler */
+:global(html[data-reveal-ready]) .band:not([data-in]) .list span {
+  transform: translateY(110%);
+}
+
+@media (max-width: 760px) {
+  .inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .list li {
+    font-size: 14px;
+
+    &:not(:last-child)::after {
+      margin: 0 12px;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .list span {
+    transition: none;
+    transform: none !important;
+  }
+}

@@ -5,6 +5,7 @@ import { pageMetadata } from "@/lib/metadata";
 import { StructuredData } from "@/lib/StructuredData";
 import { graph, ORGANIZATION_ID, webPageSchema } from "@/lib/schema";
 import Hero from "@/components/home/Hero/Hero";
+import TechBand from "@/components/home/TechBand/TechBand";
 import ProblemsSolved from "@/components/home/ProblemsSolved/ProblemsSolved";
 import ProjectShowcase from "@/components/home/ProjectShowcase/ProjectShowcase";
 import { WorkProcess, CapabilitiesOverview } from "@/components/home/StudioOverview/StudioOverview";
@@ -26,6 +27,7 @@ export default function HomeView({ locale }: { locale: Locale }) {
     <>
       <StructuredData data={schema} />
       <Hero />
+      <TechBand />
       <ProjectShowcase />
       <ProblemsSolved />
       <WorkProcess />

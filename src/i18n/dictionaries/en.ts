@@ -165,6 +165,8 @@ export const en: Dictionary = {
     emptyMessage: "There are no published projects in this category yet.",
     clearFilters: "Clear Filters",
     nextProject: "NEXT PROJECT",
+    otherProjects: "More of our work",
+    allProjects: "All projects",
     factService: "Service",
     factYear: "Year",
     factSector: "Industry",
@@ -190,6 +192,7 @@ export const en: Dictionary = {
   },
   about: aboutContent.en,
   home: {
+    techBand: { label: "Technologies we work with" },
     hero: {
       eyebrow: "AI · AUTOMATION · DIGITAL PRODUCTS",
       titleFixed: "Transforming",
@@ -593,6 +596,11 @@ export const en: Dictionary = {
     stageLabel: "Project stage",
     stages: ["A brand-new project", "Improving an existing product", "A redesign", "Still at the idea stage"],
     descriptionLabel: "In a few sentences *",
+    fileLabel: "Attach a file (optional)",
+    fileHint: "Brief, sample document or image — PDF, Word, PowerPoint, Excel, PNG, JPG · up to 5 MB",
+    fileRemove: "Remove",
+    fileType: "This file type isn’t supported. You can upload PDF, Word, PowerPoint, Excel, PNG or JPG.",
+    fileTooBig: "The file is too large. You can upload up to 5 MB.",
     errors: {
       services: "Please select at least one service.",
       description: "Please describe your project in a few sentences.",
