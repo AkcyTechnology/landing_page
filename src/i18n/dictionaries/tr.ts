@@ -177,7 +177,6 @@ export const tr = {
     back: "Projelerimize Dön",
     visitLive: "Canlı Siteyi Ziyaret Et",
     outcomes: "Sonuçlar",
-    resultsLabel: "Ölçülebilir sonuçlar",
     hero: {
       ctaPrimary: "Projenizi konuşalım",
       ctaSecondary: "Projeleri keşfet",
@@ -571,10 +570,6 @@ export const tr = {
     send: "Gönder",
     close: "Kapat",
     typing: "Yazıyor",
-  },
-  booking: {
-    title: "Ücretsiz keşif görüşmesi planlayın",
-    text: "15 dakikalık bir görüşmede ihtiyacınızı birlikte netleştirelim.",
   },
   quoteWizard: {
     pageTitle: "Teklif Al",

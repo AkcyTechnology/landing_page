@@ -1,6 +1,5 @@
 import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from "@/lib/contact";
 import { getT } from "@/i18n/server";
-import BookingLink from "@/components/common/BookingLink/BookingLink";
 import styles from "./ContactInfo.module.scss";
 
 function getItems(t: { email: string; phone: string; location: string; locationValue: string }) {
@@ -61,10 +60,6 @@ export default function ContactInfo() {
             )}
           </div>
         ))}
-      </div>
-
-      <div className={styles.booking}>
-        <BookingLink variant="card" />
       </div>
     </aside>
   );

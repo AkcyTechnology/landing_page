@@ -9,7 +9,6 @@ import { useLocale, useT } from "@/i18n/LocaleProvider";
 import { trackEvent } from "@/lib/analytics";
 import { CONTACT_EMAIL } from "@/lib/contact";
 import TurnstileWidget, { TURNSTILE_SITE_KEY, type TurnstileHandle } from "@/components/contact/ContactForm/TurnstileWidget";
-import BookingLink from "@/components/common/BookingLink/BookingLink";
 import styles from "./QuoteWizard.module.scss";
 
 /*
@@ -237,7 +236,6 @@ export default function QuoteWizard() {
         <span className={styles.successIcon} aria-hidden="true">✓</span>
         <h2>{t.successTitle}</h2>
         <p>{t.successText}</p>
-        <BookingLink variant="card" />
         <Link href="/projelerimiz" className={styles.successLink}>
           {t.successLink} <span aria-hidden="true">→</span>
         </Link>
@@ -528,7 +526,6 @@ export default function QuoteWizard() {
             <li key={promise}>{promise}</li>
           ))}
         </ul>
-        <BookingLink variant="inline" />
       </aside>
     </div>
   );

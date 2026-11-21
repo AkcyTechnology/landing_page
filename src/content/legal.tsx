@@ -5,7 +5,6 @@ import type { LegalSection } from "@/components/legal/LegalPageLayout/LegalPageL
 /* Analiz araçları tanımlıysa (çerez bandı + onaylı ölçüm) çerez politikası buna göre yazılır */
 const ANALYTICS_TOOLS = [
   process.env.NEXT_PUBLIC_GA_ID ? "Google Analytics" : "",
-  process.env.NEXT_PUBLIC_CLARITY_ID ? "Microsoft Clarity" : "",
 ].filter(Boolean);
 const ANALYTICS_ENABLED = ANALYTICS_TOOLS.length > 0;
 const ANALYTICS_TR = ANALYTICS_TOOLS.join(" ve ");

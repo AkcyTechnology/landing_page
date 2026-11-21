@@ -174,7 +174,6 @@ export const en: Dictionary = {
     back: "Back to Projects",
     visitLive: "Visit the Live Site",
     outcomes: "Outcomes",
-    resultsLabel: "Measurable results",
     hero: {
       ctaPrimary: "Let’s talk about your project",
       ctaSecondary: "Explore projects",
@@ -567,10 +566,6 @@ export const en: Dictionary = {
     send: "Send",
     close: "Close",
     typing: "Typing",
-  },
-  booking: {
-    title: "Book a free discovery call",
-    text: "Let’s clarify your needs together in a 15-minute call.",
   },
   quoteWizard: {
     pageTitle: "Get a Quote",

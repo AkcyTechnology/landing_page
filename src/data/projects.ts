@@ -58,10 +58,6 @@ export interface ProjectDef {
   caseStudy?: CaseStudySection[];
   featureHighlight?: FeatureHighlight;
   outcomes?: string[];
-  /** Ölçülebilir sonuçlar (ör. { value: "95", label: "Mobil PageSpeed skoru" }). Yalnızca doğrulanmış rakamlar girilmeli; boşsa bölüm gösterilmez. */
-  metrics?: { value: string; label: string }[];
-  /** Müşteri yorumu (müşterinin izniyle). Boşsa gösterilmez. */
-  testimonial?: { quote: string; author: string; role?: string };
   /** Gerçek müşteri projesi mi, yoksa AKCY'nin kendi konsept çalışması mı. */
   kind: "client" | "concept";
   imagesPending?: boolean;
